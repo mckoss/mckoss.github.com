@@ -1,0 +1,886 @@
+<HTML>
+<HEAD>
+<STYLE>
+BODY {
+font-family:Verdana;
+}
+
+H1 {
+text-align:center;
+}
+
+H2 {
+text-align:center;
+}
+
+TABLE.QR {
+cursor:hand;
+}
+
+TABLE.QR TD.C {
+background-color:firebrick;
+width:40px;
+height:40px;
+text-align:center;
+vertical-align:middle;
+font-size: 10;
+}
+
+TABLE.QR TD.L {
+width:4px;
+background-color:maroon;
+}
+
+TABLE.QR TD.B {
+height:4px;
+background-color:maroon;
+}
+
+TABLE.QR TD.I {
+width:4px;
+height:4px;
+background-color:maroon;
+}
+
+TD {
+vertical-align: top;
+}
+
+TABLE.Stats {
+font: 12 Verdana;
+}
+
+TABLE.Stats TH {
+text-align: right;
+}
+
+</STYLE>
+
+<SCRIPT>
+// Origin of board (x,y) is lower left.
+// Dir (0, 1, 2, 3) = (right, top, left, bottom)
+// Orient (0, 1) = (horiz, vert)
+
+// Quoridor Board [QB]
+function QBoard()
+{
+	this.crw = 9;
+	this.ccol = 9;
+	this.cwall = 10;
+	this.mpWall = new Object;	// center pos -> orient
+	this.mpBlock = new Object;	// pos-pos -> true if wall prevents move
+}
+
+QBoard.prototype.Init = QBInit;
+function QBInit()
+{
+	this.iqp = 0;
+	this.iqpMax = 2;
+	this.rgqp = new Array(this.iqpMax);
+	this.rgqp[0] = new QPlayer(this, "White", "white", 3);
+	this.rgqp[1] = new QPlayer(this, "Black", "gray", 1);
+	this.rgmove = new Array;
+}
+
+// Evaluate each player's position
+QBoard.prototype.Eval = QBEval;
+function QBEval()
+{
+	var iqp;
+	for (iqp = 0; iqp < this.iqpMax; iqp++)
+		this.rgqp[iqp].Eval();
+}
+
+QBoard.prototype.FPlaceWall = QBFPlaceWall;
+function QBFPlaceWall(pos, orient, fCommit)
+{
+	var qp = this.rgqp[this.iqp];
+
+	if (qp.cwall == 0)
+		return false;
+
+	orient = orient-0;
+	if (pos.x <= 0 || pos.x >= this.ccol ||
+		pos.y <= 0 || pos.y >= this.crw)
+		return false;
+
+	if (this.mpWall[pos.toString()] != null)
+		return false;
+
+	var posT = pos.Clone();
+	posT.Move(orient);
+	if (this.mpWall[posT.toString()] == orient)
+		return false;
+
+	var posT2 = pos.Clone();
+	posT2.Move(orient + 2);
+	if (this.mpWall[posT2.toString()] == orient)
+		return false;
+
+	var fRet = true;
+
+	this.mpWall[pos.toString()] = orient;
+
+	var rgstBlock = new Array;
+
+	var posBlock = pos.Clone();
+	posBlock.Move(3 - orient);
+	rgstBlock[0] = pos + "-" + posBlock;
+	rgstBlock[1] = posBlock + "-" + pos;
+
+	posBlock = posT2.Clone();
+	posBlock.Move(3-orient);
+	rgstBlock[2] = posT2 + "-" + posBlock;
+	rgstBlock[3] = posBlock + "-" + posT2;
+
+	var ist;
+	for (ist = 0; ist < 4; ist++)
+		this.mpBlock[rgstBlock[ist]] = true;
+
+	// Check to make sure all players can reach their goal
+	this.Eval();
+
+	var iqp;
+	for (iqp = 0; iqp < this.iqpMax; iqp++)
+		{
+		var qpT = this.rgqp[iqp];
+		if (qpT.wScore == null)
+			{
+			fRet = false;
+			break;
+			}
+		}
+	if (fRet && fCommit)
+		{
+		qp.cwall--;
+		}
+	else
+		{
+		this.mpWall[pos.toString()] = null;
+		for (ist = 0; ist < 4; ist++)
+			this.mpBlock[rgstBlock[ist]] = null;
+		}
+
+	return fRet;
+}
+
+QBoard.prototype.Move = QBMove;
+function QBMove(pos, dir)
+{
+	var posT = pos.Clone();
+	posT.Move(dir);
+	if (this.FOnBoard(posT) && !this.mpBlock[pos + "-" + posT])
+		return posT;
+
+	return null;
+}
+
+QBoard.prototype.FDirectMove = QBFDirectMove;
+function QBFDirectMove(posFrom, posTo)
+{
+	return (posFrom.FAdjacent(posTo) && !this.mpBlock[posFrom + "-" + posTo]);
+}
+
+QBoard.prototype.FMovePiece = QBFMovePiece;
+function QBFMovePiece(qp, pos, fCommit)
+{
+	var posFrom = qp.pos;
+
+	// Can't move off the board or on another piece
+	if (!this.FOnBoard(pos))
+		return false;
+
+	var iqp;
+	for (iqp = 0; iqp < this.iqpMax; iqp++)
+		{
+		var qpT = this.rgqp[iqp];
+		if (qpT.pos.FEq(pos))
+			return false;
+		}
+
+	var fRet = this.FDirectMove(posFrom, pos);
+
+	if (!fRet)
+		{
+		for (iqp = 0; iqp < this.iqpMax; iqp++)
+			{
+			qpT = this.rgqp[iqp];
+			if (this.FDirectMove(posFrom, qpT.pos) && this.FDirectMove(qpT.pos, pos))
+				{
+				fRet = true;
+				break;
+				}
+			}
+		}
+
+	if (fRet && fCommit)
+		qp.pos = pos.Clone();
+	return fRet;
+}
+
+QBoard.prototype.FMakeMove = QBFMakeMove;
+function QBFMakeMove(qmove, fCommit)
+{
+	var fRet;
+
+	if (qmove.fMove)
+		{
+		var qp = this.rgqp[this.iqp];
+		fRet = this.FMovePiece(qp, qmove.pos, fCommit);
+		}
+	else
+		{
+		fRet = this.FPlaceWall(qmove.pos, qmove.orient, fCommit);
+		}
+
+	if (fRet && fCommit)
+		{
+		this.iqp = (this.iqp + 1) % this.iqpMax;
+		this.rgmove[this.rgmove.length] = qmove;
+		}
+	return fRet;
+}
+
+QBoard.prototype.toString = QBSt;
+function QBSt()
+{
+	var st = "";
+	var iqp;
+
+	st += "Quoridor Board";
+	for (iqp = 0; iqp < this.iqpMax; iqp++)
+		{
+		st += "\r" + this.rgqp[iqp];
+		}
+
+	var stPos;
+	for (stPos in this.mpWall)
+		st += "\r" + stPos + ":" + this.mpWall[stPos];
+	return st;
+}
+
+QBoard.prototype.FOnBoard = QBFOnBoard;
+function QBFOnBoard(pos)
+{
+	return (pos.x >= 0 && pos.x < this.ccol &&
+		pos.y >= 0 && pos.y < this.crw);
+}
+
+// Player position [POS]
+function Pos(x, y)
+{
+	this.x = x-0;
+	this.y = y-0;
+}
+
+Pos.prototype.Clone = PosClone;
+function PosClone()
+{
+	return new Pos(this.x, this.y);
+}
+
+var mpdirdx = new Array(1, 0, -1, 0);
+var mpdirdy = new Array(0, 1, 0, -1);
+
+Math.sgn = MathSgn;
+function MathSgn(w)
+{
+	if (w > 0) return 1;
+	if (w < 0) return -1;
+	return 0;
+}
+
+Pos.prototype.Move = PosMove;
+function PosMove(dir)
+{
+	this.x += mpdirdx[dir];
+	this.y += mpdirdy[dir];
+}
+
+Pos.prototype.MoveToward = PosMoveToward;
+function PosMoveToward(pos)
+{
+	this.x += Math.sgn(pos.x - this.x);
+	this.y += Math.sgn(pos.y - this.y);
+}
+
+Pos.prototype.FAdjacent = PosFAdjacent;
+function PosFAdjacent(pos)
+{
+	var wDiff = Math.abs(pos.x - this.x) + Math.abs(pos.y - this.y);
+	return wDiff == 1;
+}
+
+var rgxStart = new Array(1, 0.5, 0, 0.5);
+var rgyStart = new Array(0.5, 1, 0.5, 0);
+
+function PosStart(dir, qb)
+{
+	var pos = new Pos(Math.floor(rgxStart[dir] * (qb.ccol - 1)),
+		Math.floor(rgyStart[dir] * (qb.crw - 1)));
+	return pos;
+}
+
+var rgxGoal = new Array(0, 0, 0, 1, 1, 1, 0, 1);
+var rgyGoal = new Array(0, 1, 0, 0, 0, 1, 1, 1);
+
+function PosGoal(dir, fStart, qb)
+{
+	return(new Pos(rgxGoal[dir*2 + fStart] * (qb.ccol - 1),
+		rgyGoal[dir*2+fStart] * (qb.crw - 1)));
+}
+
+Pos.prototype.InitEnum = PosInitEnum;
+function PosInitEnum(qb)
+{
+	this.x = qb.ccol - 1;
+	this.y = qb.crw;
+	this.qb = qb;
+}
+
+Pos.prototype.FEnum = PosFEnum;
+function PosFEnum()
+{
+	this.x = this.x + 1;
+	if (this.x == qb.ccol)
+		{
+		this.x = 0;
+		this.y -= 1;
+		}
+	return(this.y >= 0);
+}
+
+Pos.prototype.FEq = PosFEq;
+function PosFEq(pos)
+{
+	return (this.x == pos.x && this.y == pos.y);
+}
+
+Pos.prototype.toString = PosSt;
+function PosSt()
+{
+	return this.x + "." + this.y;
+}
+
+Pos.FromSt = PosFromSt;
+function PosFromSt(st)
+{
+	var ich = st.indexOf(".");
+	var pos = new Pos(0, 0);
+	pos.x = st.substr(0, ich) - 0;
+	pos.y = st.substr(ich+1) - 0;
+	return pos;
+}
+
+// Quoridor player [QP]
+function QPlayer(qb, stName, stColor, dir)
+{
+	this.cwall = qb.cwall;
+	this.stName = stName;
+	this.stColor = stColor;
+	this.pos = PosStart(dir, qb);
+	this.posGoal1 = PosGoal(dir, 0, qb);
+	this.posGoal2 = PosGoal(dir, 1, qb);
+	this.qb = qb;
+}
+
+QPlayer.prototype.Eval = QPEval;
+function QPEval()
+{
+	this.qs = new QSearch(this.qb);
+	this.qs.Push(this.pos, 0);
+	this.qs.BFS();
+	this.wScore = null;
+	var pos = this.posGoal1.Clone();
+	while (true)
+		{
+		var w = this.qs.WPeek(pos);
+		if (w != null && (this.wScore == null || w < this.wScore))
+			this.wScore = w;
+		if (pos.FEq(this.posGoal2))
+			break;
+		pos.MoveToward(this.posGoal2);
+		}
+}
+
+QPlayer.prototype.toString = QPSt;
+function QPSt()
+{
+	var st = "";
+	st += "Player: " + this.stName;
+	st += "\rWalls: " + this.cwall;
+	st += "\rPosition: " + this.pos;
+	if (this.qs)
+		{
+		st += this.qs;
+		st += "\rScore: " + this.wScore;
+		}
+	return st;
+}
+
+// Quoridor Search [QS]
+function QSearch(qb)
+{
+	this.mpposw = new Object;
+	this.qpos = new Queue;
+	this.qb = qb;
+}
+
+QSearch.prototype.Push = QSPush;
+function QSPush(pos, wDist)
+{
+	this.mpposw[pos.toString()] = wDist;
+	this.qpos.Push(pos);
+}
+
+QSearch.prototype.WPeek = QSWPeek;
+function QSWPeek(pos)
+{
+	return this.mpposw[pos.toString()];
+}
+
+QSearch.prototype.BFS = QSBFS;
+function QSBFS()
+{
+	var dir;
+	while (!this.qpos.FEmpty())
+		{
+		var pos = this.qpos.Pop();
+		var w = this.WPeek(pos);
+		for (dir = 0; dir < 4; dir++)
+			{
+			var posT = this.qb.Move(pos, dir);
+			if (posT && this.WPeek(posT) == null)
+				this.Push(posT, w+1);
+			}
+		}	
+}
+
+QSearch.prototype.toString = QSSt;
+function QSSt()
+{
+	var x;
+	var y;
+	var st = "";
+
+	var pos = new Pos;
+	pos.InitEnum(this.qb);
+	while (pos.FEnum())
+		{
+		if (pos.x == 0)
+			st += "\r";
+		w = this.WPeek(pos);
+		if (w == null)
+			st += " ";
+		else
+			{
+			if (w < 10)
+				st += " ";
+			st += w;
+			}
+		st += " ";
+		}
+	return st;
+}
+
+// Generic Queue [Q]
+function Queue()
+{
+	this.rg = new Array;
+	this.iIn = 0;
+	this.iOut = 0;
+}
+
+Queue.prototype.Push = QPush;
+function QPush(item)
+{
+	this.rg[this.iIn++] = item;
+}
+
+Queue.prototype.Pop = QPop;
+function QPop()
+{
+	if (this.iIn == this.iOut)
+		return null;
+	return this.rg[this.iOut++];
+}
+
+Queue.prototype.FEmpty = QFEmpty;
+function QFEmpty()
+{
+	return this.iIn == this.iOut;
+}
+
+//
+// Quoridor Rendering Object [QR]
+//
+function QRender(qb, stSelf)
+{
+	this.qb = qb;
+	this.idDOM = stSelf + ".T";
+	this.stSelf = stSelf;
+}
+
+function StEventAttr(stSelf, stEvent)
+{
+	var st;
+	st = stEvent + "=\"" + stSelf + "." + stEvent + "(event.srcElement, event.offsetX, event.offsetY);\"";
+	return st;
+}
+
+QRender.prototype.StCellId = QRStCellId;
+function QRStCellId(stType, pos)
+{
+	var st = this.stSelf + "." + stType + pos;
+	return st;
+}
+
+function QMove(qb, pos, fMove, orient)
+{
+	if (!orient)
+		orient = 0;
+	this.pos = pos;
+	this.fMove = fMove;
+	this.orient = orient;
+	this.iqp = qb.iqp;
+	this.qb = qb;
+}
+
+QMove.prototype.Clone = QMClone;
+function QMClone()
+{
+	var qmove = new QMove(this.qb, this.pos, this.fMove, this.orient);
+	return qmove;
+}
+
+var rgstOrient = new Array("horiz", "vert");
+
+QMove.prototype.toString = QMSt;
+function QMSt()
+{
+	var st = "";
+	var stPlayer = this.qb.rgqp[this.iqp].stName;
+	st += stPlayer + ": ";
+	if (this.fMove)
+		{
+		st += "move to " + this.pos;
+		}
+	else
+		{
+		st += rgstOrient[this.orient] + " wall at " + this.pos;
+		}
+	return st;
+
+}
+
+QRender.prototype.QMoveFromId = QRQMoveFromId;
+function QRQMoveFromId(stId)
+{
+	var stType = stId.substr(this.stSelf.length+1, 1);
+	var qmove = new QMove(this.qb, Pos.FromSt(stId.substr(this.stSelf.length + 2)), stType == "C");
+	if (stType == "L")
+		{
+		qmove.orient = 1;
+		}
+	else if (stType == "B")
+		{
+		qmove.orient = 0;
+		qmove.pos.Move(0);
+		}
+	return qmove;
+}
+
+QRender.prototype.StQCell = QRStQCell;
+function QRStQCell(stType, pos)
+{
+	var st = "\r<TD ID=\"" + this.StCellId(stType, pos) + "\" class=\"" + stType + "\">";
+	//st += "&nbsp;"
+	st += "</TD>";
+	return st;
+}
+
+function Debug(st)
+{
+//	divDebug.insertAdjacentText("BeforeEnd", "\r" + st);
+}
+
+function StCellEvt(obj, x, y)
+{
+	var st = obj.id + ": (" + x + ", " + y + ")";
+	return st;
+}
+
+QRender.prototype.OnClick = QROnClick;
+function QROnClick(obj, x, y)
+{
+	if (obj.tagName != "TD")
+		return;
+	// Remove highlighting before click
+	this.OnMouseOut(obj, x, y);
+	var qmove = this.QMoveFromId(obj.id);
+	this.FMakeMove(qmove);
+}
+
+function Highlight(obj, fHighlight)
+{
+	if (fHighlight)
+		{
+		obj.bgSav = obj.style.backgroundColor;
+		obj.style.backgroundColor = "yellow";
+		}
+	else
+		{
+		obj.style.backgroundColor = obj.bgSav;
+		}		
+}
+
+QRender.prototype.HighlightMove = QRHighlightMove;
+function QRHighlightMove(qmove, fHighlight)
+{
+	if (qmove.fMove)
+		{
+		var td = document.all(this.StCellId("C", qmove.pos));
+		Highlight(td, fHighlight);
+		return;
+		}
+
+	var stPre = rgWallType[qmove.orient];
+	var td = document.all(this.StCellId("I", qmove.pos));
+	Highlight(td, fHighlight);
+	td = document.all(this.StCellId(stPre, qmove.pos));
+	Highlight(td, fHighlight);
+	var posT = qmove.pos.Clone();
+	posT.Move(qmove.orient + 2);
+	td = document.all(this.StCellId(stPre, posT));
+	Highlight(td, fHighlight);
+}
+
+QRender.prototype.OnMouseOver = QROnMouseOver;
+function QROnMouseOver(obj, x, y)
+{
+	if (obj.tagName != "TD")
+		return;
+	var qmove = this.QMoveFromId(obj.id);
+	if (this.qb.FMakeMove(qmove, false))
+		{
+		this.HighlightMove(qmove, true);
+		this.qmoveHighlight = qmove.Clone();
+		}
+}
+
+QRender.prototype.OnMouseOut = QROnMouseOut;
+function QROnMouseOut(obj, x, y)
+{
+	if (obj.tagName != "TD")
+		return;
+	if (this.qmoveHighlight)
+		{
+		this.HighlightMove(this.qmoveHighlight, false);
+		this.qmoveHighlight = null;
+		}
+}
+
+QRender.prototype.StHTML = QRStHTML;
+function QRStHTML()
+{
+	var st = "<TABLE class=QR cellpadding=0 cellspacing=0 ID=\"" + this.idDOM + "\" " + 
+		StEventAttr(this.stSelf, "OnClick") + " " +
+		StEventAttr(this.stSelf, "OnMouseOver") + " " +
+		StEventAttr(this.stSelf, "OnMouseOut") + ">";
+
+	var pos = new Pos;
+	pos.InitEnum(this.qb);
+	while (pos.FEnum())
+		{
+		if (pos.x == 0)
+			st += "\r<TR>";
+		else
+			st += this.StQCell("L", pos);
+		st += this.StQCell("C", pos);
+		if (pos.x == this.qb.ccol - 1)
+			{
+			st += "</TR>";
+			if (pos.y != 0)
+				{
+				var posT = pos.Clone();
+				posT.y++;
+				st += "\r<TR>";
+				while (posT.FEnum() && posT.y == pos.y)
+					{
+					if (posT.x != 0)
+						st += this.StQCell("I", posT);
+					st += this.StQCell("B", posT);
+					}
+				st += "</TR>";
+				}
+			}
+		}
+	st = st + "</TABLE>";
+
+	return st;
+}
+
+QRender.prototype.SetCell = QRSetCell;
+function QRSetCell(pos, st, stColor)
+{
+	var td = document.all(this.StCellId("C", pos));
+	if (st != null)
+		td.innerText = st;
+	if (stColor != null)
+		td.style.backgroundColor = stColor;
+}
+
+QRender.prototype.FMakeMove = QRFMakeMove;
+function QRFMakeMove(qmove)
+{
+	if (!this.qb.FMakeMove(qmove, true))
+		return false;
+
+	if (!qmove.fMove)
+		this.ColorWall(qmove.pos, qmove.orient, "white");
+
+	this.DisplayVals();
+
+	if (this.funcMoveEvent)
+		this.funcMoveEvent(this, qmove);
+	return true;
+}
+
+var rgWallType = new Array("B", "L");
+
+QRender.prototype.ColorWall = QRColorWall;
+function QRColorWall(pos, orient, stColor)
+{
+	var stPre = rgWallType[orient];
+
+	var td = document.all(this.StCellId("I", pos));
+	td.style.backgroundColor = stColor;
+	td = document.all(this.StCellId(stPre, pos));
+	td.style.backgroundColor = stColor;
+
+	var posT = pos.Clone();
+	posT.Move(orient + 2);
+	td = document.all(this.StCellId(stPre, posT));
+	td.style.backgroundColor = stColor;
+}
+
+QRender.prototype.DisplayVals = QRDisplayVals;
+function QRDisplayVals()
+{
+	var iqp;
+	this.qb.Eval();
+
+	var pos = new Pos;
+	pos.InitEnum(this.qb);
+	while (pos.FEnum())
+		{
+		var stEval = "";
+		for (iqp = 0; iqp < this.qb.iqpMax; iqp++)
+			{
+			var w = this.qb.rgqp[iqp].qs.WPeek(pos);
+			if (w == null)
+				w = "-";
+			stEval += w;
+			if (iqp != this.qb.iqpMax-1)
+				stEval += "/";			
+			}
+		this.SetCell(pos, stEval, "firebrick");
+		}
+
+	for (iqp = 0; iqp < this.qb.iqpMax; iqp++)
+		{
+		var qp = this.qb.rgqp[iqp];
+		this.SetCell(qp.pos, null, qp.stColor);
+		}
+}
+
+</SCRIPT>
+
+</HEAD>
+
+<BODY onload="InitStats(qr);" onunload="LeavePage();">
+<H1>Quoridor</H1>
+<TABLE style="width:100%">
+<TR>
+<TD><DIV id=divQR></DIV></TD>
+<TD style="width:50%">
+
+<TABLE class=Stats style="width:100%">
+<TR><TD>
+<H2>Game Status</H2>
+Next Move: <SPAN ID=spanNextMove>player name</SPAN>
+<p>
+<DIV ID=divStatsParent>
+<DIV>
+<TABLE class=Stats>
+<TR><TH>Player:</TH><TD><SPAN ID=spanPlayerName>player name</SPAN></TD></TR>
+<TR><TH>Walls:</TH><TD><SPAN ID=spanWalls>walls</SPAN></TD></TR>
+<TR><TH>Score:</TH><TD><SPAN ID=spanScore>moves</SPAN></TD></TR>
+</TABLE>
+</DIV>
+</DIV>
+
+</TD></TR>
+<TR><TD><H2>Game History</H2><DIV id=divQHist></DIV></TD></TR>
+</TABLE>
+
+</TD></TR>
+</TABLE>
+
+<SCRIPT>
+var qb = new QBoard;
+qb.Init();
+var qr = new QRender(qb, "qr");
+qr.funcMoveEvent = UpdateStats;
+divQR.innerHTML = qr.StHTML();
+
+function InitStats(qr)
+{
+	var divParent = document.all("divStatsParent");
+	var div;
+	var iqp;
+
+	for (iqp = 0; iqp < qr.qb.iqpMax; iqp++)
+		{
+		if (iqp != 0)
+			{
+			div.insertAdjacentHTML("AfterEnd", div.outerHTML);
+			}
+		var div = divParent.children(iqp);
+		qp = qr.qb.rgqp[iqp];
+		qp.divStats = div;
+		}
+	qr.qb.Eval();
+	UpdateStats(qr, null);
+	qr.DisplayVals();
+}
+
+function UpdateStats(qr, qmove)
+{
+	var qp = qr.qb.rgqp[qr.qb.iqp];
+	spanNextMove.innerText = qp.stName;
+
+	if (qmove)
+		divQHist.insertAdjacentText("BeforeEnd", "\r" + qmove);
+
+	var iqp;
+	for (iqp = 0; iqp < qr.qb.iqpMax; iqp++)
+		{
+		qp = qr.qb.rgqp[iqp];
+		qp.divStats.all("spanPlayerName").innerText = qp.stName;
+		qp.divStats.all("spanWalls").innerText = qp.cwall;
+		qp.divStats.all("spanScore").innerText = qp.wScore;	
+		}
+}
+
+function LeavePage()
+{
+	alert("Leaving page");
+	event.returnValue = false;
+	return false;
+}
+
+</SCRIPT>
+
+</BODY>
+</HTML>

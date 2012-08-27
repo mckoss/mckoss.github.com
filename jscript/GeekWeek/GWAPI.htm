@@ -1,0 +1,130 @@
+<HTML>
+<HEAD>
+<TITLE>Geek Week 2003 Test</TITLE>
+<SCRIPT SRC="geekweek.js"></SCRIPT>
+
+<STYLE>
+
+BODY
+{
+font-family: Verdana;
+font-size: 12;
+}
+
+OBJECT
+{
+border: solid 2;
+}
+
+TD
+{
+vertical-align: top;
+}
+
+.lblCmd {
+font-weight: bold;
+font-size: 18;
+}
+
+.doTable {
+border: 1px solid black;
+border-collapse: collapse;
+margin: 5
+}
+
+.doTable TD {
+border:1px solid black;
+vertical-align: top;
+}
+
+.doTitle {
+background-color: black;
+color: white;
+font-weight: bold;
+}
+
+.doProto {
+background-color: gray;
+color: white;
+font-weight: bold;
+}
+
+.doName {
+font-weight: bold;
+}
+
+.doValue {
+font-family: courier;
+font-size: 14;
+}
+
+</STYLE>
+
+</HEAD>
+<BODY>
+<H1>Geek Week/Wild Tangent API Reference:</H1>
+
+<SCRIPT>
+function FuncRef(fn)
+{
+	DW(StFuncRef(fn));
+}
+
+function StFuncRef(fn)
+{
+	var st = "";
+	var ich;
+
+	st = fn.StName();
+	ich = st.indexOf(".prototype.");
+	if (ich >= 0)
+		st = st.substring(ich + 11, st.length);
+
+	st = "<BR><B>" + st + fn.StParams() + "</B>";
+	return st;
+}
+
+function StClassRef(fnConstr)
+{
+	var st;
+
+	st = "<HR><H2>" + fnConstr.StName() + "</H2><HR>";
+	for (prop in fnConstr.prototype)
+		{
+		value = fnConstr.prototype[prop];
+		if (typeof(value) == "function")
+			st += StFuncRef(value);			
+		}
+	return st;
+}
+
+function ClassRef(fnConstr)
+{
+	DW(StClassRef(fnConstr));
+}
+
+ClassRef(Box);
+ClassRef(Cube);
+ClassRef(Plane);
+ClassRef(Sphere);
+ClassRef(Model);
+ClassRef(Text3D);
+ClassRef(Group);
+
+ClassRef(Light);
+ClassRef(Camera);
+ClassRef(Sound);
+
+ClassRef(CBController);
+ClassRef(SlewController);
+
+ClassRef(V3);
+ClassRef(Rect);
+ClassRef(Bag);
+ClassRef(IBag);
+
+ClassRef(Debug);
+
+</SCRIPT>
+</BODY>
+</HTML>

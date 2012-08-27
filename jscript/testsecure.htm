@@ -1,0 +1,25 @@
+<HTML>
+<BODY>
+<SCRIPT>
+function DoLoad()
+{
+  var req;
+
+  req = new ActiveXObject("Microsoft.XMLHTTP");
+  req.Open("GET", "http://mckoss.com/kossres", false);
+  req.Send("x");
+  divHeader.innerText = req.getAllResponseHeaders();
+  divTest.innerHTML = req.responseText;
+}
+
+
+window.onload = DoLoad;
+
+</SCRIPT>
+Header:
+<DIV ID=divHeader></DIV>
+Page:
+<DIV ID=divTest></DIV>
+
+</BODY>
+</HTML>

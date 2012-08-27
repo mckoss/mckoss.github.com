@@ -1,0 +1,64 @@
+<HTML>
+<HEAD>
+<TITLE>Bouncing Ball</TITLE>
+<SCRIPT SRC=sim.js></SCRIPT>
+<SCRIPT>
+var x = 0;
+var y = 0;
+var vx = 1;
+var vy = 1;
+var fRunning = false;
+
+function SimMove()
+{
+	if (fRunning)
+		{
+		Sim();
+		Ball.style.posLeft = x;
+		Ball.style.posTop = y;
+		}
+}
+
+function Start()
+{
+	x = parseInt(X.value);
+	y = parseInt(Y.value);
+	vx = parseInt(VX.value);
+	vy = parseInt(VY.value);
+	fRunning = true;
+}
+
+function Stop()
+{
+	fRunning = false;
+}
+
+</SCRIPT>
+</HEAD>
+<BODY ONLOAD="window.tm = setInterval('SimMove()', 1);"
+     ONUNLOAD="clearInterval(window.tm);">
+
+<CENTER>
+<TABLE ID=Stage BORDER><TR><TD WIDTH=300 HEIGHT=300 VALIGN=TOP>
+<IMG SRC="head.gif" ID=Ball STYLE="position:relative; top:0; left:0; z-index:-1" width="40" height="55">
+</TABLE>
+</CENTER>
+
+<CENTER>
+<TABLE>
+<TR>
+<TD>X:<TD><INPUT ID=X VALUE=0>
+<TD>Y:<TD><INPUT ID=Y VALUE=0>
+<TR>
+<TD>VX:<TD><INPUT ID=VX VALUE=1>
+<TD>VY:<TD><INPUT ID=VY VALUE=1>
+<TR><TD ALIGN=CENTER COLSPAN=4>
+<CENTER>
+<BUTTON onclick="Start();">Simulate</BUTTON>&nbsp;
+<BUTTON onclick="Stop()">Stop</BUTTON>
+</CENTER>
+</TABLE>
+<CENTER>
+
+</BODY>
+</HTML>

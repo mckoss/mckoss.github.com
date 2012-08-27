@@ -1,0 +1,56 @@
+<HTML>
+<BODY>
+<SCRIPT>
+
+function ShowDriveList()
+{
+	var fs = new ActiveXObject("Scripting.FileSystemObject");
+	var e = new Enumerator(fs.Drives);
+	return StXMLNewItems(e, "Contacts", rgstProps, rgstFields);
+}
+
+function StXMLNewItems(e, stList, rgstProps, rgstFields)
+{
+	var st = "<ows:Batch>\r";
+	ienum = 0;
+	for (; !e.atEnd(); e.moveNext(), ienum++)
+		{
+		st += "<Method ID=" + StAttribute(ienum) + ">\r" +
+			"<SetList Scope=\"Request\">" + stList + "</SetList>\r" +
+			"<SetVar Name=\"Cmd\">Save</SetVar>\r" +
+			"<SetVar Name=\"ID\">New</SetVar>\r";
+     		st += StXMLSetVars(e.item(), rgstProps, rgstFields);
+		st += "</Method>\r";
+		}
+	st += "</ows:Batch>\r";
+
+	return st;
+}
+
+var rgstProps = new Array("DriveLetter", "IsReady", "DriveType");
+var rgstFields = new Array("Drive", "Ready", "DT");
+
+function StXMLSetVars(obj, rgstProps, rgstFields)
+{
+	var ist;
+	var st = "";
+
+	for (ist = 0; ist < rgstProps.length; ist++)
+		{
+		st += "<SetVar Name=" + StAttribute(rgstFields[ist]) + ">" +
+			obj[rgstProps[ist]] + "</SetVar>\r";
+
+		}
+	return st;
+}
+
+function StAttribute(st)
+{
+	return '"' + st + '"';
+}
+
+alert(ShowDriveList());
+</SCRIPT>
+</BODY>
+</HTML>
+

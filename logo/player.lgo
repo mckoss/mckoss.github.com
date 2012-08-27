@@ -1,0 +1,205 @@
+;
+; Player.lgo - Allows playing songs using solfege notes
+;
+; Author: Mike Koss 10/21/95
+;
+; Notes: Do Re Mi Fa Sol La Ti
+; Durations: Quarter Half Whole beats <cBeats>
+; Octaves: Dinasaur Low Middle High
+; Incidentals: Flat Natural Sharp
+; Instruments: Piano Harpsichord Musicbox Guitar Hendrix 
+; Violin Trumpet Brass Flute Banjo Steeldrum Tom Gun
+;
+
+make "startup [startplayer]
+
+to startplayer
+init
+buryall
+end
+
+to init
+; midiclose
+show (midiopen 0)
+reset
+end
+
+to reset
+make "dtickBeat 8
+quarter
+middle
+natural
+piano
+end
+
+;
+; Note - plays a midi note
+;
+; The guts of the player - plays the currently selected note
+; and waits for the durations before sending the key-up message
+; to the midi device.
+;
+to note :nt
+local "msg
+local "msgStop
+local "note
+make "note 40+:nt+:oct*12+:dnote
+make "msg (list 144 :note 127)
+make "msgStop (list 128 :note)
+midimessage :msg
+print (list :instr :note)
+wait :dtickCur
+midimessage :msgStop
+end
+
+;
+; Octave commands
+;
+to dinosaur
+make "oct -2
+end
+
+to low
+make "oct -1
+end
+
+to middle
+make "oct 0
+end
+
+to high
+make "oct 1
+end
+
+to octshift :doct
+make "oct :oct+:doct
+end
+
+;
+; Note playing commands
+;
+to do
+note 0
+end
+
+to re
+note 2
+end
+
+to mi
+note 4
+end
+
+to fa
+note 5
+end
+
+to sol
+note 7
+end
+
+to la
+note 9
+end
+
+to ti
+note 11
+end
+
+;
+; Durations
+;
+to beats :cBeats
+make "dtickCur :dtickBeat*:cBeats
+end
+
+to eighth
+beats 0.5
+end
+
+to quarter
+beats 1
+end
+
+to half
+beats 2
+end
+
+to whole
+beats 4
+end
+
+;
+; Incidental Commands
+;
+to flat
+make "dnote -1
+end
+
+to natural
+make "dnote 0
+end
+
+to sharp
+make "dnote 1
+end
+
+;
+; Instruments
+;
+to instrument :instrT
+make "instr :instrT
+midimessage (list 192 :instr)
+end
+
+to piano
+instrument 0
+end
+
+to harpsichord
+instrument 6
+end
+
+to musicbox
+instrument 10
+end
+
+to guitar
+instrument 24
+end
+
+to hendrix
+instrument 30
+end
+
+to violin
+instrument 40
+end
+
+to trumpet
+instrument 56
+end
+
+to brass
+instrument 61
+end
+
+to flute
+instrument 73
+end
+
+to banjo
+instrument 105
+end
+
+to steeldrum
+instrument 114
+end
+
+to tom
+instrument 117
+end
+
+to gun
+instrument 127
+end

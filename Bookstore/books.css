@@ -1,0 +1,104 @@
+BODY {
+	color:        #000000;
+	background:   #FFFFFF;
+	font-family:  Verdana, Times New Roman, Times, serif;
+	font-size: 12;
+}
+H1 { font-size:24; }
+A {
+	font-weight:  bold;
+}
+A:link {
+	color:        #0000FF;
+}
+A:visited {
+	color:        #696969; /* dimgray */
+} 
+A:hover {
+	color:        #FF0000;
+}
+HR {
+	color:        #808080;
+}
+ADDRESS {
+	font-size:    xx-small;
+}
+.BookTitle {
+	font-weight: bold;
+}
+.BookAuthor {
+	font-style: italic;
+}
+
+/* List Tables */
+TABLE.list TD.top {
+	color:        #404040;
+	background:   #C0C0C0;
+	text-align:   left;
+	font-size:    70%;
+	font-weight:  bold;
+}
+TABLE.list TD {
+	font-size: 70%;
+}
+TABLE.list TH {
+	vertical-align: bottom;
+	text-align:   left;
+	font-size:    70%;
+}
+
+/* Form Tables and Fields */
+TABLE.form {
+	width: 100%;
+}
+
+TABLE.form TH {
+	color:        #404040;
+	font-size:    x-small;
+	font-weight:  normal;
+	text-align:   left;
+	vertical-align: top;
+	width: 100px;
+}
+TABLE.form TD {
+	font-size:    x-small;
+	vertical-align: top;
+	width: 100%
+}
+TEXTAREA {
+	font-size:    x-small;
+	font-family:  Verdana, Arial, Helvetica, helv, sans-serif;
+	width:        100%;
+	height:       250px;
+}
+INPUT, SELECT {
+	font-size:    x-small;
+	font-family:  Verdana, Arial, Helvetica, helv, sans-serif;
+	vertical-align: baseline;
+}
+INPUT.long {
+	width:        100%;
+}
+INPUT.short {
+	width:        35%;
+}
+INPUT.button, {
+	font:         normal xx-small Verdana, Arial, Helvetica, helv, sans-serif;
+    border:       1px solid threeddarkshadow;
+    text-align:   center;
+    width:        100px;
+    vertical-align: baseline;
+}
+
+FORM {
+	margin:       0;
+}
+
+DIV.section {
+	width: 100%;
+	color:				#404040;
+	background-color:   #C0C0C0;
+	text-align:   		left;
+	font-size:    		150%;
+	font-weight:  		bold;
+}

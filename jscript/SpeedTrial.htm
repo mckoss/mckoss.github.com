@@ -1,0 +1,221 @@
+<HTML>
+<HEAD>
+<STYLE>
+BODY {
+font-family: Verdana;
+}
+
+TABLE {
+border: 1px solid black;
+border-collapse: collapse;
+margin-bottom: 20px;
+}
+
+TD {
+border: 1px solid black;
+text-align: center;
+}
+</STYLE>
+<SCRIPT>
+//
+// Timer - Uses Date object to create a ms-resolution timer.
+//
+function Timer(c)
+{
+	this.Reset();
+}
+
+Timer.prototype.Reset = function()
+{
+	this.ms = 0;
+}
+
+Timer.prototype.Start = function()
+{
+	this.d = new Date;
+}
+
+Timer.prototype.Stop = function()
+{
+	this.d2 = new Date;
+	this.ms += this.d2.getTime() - this.d.getTime();
+	delete this.d;
+	delete this.d2;
+}
+
+//
+// TestIter - Object to embed code to be speed tested.
+//
+function TestIter(fnPre, fnLoop, fnPost)
+{
+	this.Init(fnPre, fnLoop, fnPost);
+
+	this.t = new Timer;
+	this.rgBase = [];
+}
+
+TestIter.prototype.Init = function(fnPre, fnLoop, fnPost)
+{
+	if (fnPre == undefined)
+		fnPre = function () {};
+	if (fnLoop == undefined)
+		fnLoop = function () {};
+	if (fnPost == undefined)
+		fnPost = function (obj) {obj.stResults = "";};
+
+	this.fnPre = fnPre;
+	this.fnLoop = fnLoop;
+	this.fnPost = fnPost;
+}
+
+TestIter.prototype.Test = function(c)
+{
+	delete this.obj;
+	this.obj = new Object;
+
+	this.t.Reset();
+	this.t.Start();
+	this.fnPre(this.obj);
+	for (var i = 0; i < c; i++)
+		this.fnLoop(this.obj);
+	this.fnPost(this.obj);
+	this.t.Stop();
+
+	if (this.fBaseline)
+		{
+		this.rgBase[c] = this.t.ms;
+		return this.t.ms;
+		}
+
+	var ms = this.t.ms;
+	if (this.rgBase[c])
+		ms -= this.rgBase[c];
+
+	return(ms);
+}
+
+TestIter.prototype.SpeedTest = function()
+{
+	var st = "";
+
+	if (this.fBaseline)
+		st += "<B>Baseline (calibration)</B><BR/>";
+
+	st += "<B>Pre</B>: " + StHTML(this.fnPre);
+	st += "<BR/><B>Loop</B>: " + StHTML(this.fnLoop);
+	st += "<BR/><B>Post</B>: " + StHTML(this.fnPost);
+
+	st += "<TABLE><TR><TD>Iterations</TD>";
+	st += "<TD>ms</TD>";
+	st += "<TD>us/iter</TD>";
+	st += "<TD>Results</TD>";
+	st += "</TR>";
+	var c = 512;
+	for (var i = 0; i < 10; i++)
+		{
+		var ms = this.Test(c);
+		st += "<TR><TD>" + c + "</TD><TD>" + ms + "</TD>";
+		st += "<TD>" + Math.round(ms/c*1000) + "</TD>";
+		st += "<TD>" + this.obj.stResults + "</TD>";
+		c *= 2;
+		if (ms > 2000)
+			break;
+		}
+
+	st += "</TABLE>";
+	return st;
+}
+
+function StBuf()
+{
+    this.rgst = new Array;
+}
+ 
+StBuf.prototype.Append = function(st)
+{
+    this.rgst.push(st);
+}
+ 
+StBuf.prototype.toString = function()
+{
+    return this.rgst.join("");
+}
+
+function StHTML(st)
+{
+	st = st.toString();
+	st = st.replace(/&/g, '&amp;');
+	st = st.replace(/</g, '&lt;');
+	st = st.replace(/>/g, '&gt;');
+	st = st.replace(/\n/g, '<br>');
+	st = st.replace(/ /g, '&nbsp;');
+	st = st.replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+	return st;
+}
+
+</SCRIPT>
+</HEAD>
+
+<BODY>
+<h1>Javascript speed trials.</h1>
+This file executes several speed tests for javascript statements. In order to get good
+measurement resolution, the tests are executed in loops of increasing size.  The basic timer
+being used (via the Date object) has greater than 1 ms resolution, so we need to execute
+about 1000 iterations to get near 1 us (micro-second) resolution.
+<P/>
+The first test is a calibration test of an empty javascript statement.  The resulting time is subtracted
+from the subsequent tests to isolate the cost of the statements being executed (subtracting
+away the overhead of the test harness).
+<hr>
+<SCRIPT>
+var test = new TestIter;
+test.fBaseline = true;
+document.write(test.SpeedTest());
+</SCRIPT>
+
+<HR/>
+February 16, 2006
+<P/>
+The following tests show a factor from 6 to 40 times better performance in IE6 when using the StBuf
+class instead of a generic string variable for concatenating 100's of strings (on my machine,
+concatenating 4,000 strings takes nearly 5 seconds in IE6, whereas the StBuf takes about 0.1 seconds!).
+<P/>
+On Firefox, the built-in String concatenation operator is faster than the StBuf class - but not
+by much.  In fact, for very large numbers of strings (100,000's), the StBuf class and String
+perform about the same.
+<PRE>
+function StBuf()
+{
+    this.rgst = new Array;
+}
+ 
+StBuf.prototype.Append = function(st)
+{
+    this.rgst.push(st);
+}
+ 
+StBuf.prototype.toString = function()
+{
+    return this.rgst.join("");
+}
+</PRE>
+<P/>
+- Mike Koss
+<HR/>
+<SCRIPT>
+test.fBaseline = false;
+test.Init(function (obj) {obj.st = "";},
+	function (obj) {obj.st += "aaaaaaaaaa";},
+	function (obj){obj.stResults = obj.st.length;});
+document.write(test.SpeedTest());
+
+test.Init(function (obj) {obj.stB = new StBuf;},
+	function(obj) {obj.stB.Append("aaaaaaaaaa");},
+	function(obj) {obj.stResults = obj.stB.toString().length;});
+document.write(test.SpeedTest());
+</SCRIPT>
+
+
+</BODY>
+</HTML>
+

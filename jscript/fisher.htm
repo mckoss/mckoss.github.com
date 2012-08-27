@@ -1,0 +1,99 @@
+<html>
+<head>
+<title>Spanish Rice</title>
+<script>
+
+// Array of amounts - one for each ingredient - must be in same order as used in table below
+var amts = new Array(1/2, 1/4);
+var units= new Array("cup", "cup");
+
+// This function loops through all the ingredient amounts, multiplies them by the number of servings, and then
+// fills in the recipe table with the updated amounts (displayed as a fraction if possible to the nearest 1/8th).
+// Note that this function is called once when the page is first loaded to fill in the original serving size for the recipe.
+function CalcIngredients()
+{
+	var wServe;
+
+	// Parse the requested number of servings - make sure it's a valid number.
+	wServe = parseFloat(Servings.value);
+	if (isNaN(wServe) || wServe < 1 || wServe > 20)
+		{
+		alert("Please provide a number of servings between 1 and 20.");
+		return;
+		}
+
+	// Loop through all "spnAmount" span's in the document, and replace them with
+	// the corresponding correct value.
+	for (i in amts)
+		{
+		spnAmount[i].innerText = StFraction(amts[i]*wServe, units[i]) + " ";
+		}
+}
+
+// Display fraction as "A/B units", or "A B/C units" (for amounts larger than 1)
+// We pass in the units string so we can properly pluralize it when needed
+function StFraction(num, stUnits)
+{
+	if (num <= 0)
+		return "0";
+
+	var numWhole = Math.floor(num);
+	var numT = num - numWhole;
+
+	// look for a denominator (2, 4, 8) that will yield a whole fraction
+	var denom = 1;
+	var frac = numT;
+	while (frac > 0.01 && denom < 8)
+		{
+		denom *= 2;
+		numT *= 2;
+		frac = numT - Math.floor(numT);
+		}
+
+	// couldn't find a good denominator - just print the decimal form
+	if (frac > 0.01)
+		return num.toString() + " " + stUnits + "s";
+
+	var st = "";
+
+	var fPlural = false;
+
+	if (numWhole > 0)
+		st += numWhole.toString();
+	
+	if (denom != 1)
+		{
+		numT = Math.floor(numT);
+		if (numWhole > 0)
+			st += " ";
+		st += numT.toString();
+		st += "/" + denom;
+		}
+
+	st += " " + stUnits;
+	if ((numWhole != 1 || denom != 1) && numWhole != 0)
+		st += "s";
+
+	return st;
+}
+
+</script>
+</head>
+
+<body bgcolor=ffcc99 onload="CalcIngredients();">
+<table width=70% cellspacing=15>
+<tr><td><h2><center>Spanish Rice</center></h2></td></tr>
+<tr>
+<td>
+<center><i>serves</i>
+<br>
+	<input id=Servings type=text size=3 maxlength=3 value="1">
+	<p><input type=button value="How many?" onclick= "CalcIngredients();">
+</td></tr>
+<table cellspacing=15>
+<tr><td><span id="spnAmount"></span>beef broth &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</td></tr>
+<tr><td><span id="spnAmount"></span>brown rice</td></tr>
+</table>
+
+</body>
+</html>

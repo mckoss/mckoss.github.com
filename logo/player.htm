@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//W3O/DTD HTML//EN">
+
+<html>
+<head>
+<title>Player.LGO file</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 6.0">
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-177353-1";
+urchinTracker();
+</script>
+
+</head>
+<body bgcolor="#FFFFFF">
+<h1><img src="images/rtree.gif" align="baseline" width="135" height="112">LOGO Programming <a href="OldDefault.htm">
+<img
+src="images/mikeface.gif" align="baseline" border="0" width="100" height="141"></a></h1>
+<hr noshade>
+<h2>You can copy and paste the following program into Logo. Save
+it in a file called PLAYER.LGO.&nbsp; Or you can download this file:
+<a href="player.lgo">player.lgo</a> (right click on the hyper-link and select 
+Save Target As...).&nbsp; Once the file is on your machine, you can read it into 
+MSWLogo by using the Load command from the File menu.<br>
+<br>
+To test that this is working in Logo, type &quot;do re mi fa sol la ti high do&quot;.</h2>
+<CODE>
+<p>;<br>
+; Player.lgo - Allows playing songs using solfege notes<br>
+;<br>
+; Author: Mike Koss 10/21/95<br>
+;<br>
+; Notes: Do Re Mi Fa Sol La Ti<br>
+; Durations: Quarter Half Whole beats &lt;cBeats&gt;<br>
+; Octaves: Dinasaur Low Middle High<br>
+; Incidentals: Flat Natural Sharp<br>
+; Instruments: Piano Harpsichord Musicbox Guitar Hendrix <br>
+; Violin Trumpet Brass Flute Banjo Steeldrum Tom Gun<br>
+;<br>
+<br>
+make &quot;startup [startplayer]<br>
+<br>
+to startplayer<br>
+init<br>
+buryall<br>
+end<br>
+<br>
+to init<br>
+show (midiopen 0)<br>
+reset<br>
+end<br>
+<br>
+to reset<br>
+make &quot;dtickBeat 8<br>
+quarter<br>
+middle<br>
+natural<br>
+piano<br>
+end<br>
+<br>
+;<br>
+; Note - plays a midi note<br>
+;<br>
+; The guts of the player - plays the currently selected note<br>
+; and waits for the durations before sending the key-up message<br>
+; to the midi device.<br>
+;<br>
+to note :nt<br>
+local &quot;msg<br>
+local &quot;msgStop<br>
+local &quot;note<br>
+make &quot;note 40+:nt+:oct*12+:dnote<br>
+make &quot;msg (list 144 :note 127)<br>
+make &quot;msgStop (list 128 :note)<br>
+midimessage :msg<br>
+print (list :instr :note)<br>
+wait :dtickCur<br>
+midimessage :msgStop<br>
+end<br>
+<br>
+;<br>
+; Octave commands<br>
+;<br>
+to dinosaur<br>
+make &quot;oct -2<br>
+end<br>
+<br>
+to low<br>
+make &quot;oct -1<br>
+end<br>
+<br>
+to middle<br>
+make &quot;oct 0<br>
+end<br>
+<br>
+to high<br>
+make &quot;oct 1<br>
+end<br>
+<br>
+to octshift :doct<br>
+make &quot;oct :oct+:doct<br>
+end<br>
+<br>
+;<br>
+; Note playing commands<br>
+;<br>
+to do<br>
+note 0<br>
+end<br>
+<br>
+to re<br>
+note 2<br>
+end<br>
+<br>
+to mi<br>
+note 4<br>
+end<br>
+<br>
+to fa<br>
+note 5<br>
+end<br>
+<br>
+to sol<br>
+note 7<br>
+end<br>
+<br>
+to la<br>
+note 9<br>
+end<br>
+<br>
+to ti<br>
+note 11<br>
+end<br>
+<br>
+;<br>
+; Durations<br>
+;<br>
+to beats :cBeats<br>
+make &quot;dtickCur :dtickBeat*:cBeats<br>
+end<br>
+<br>
+to eighth<br>
+beats 0.5<br>
+end<br>
+<br>
+to quarter<br>
+beats 1<br>
+end<br>
+<br>
+to half<br>
+beats 2<br>
+end<br>
+<br>
+to whole<br>
+beats 4<br>
+end<br>
+<br>
+;<br>
+; Incidental Commands<br>
+;<br>
+to flat<br>
+make &quot;dnote -1<br>
+end<br>
+<br>
+to natural<br>
+make &quot;dnote 0<br>
+end<br>
+<br>
+to sharp<br>
+make &quot;dnote 1<br>
+end<br>
+<br>
+;<br>
+; Instruments<br>
+;<br>
+to instrument :instrT<br>
+make &quot;instr :instrT<br>
+midimessage (list 192 :instr)<br>
+end<br>
+<br>
+to piano<br>
+instrument 0<br>
+end<br>
+<br>
+to harpsichord<br>
+instrument 6<br>
+end<br>
+<br>
+to musicbox<br>
+instrument 10<br>
+end<br>
+<br>
+to guitar<br>
+instrument 24<br>
+end<br>
+<br>
+to hendrix<br>
+instrument 30<br>
+end<br>
+<br>
+to violin<br>
+instrument 40<br>
+end<br>
+<br>
+to trumpet<br>
+instrument 56<br>
+end<br>
+<br>
+to brass<br>
+instrument 61<br>
+end<br>
+<br>
+to flute<br>
+instrument 73<br>
+end<br>
+<br>
+to banjo<br>
+instrument 105<br>
+end<br>
+<br>
+to steeldrum<br>
+instrument 114<br>
+end<br>
+<br>
+to tom<br>
+instrument 117<br>
+end<br>
+<br>
+to gun<br>
+instrument 127<br>
+end<br>
+<br>
+<br>
+<br>
+</p>
+<p></p>
+<p></p>
+<p></CODE></p>
+</body>
+</html>

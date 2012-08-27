@@ -1,0 +1,160 @@
+<HTML>
+<HEAD>
+<SCRIPT>
+
+var sndBump;
+var m;
+
+var Ash;
+
+function Init()
+{
+	document.onkeydown = KeyDown;
+
+	m = DAControl.MeterLibrary;
+	sndBump = m.ImportSound("sounds/bump.wav");
+	DAControl.Sound = m.ModifiableBehavior(m.silence);
+	DAControl.Start();
+
+	Ash = new Object;
+	Ash.x = 0;
+	Ash.y = 0;
+
+	InitBoard();
+	UpdateMarker();
+}
+
+var rgdkeydx = new Array(-1, 0, 1, 0);
+var rgdkeydy = new Array(0, -1, 0, 1);
+
+function KeyDown()
+{
+	var key;
+	var dx;
+	var dy;
+
+	key = event.keyCode;
+
+	if (key >= 37 && key <= 40)
+		{
+		dx = rgdkeydx[key-37];
+		dy = rgdkeydy[key-37];
+		Move(dx, dy);
+		event.returnValue = false;
+		}
+}
+
+var dxGrid = 32;
+var dyGrid = 32;
+var rwMax = 5;
+var colMax = 20;
+
+var rgszMap = new Array();
+
+// Draw map with characters in this array.
+// E - earth, G - grass, W - water.
+// You can add as many rows or as long a string as desired.
+
+rgszMap[0]  = "EEEEEEEGGGGGEEEEEE"
+rgszMap[1]  = "EEEEEEGGGGGEEEWWEE"
+rgszMap[2]  = "EEEEEGGGGGGGEWWWWE"
+rgszMap[3]  = "EEEEEEGGGEEEEWWWEE"
+rgszMap[4]  = "EEEEEEEGEEEEEEEWWE"
+rgszMap[5]  = "EEEEEEEGEEEEEEEWWE"
+rgszMap[6]  = "EEEEEEEGEEEEEEEWWE"
+rgszMap[7]  = "EEEEEEEGEEEWWEEWWE"
+rgszMap[8]  = "EEEEGGGGEEEWWEEWWE"
+rgszMap[9]  = "EEEEGGGGEEEEEEEEWE"
+rgszMap[10] = "EEEEGGGGEEEEEEEEEE"
+
+function InitBoard()
+{
+	var rw;
+	var col;
+	var st;
+	var isz;
+	var rgsz = new Array("grass.jpg", "earth.jpg", "water.jpg");
+
+	st = "<TABLE ID=MapTable CELLPADDING=0 CELLSPACING=0>";
+
+	for (rw = 0; rw < rgszMap.length; rw++)
+		{
+		st += "<TR>";
+		for (col = 0; col < rgszMap[rw].length; col++)
+			{
+			switch(rgszMap[rw].charAt(col))
+				{
+			case 'E':
+				isz = 1;
+				break;
+			case 'G':
+				isz = 0;
+				break;
+			case 'W':
+				isz = 2;
+				break;
+				}
+			st += "<TD>";
+			st += "<IMG SRC=images/" + rgsz[isz] + ">";
+			st += "</TD>";
+			}
+		st += "</TR>";
+		}
+
+	st += "</TABLE>"
+
+	TableIns.insertAdjacentHTML("BeforeBegin", st);
+}
+
+function Move(dx, dy)
+{
+	var ashT = new Object;
+
+	ashT.x = Ash.x;
+	ashT.y = Ash.y;
+
+	Ash.x += dx;
+	Ash.y += dy;
+
+	Ash.x = Math.max(0, Ash.x);
+	Ash.y = Math.max(0, Ash.y);
+
+	Ash.x = Math.min(rgszMap[0].length - 1, Ash.x);
+	Ash.y = Math.min(rgszMap.length - 1, Ash.y);
+
+	// Don't allow move over water
+	if (rgszMap[Ash.y].charAt(Ash.x) == "W")
+		{
+		Ash.x = ashT.x;
+		Ash.y = ashT.y;
+		}
+
+	if (Ash.x == ashT.x && Ash.y == ashT.y)
+		{
+		DAControl.Sound.SwitchTo(sndBump.Sound);
+		}
+	else
+		{
+		UpdateMarker();
+		}
+}
+
+function UpdateMarker()
+{
+	AshImg.style.posLeft = MapTable.offsetLeft + Ash.x * dxGrid;
+	AshImg.style.posTop = MapTable.offsetTop + Ash.y * dyGrid;
+}
+
+</SCRIPT>
+</HEAD>
+<BODY onload="Init();">
+
+<DIV ID=TableIns></DIV>
+
+<OBJECT ID="DAControl" WIDTH=1 HEIGTH=1 CLASSID="CLSID:B6FFC24C-7E13-11D0-9B47-00C04FC2F51D">
+</OBJECT>
+
+<IMG ID=AshImg SRC="images/AshKatchem.gif" STYLE="position:absolute;left:0;top:0" width="32" height="32">
+
+</BODY>
+</HTML>

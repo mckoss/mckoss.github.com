@@ -1,0 +1,133 @@
+<HTML>
+<HEAD>
+<SCRIPT SRC="persist.js"></SCRIPT>
+<BODY>
+<DIV ID=divOut></DIV>
+<SCRIPT>
+
+
+function Output(st)
+{
+	divOut.insertAdjacentText("BeforeEnd", st);
+}
+
+function Fred()
+{
+	this.Hello = "there";
+}
+
+var y = new Fred;
+y.a = 1;
+y.b = 2;
+y.c = new Fred;
+y.d = y.c;
+y.e = false;
+y.h = new Date;
+y.g = new Array(1, 2, 3, "foo");
+y.g[6] = y.g;
+y.i = eval("new Fred;");
+
+var pc = new PersistContext;
+pc.SetName("y");
+y.Persist(pc);
+Output(pc.st);
+
+Output("\r-------------\r");
+
+pc.Init();
+pc.iStyle=1;
+pc.SetName("y");
+y.Persist(pc);
+Output(pc.st);
+
+Output("\r-------------\r");
+
+pc.Init();
+pc.iStyle=2;
+pc.SetName("y");
+y.Persist(pc);
+Output(pc.st);
+
+
+Output("\r-------------\r");
+
+function Person()
+{
+	this.Addresses = new Object;
+}
+
+Person.prototype.toString = PSt;
+function PSt()
+{
+	var st = "Person:\r";
+	var prop;
+	
+	for (prop in this.Addresses)
+		{
+		if (typeof(this[prop]) != "function")
+			st += prop + ": " + this.Addresses[prop] + "\r";
+		}
+	return st;
+}
+
+function Address(stAddr, stCity, stState, stZip, fResidence)
+{
+	this.Address = stAddr;
+	this.City = stCity;
+	this.State = stState;
+	this.Zip = stZip;
+	this.IsResidence = fResidence;
+}
+
+Address.prototype.toString = AddrSt;
+function AddrSt()
+{
+	var st = "Address:\r";
+	var prop;
+
+	for (prop in this)
+		{
+		if (typeof(this[prop]) != "function")
+			st += prop + ": " + this[prop] + "\r";
+		}
+
+	return st;
+}
+
+var me = new Person;
+me.Addresses.Home = new Address("21731 35th Ave SE", "Bothell", "WA", 98021, true);
+me.Addresses.Work = new Address("One Microsoft Way", "Redmond", "WA", "98052", false);
+me.Addresses.Primary = me.Addresses.Home;
+
+alert(me);
+pc.Init();
+pc.iStyle=2;
+pc.SetName("me");
+me.Persist(pc);
+Output(pc.st);
+
+Output("\r-------------\r");
+
+pc.Init();
+pc.iStyle = 0;
+pc.SetName("me");
+me.Persist(pc);
+Output(pc.st);
+
+var stXML = pc.st;
+
+pc.Init();
+var copy = pc.ParseXML(stXML);
+alert(copy);
+
+Output("\r-----ROUND TRIP--------\r");
+
+pc.Init();
+pc.iStyle = 0;
+pc.SetName("copy");
+copy.Persist(pc);
+Output(pc.st);
+
+</SCRIPT>
+</BODY>
+</HTML>

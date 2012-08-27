@@ -1,0 +1,187 @@
+<HTML>
+<HEAD>
+<SCRIPT>
+
+function Mapping()
+{
+	this.rgi = new Array(26);
+}
+
+Mapping.wA = "A".charCodeAt(0);
+
+Mapping.prototype.SetIdent = MapSetIdent;
+function MapSetIdent()
+{
+	this.SetRot(0);
+}
+
+Mapping.prototype.SetRot = MapSetRot;
+function MapSetRot(di)
+{
+	var i;
+	for (i = 0; i < 26; i++)
+		this.rgi[i] = (i+di)%26;
+}
+
+Mapping.prototype.SetShuffle = MapSetShuffle;
+function MapSetShuffle()
+{
+	var i;
+	var j;
+
+	this.SetIdent();
+	for (i = 25; i > 0; i--)
+		{
+		j = Math.floor(Math.random()*(i+1));
+		this.SetSwap(i, j);
+		}
+}
+
+Mapping.prototype.SetSwap = MapSetSwap;
+function MapSetSwap(i1, i2)
+{
+	var iT;
+
+	iT = this.rgi[i1];
+	this.rgi[i1] = this.rgi[i2];
+	this.rgi[i2] = iT;
+}
+
+Mapping.prototype.Compose = MapCompose;
+function MapCompose(map)
+{
+	var i;
+	var mapT = new Mapping;
+
+	for (i = 0; i < 26; i++)
+		mapT.rgi[i] = map.Map(this.Map(i));
+	return mapT;
+}
+
+Mapping.prototype.Inverse = MapInverse;
+function MapInverse()
+{
+	var i;
+	var mapT = new Mapping;
+
+	for (i = 0; i < 26; i++)
+		mapT.rgi[this.Map(i)] = i;
+	return mapT;
+}
+
+Mapping.prototype.Map = MapMap;
+function MapMap(i)
+{
+	return this.rgi[i];
+}
+
+Mapping.prototype.StArray = MapStArray;
+function MapStArray()
+{
+	var i;
+	var st = "";
+
+	for (i = 0; i < 26; i++)
+		{
+		st += this.ChFromI(this.Map(i));
+		}
+	return st;
+}
+
+Mapping.prototype.ChFromI = MapChFromI;
+function MapChFromI(i)
+{
+	return String.fromCharCode(Mapping.wA + i)
+}
+
+Mapping.prototype.StPerm = MapStPerm;
+function MapStPerm()
+{
+	var mp = new Object;
+	var i;
+	var j;
+	var st = "";
+
+	for (i = 0; i < 26; i++)
+		{
+		if (!mp[i])
+			{
+			st += "(" + this.ChFromI(i);
+			mp[i] = true;
+			j = this.Map(i);
+			while (!mp[j])
+				{
+				st += " " + this.ChFromI(j);
+				mp[j] = true;
+				j = this.Map(j);
+				}
+			st += ")";
+			}
+		}
+	return st;
+}
+
+Mapping.prototype.Dump = MapDump;
+function MapDump()
+{
+	document.write("[" + this.StArray() + "]<br>");
+	document.write(this.StPerm() + "<br>");
+}
+
+function DebugTest()
+{
+var mp = new Mapping;
+mp.SetIdent();
+mp.SetSwap(3, 14);
+mp.SetSwap(7, 21);
+mp.SetSwap(8, 9);
+mp.Dump();
+mp.Inverse().Dump();
+
+mp.SetShuffle();
+mp.Dump();
+mp.Inverse().Dump;
+
+var mp2 = new Mapping;
+mp2.SetRot(1);
+var mp3 = new Mapping;
+mp3.SetRot(25);
+var mp4 = mp2.Compose(mp3);
+mp2.Dump();
+mp3.Dump();
+mp4.Dump();
+
+var mp5 = new Mapping;
+mp5.SetRot(2);
+var mp6 = mp5.Inverse();
+mp5.Dump();
+mp6.Dump();
+}
+</SCRIPT>
+</HEAD>
+<BODY>
+<SCRIPT>
+document.write("Rotor:</br>");
+var r1 = new Mapping;
+r1.SetShuffle();
+r1.Dump();
+
+document.write("Reflector:</br>");
+var rRef = new Mapping;
+for (i = 0; i < 26; i++) rRef.rgi[i] = 25-i;
+rRef.Dump();
+
+document.write("Code:Rotor-Reflector-Rotor:</br>");
+var r2 = r1.Compose(rRef.Compose(r1.Inverse()));
+r2.Dump();
+
+var rRot = new Mapping;
+rRot.SetRot(1);
+
+document.write("Rot-Code-Rot:</br>");
+rRot.Compose(r2.Compose(rRot.Inverse())).Dump();
+
+
+</SCRIPT>
+</BODY>
+</HTML>

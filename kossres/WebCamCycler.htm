@@ -1,0 +1,170 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Web Camera Cycler</title>
+<script>
+
+function StImage(iPic)
+{
+	st = "images/trailer";
+	if (iPic != 0)
+		st += iPic;
+	st += ".jpg";
+	return st;
+}
+
+var iPicMax = 32; // Number of last image (0 through iPicMax)
+var iPicCur = 0;
+
+function Picture(iPic)
+{
+	iPicCur = iPic;
+	TPic.src = StImage(iPic);
+	var rad = document.all.item("PicRad" + iPic);
+	rad.checked = true;
+}
+
+function NextPicClick()
+{
+	CancelCycle();
+	NextPic();
+}
+
+function InvertChecks()
+{
+	var iPic;
+	
+	for (iPic = 0; iPic <= iPicMax; iPic++)
+		{
+		chk = document.all.item("PicChk" + iPic);
+		chk.checked = !chk.checked;
+		}
+}
+
+function NextPic()
+{
+	var chk;
+	var di;
+	
+	for (di = iPicMax; di > 0; di--)
+		{
+		iPic = (iPicCur + di) % (iPicMax+1);
+		chk = document.all.item("PicChk" + iPic);
+		if (chk.checked)
+			{
+			Picture(iPic);
+			break;
+			}
+		}
+}
+
+function PrevPic()
+{
+	var chk;
+	var di;
+	
+	CancelCycle();
+	for (di = 1; di <= iPicMax; di++)
+		{
+		iPic = (iPicCur + di) % (iPicMax+1);
+		chk = document.all.item("PicChk" + iPic);
+		if (chk.checked)
+			{
+			Picture(iPic);
+			break;
+			}
+		}
+}
+
+function StBuildUI()
+{
+	var st = "";
+	var stSuffix;
+	
+	st += "<table><tr><td valign=top>\r";
+	
+	for (i = iPicMax; i >= 0; i--)
+		{
+		stSuffix = "";
+		if (i)
+			stSuffix = i;
+		st += "<input type=radio name=RadioPics ";
+		st += "id=PicRad" + i + " ";
+		st += "onclick=\"Picture(" + i + ");\">\r";
+		st += "<img align=top width=64 height=48 src=\"";
+		st += StImage(i);
+		st += "\" onclick=\"Picture(" + i + ");\">\r";
+		st += "<input type=checkbox checked name=Pic" + stSuffix;
+		st += " id=PicChk" + i + "><br>\r";
+		if (((iPicMax-i) % 9) == 8)
+			{
+			st += "</td><td valign=top>";
+			}
+		}
+	st += "</td></tr></table>";
+	return st;
+}
+
+var tm = 0;
+
+function Cycle()
+{
+	if (tm)
+		CancelCycle();
+	else
+		tm = setInterval(NextPic, 200)
+}
+
+function CancelCycle()
+{
+	if (tm)
+		{
+		clearInterval(tm)
+		tm = 0;
+		}
+}
+
+</script>
+</head>
+
+<body>
+<h1 align="center">Web Cam Image Cycler</h1>
+
+<table>
+<tr>
+<td align=center valign=top>
+<img id=TPic border="0" width="320" height="240">
+<script>
+document.write(StBuildUI());
+Picture(10);
+</script>
+</td>
+
+<td width=100 align=center valign=top>
+<input type=button name=Next Value="Next" onclick="NextPicClick();">
+<p><input type=button name=Prev Value="Prev" onclick="PrevPic();">
+<p><input type=button name=Cycle Value="Cycle" onclick="Cycle();">
+<p><input type=button name=Invert Value="Invert Checks" onclick="InvertChecks();">
+</td>
+
+<td valign=top>
+Thumbnails of the most recent 11 images from the web cam are presented in this page.  You can cycle through the images one at a time by hitting
+the next or previous buttons, or you can cycle through them in rapid succession by hitting the Cycle button.  You can also directly access
+a particular image by clicking on the radio button to the left of the image.
+<p>
+If you want to include only certain of the web cam images in the cycling (for example, only those images taken from the trailer camera - as
+opposed to the dock camera), uncheck the checkbox next to the unwanted images.
+</td>
+</tr>
+</table>
+
+
+
+
+<br>
+
+
+</body>

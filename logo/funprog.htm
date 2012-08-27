@@ -1,0 +1,241 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+
+<html>
+
+<head>
+<title>Fun Programs in LOGO</title>
+<meta name="FORMATTER" content="Microsoft FrontPage 1.1">
+<meta name="GENERATOR" content="Microsoft FrontPage 6.0">
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-177353-1";
+urchinTracker();
+</script>
+
+</head>
+
+<body bgcolor="#FFFFFF">
+<h1><img src="images/rtree.gif" align=baseline width=135 height=112>LOGO Programming <a href="OldDefault.htm"><img src="images/mikeface.gif" align=baseline border=0 width=100 height=141></a></h1>
+<hr noshade>
+<h2>&nbsp;</h2>
+<table border="1" style="border-collapse: collapse" width="100%" id="table1">
+	<tr>
+		<td width="144" valign="top">
+		<h1>Pumpkin</h1>
+		</td>
+		<td valign="top">
+		<img border="0" src="images/pumpkin.jpg" width="227" height="218"></td>
+	</tr>
+</table>
+<p><i>The text of this program can be downloaded from here: </i>
+<a href="pumpkin.lgo">pumpkin.lgo</a>.&nbsp; <i>Right click on the link and 
+select Save Target As... to save it to your machine.&nbsp; You can then use the 
+File/Load menu command in MSWLogo to load the file.&nbsp; Once you do that, type 
+&quot;pumpkin 200&quot; in the command window to see it draw on screen.</i></p>
+<blockquote>
+<p>; Fillpoly<br>
+;<br>
+; Creates a polygon filled in with a color. The :size is the approximate<br>
+; diameter. :color is an RGB list. The polygon is created about the turtle<br>
+; at its center.<br>
+;<br>
+to fillpoly :sides :size :color<br>
+poly :sides :size<br>
+setfloodcolor :color<br>
+fill<br>
+end<br>
+<br>
+; Draws the head of the Pumpkin (i.e., the orange circle)<br>
+to head :size<br>
+fillpoly 50 :size [255 127 0]<br>
+end<br>
+<br>
+; Draws the mouth of the pumpkin - turtle starts in the middle<br>
+to mouth :size<br>
+local &quot;dzMouth<br>
+local &quot;ptSave<br>
+make &quot;dzMouth :size/8<br>
+make &quot;ptSave pos<br>
+<br>
+pd<br>
+lt 45 fd :dzMouth<br>
+lt 90 fd :dzMouth<br>
+rt 90 fd :dzMouth<br>
+rt 45<br>
+pu setpos :ptSave pd<br>
+rt 45 fd :dzMouth<br>
+rt 90 fd :dzMouth<br>
+lt 90 fd :dzMouth<br>
+lt 45<br>
+pu setpos :ptSave<br>
+end<br>
+<br>
+; A generic move function - always picks up the pen.<br>
+; x and y are relative to the current heading of the turtle.<br>
+to move :dx :dy<br>
+pu fd :dy rt 90 fd :dx lt 90<br>
+end<br>
+<br>
+; A Generic polygon drawing functions. The turtle is placed in the middle<br>
+; of the polygon. The :size is the approximate diameter of the polygon.<br>
+to poly :sides :size<br>
+local &quot;step<br>
+make &quot;step 3.14*:size/:sides<br>
+pu<br>
+bk :size/2 lt 90 bk :step/2<br>
+pd<br>
+repeat :sides [fd :step rt 360/:sides]<br>
+pu<br>
+fd :step/2 rt 90 fd :size/2<br>
+end<br>
+<br>
+; Draws a pumpkin of a given diameter.<br>
+to pumpkin :size<br>
+local &quot;dxEye<br>
+local &quot;dyEye<br>
+local &quot;dyMouth<br>
+local &quot;dzMouth<br>
+local &quot;ptCenter<br>
+make &quot;dxEye :size/5<br>
+make &quot;dyEye :size/8<br>
+make &quot;dyMouth :size/3<br>
+make &quot;dzMouth :size/8<br>
+make &quot;ptCenter pos<br>
+<br>
+setpensize [5 5]<br>
+<br>
+head :size<br>
+tri :size<br>
+<br>
+move -:dxEye :dyEye rt 180<br>
+tri :size<br>
+move -2*:dxEye 0<br>
+tri :size<br>
+<br>
+pu setpos :ptCenter<br>
+fd :dyMouth rt 180<br>
+mouth :size<br>
+<br>
+pu setpos :ptCenter<br>
+end<br>
+<br>
+; A cool array of 7 pumpkins.<br>
+to pumpkins<br>
+pumpkin 200<br>
+repeat 6 [fd 210 pumpkin 200 bk 210 rt 60]<br>
+ht<br>
+end<br>
+<br>
+; Draws triangular eyes and nose dimensioned for the :size'd pumpkin head.<br>
+to tri :size<br>
+fillpoly 3 :size/6 [0 0 0]<br>
+end<br>
+<br>
+</p>
+</blockquote>
+<hr noshade>
+<h2>Recursive Trees</h2>
+<p>You can make some nifty pictures of tree by using recursion.</p>
+<blockquote>
+<p>to tree :size<br>
+&#160;&#160;if :size &lt; 5 [stop]<br>
+&#160;&#160;fd :size<br>
+&#160;&#160;lt 30 tree :size*.7<br>
+&#160;&#160;rt 60 tree :size*.7<br>
+&#160;&#160;lt 30 bk :size<br>
+end</p>
+<p>to rtree :size<br>
+&#160;&#160;if :size &lt; 5 [stop]<br>
+&#160;&#160;fd :size<br>
+&#160;&#160;lt 30 rtree :size*(((random 5)+5)/10)<br>
+&#160;&#160;rt 60 rtree :size*(((random 5)+5)/10)<br>
+&#160;&#160;lt 30 bk :size<br>
+end</p>
+</blockquote>
+<hr noshade>
+<h2>Towers of Hanoi</h2>
+<p>The Towers of Hanoi puzzle may be familiar to you. It is a game of 3 pegs and a number of disks. Each disk has a 
+different size. The puzzle starts with all the disks on one peg, with the largest disks on the bottom. The problem is to move 
+the disks from the first peg to the last peg <strong>without</strong> ever placing a larger disk on top of a smaller one.</p>
+<p>A simple program to solve this problem is this one. It merely prints the &quot;moves&quot; to be made.</p>
+<blockquote>
+<p>to move :from :to<br>
+(print &quot;Move &quot;disk &quot;on &quot;peg :from &quot;to &quot;peg :to &quot;.)<br>
+end<br>
+<br>
+to tower :disks :from :to :using<br>
+if :disks = 1 [move :from :to stop]<br>
+tower :disks-1 :from :using :to<br>
+move :from :to<br>
+tower :disks-1 :using :to :from<br>
+end<br>
+</p>
+</blockquote>
+<p>A more complex version (with some satisfying graphics displaying an animation of all the moves - type &quot;towers 10&quot; to start 
+the demo...you can turn Trace on to slow down the program to see the individual moves if the program is running too 
+swiftly).</p>
+<p><img src="images/hanoi.gif" align=bottom width=428 height=203></p>
+<blockquote>
+<p>to drawdisk :disk :peg :height :fDraw<br>
+pu<br>
+setxy :peg*150-300 :height*10<br>
+ifelse :fDraw [penpaint] [penerase]<br>
+bk :disk*5<br>
+fd :disk*10<br>
+end<br>
+<br>
+to move :from :to<br>
+make &quot;moves :moves + 1<br>
+; (print :moves &quot;. &quot;Move &quot;disk &quot;on &quot;peg :from &quot;to &quot;peg :to &quot;.)<br>
+<br>
+make &quot;height (item :from :stacks)<br>
+make &quot;disk (item :height (item :from :pegs))<br>
+setitem :height (item :from :pegs) &quot;.<br>
+setitem :from :stacks (item :from :stacks)-1<br>
+drawdisk :disk :from :height &quot;false<br>
+<br>
+make &quot;height (item :to :stacks)+1<br>
+setitem :to :stacks :height<br>
+setitem :height (item :to :pegs) :disk<br>
+drawdisk :disk :to :height &quot;true<br>
+<br>
+; show :stacks<br>
+; show :pegs<br>
+end<br>
+<br>
+to start :disks<br>
+cs<br>
+ht<br>
+make &quot;moves 0<br>
+rt 90<br>
+setpensize [5 5]<br>
+make &quot;stacks (array 3)<br>
+setitem 1 :stacks :disks<br>
+setitem 2 :stacks 0<br>
+setitem 3 :stacks 0<br>
+<br>
+make &quot;pegs (array 3)<br>
+repeat 3 [setitem repcount :pegs (array :disks)]<br>
+make &quot;firstPeg (item 1 :pegs)<br>
+repeat :disks [setitem repcount :firstPeg :disks-repcount+1]<br>
+repeat :disks [drawdisk :disks-repcount+1 1 repcount &quot;true]<br>
+end<br>
+<br>
+to tower :disks :from :to :using<br>
+if :disks = 1 [move :from :to stop]<br>
+tower :disks-1 :from :using :to<br>
+move :from :to<br>
+tower :disks-1 :using :to :from<br>
+end<br>
+<br>
+to towers :disks<br>
+start :disks<br>
+tower :disks 1 3 2<br>
+end<br>
+</p>
+</blockquote>
+<p>&#160;</p>
+</body>
+
+</html>

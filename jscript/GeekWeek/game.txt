@@ -1,0 +1,238 @@
+drv.Reset();
+
+drv.SetBackColor([98, 227, 255]);	// Sky Blue
+
+var lgtAmb = new Light(0);
+lgtAmb.SetColor([200,200,200]);
+var lgtDir = new Light(3);
+lgtDir.Turn(-45);
+
+field = new Plane(5000, 5000, "grass.wjp", null, 50, 50);
+field.SetOrientation(0,1,0, 0,0,1);
+
+var dir;
+for (dir = 0; dir <= 360; dir += 90)
+	new Wall(dir);
+
+function Wall(dir)
+{
+	SetCollisionCallback(this);
+	this.plane = new Plane(5000, 700, "mountains.wpg", [255,0,0]);
+	this.plane.SetDir(dir+180);
+	this.plane.MoveTo(Math.sin(Math.Rad(dir)) * 2500, 345, Math.cos(Math.Rad(dir)) * 2500);
+	SetCollisionCallback();
+}
+
+sndMusic = new Sound("music", true);
+sndMusic.Volume(32);
+sndBoom = new Sound("boom");
+sndShot = new Sound("shot");
+sndMusic.Play();
+
+tankLeft = new Tank(-1250, 0, 90, "WASZ-RDF");	// FLRB-SLR
+
+tankRight = new Tank(1250, 0, 270, "YGHB-IJK");
+
+Tank.idNext = 1;
+
+function Tank(x, z, dir, stKeys)
+{
+	var i;
+
+	// Work around JScript prob where Tank.idNext initializer lost on function def!
+	if (Tank.idNext == undefined)
+		Tank.idNext = 1;
+
+	this.id = Tank.idNext++;
+
+	SetCollisionCallback(this);
+
+	this.modBody = new Model("body");
+	this.modTur = new Model("turret");
+
+	// Adjust tank to be forward in Z direction, and wheels on the surface
+	grpAdjust = new Group(this.modBody, this.modTur);
+	grpAdjust.Turn(90);
+	grpAdjust.Move(0,-20,0);
+
+	this.cam = new Camera;
+	this.grpTur = new Group(this.modTur, this.cam);
+	this.cam.Move(0, 150, -500);
+	this.cam.LookAt(this.grpTur);
+	this.grpTank = new Group(grpAdjust, this.grpTur);
+	this.grpTank.Move(0,50,0);
+
+	SetCollisionCallback();
+
+	this.snd = new Sound("5sengine", true);
+
+	this.shells = new Array;
+	for (i = 0; i < 6; i++)
+		this.shells[i]= new Shell();
+	this.ishellNext = 0;
+	
+	this.ctr = new CBController(this, "Tank #" + this.id, stKeys, "FLRB-Slr");
+
+	this.speed = 0;
+	this.ddirTank = 0;
+	this.ddirTur = 0;
+	this.hits = 0;
+
+	this.grpTank.Move(x, 0, z);
+	this.grpTank.SetDir(dir);
+}
+
+function Tank.prototype.DoKey(ch, fDown)
+{
+	switch (ch)
+		{
+	case "F":
+		if (fDown)
+			{
+			this.snd.Play();
+			this.speed = 100;
+			}
+		else
+			{
+			this.snd.Stop();
+			this.speed = 0;
+			}
+		break;
+	case "B":
+		if (fDown)
+			{
+			this.snd.Play();
+			this.speed = -100;
+			}
+		else
+			{
+			this.snd.Stop();
+			this.speed = 0;
+			}
+		break;
+	case "L":
+		if (fDown)
+			this.ddirTank = -30;
+		else
+			this.ddirTank = 0;
+		break;
+	case "R":
+		if (fDown)
+			this.ddirTank = 30;
+		else
+			this.ddirTank = 0;
+		break;
+	case "S": // Shoot
+		if (fDown)
+			{
+			var shell = this.shells[this.ishellNext];
+			shell.Fire(this.grpTank.GetPos(true), this.grpTur.GetDir(true));
+			this.ishellNext = (this.ishellNext + 1) % this.shells.length;
+			}
+		break;
+	case "l":	// Turret Left
+		if (fDown)
+			this.ddirTur = -60;
+		else
+			this.ddirTur = 0;
+		break;
+	case "r": // Turret Right
+		if (fDown)
+			this.ddirTur = 60;
+		else
+			this.ddirTur = 0;
+		break;
+		}
+}
+
+function Tank.prototype.DoRender(msInterval, msTime)
+{
+	this.grpTur.Turn(msInterval * this.ddirTur / 1000);
+	this.grpTank.Turn(msInterval * this.ddirTank / 1000);
+
+	if (this.speed == 0)
+		return;
+	
+	var dist = msInterval * this.speed / 1000;
+
+	var ci = this.grpTank.TestCollision(dist);
+	if (ci == null)
+		this.grpTank.Forward(dist);
+}
+
+function Tank.prototype.Hit()
+{
+	new Explosion(this.grpTank.GetPos(true));
+	this.hits++;
+//	this.ctr.Status("Hits: " + this.hits);
+}
+
+Shell.prototype.speed = 2000;
+
+function Shell()
+{
+	this.mod = new Sphere(25);
+	this.mod.SetColor([180, 120, 120]);
+	this.ctr = new CBController(this);
+
+	// Take off stage until needed
+	this.mod.Remove();
+	this.ctr.Suspend(true);
+}
+
+function Shell.prototype.Fire(pos, dir)
+{
+	sndShot.Play();
+
+	this.mod.Add();
+	this.mod.MoveTo(pos.x, pos.y, pos.z);
+	this.mod.SetDir(dir);
+	this.ctr.Suspend(false);
+}
+
+function Shell.prototype.DoRender(msDelay, msTime)
+{
+	var dist;
+	var obj;
+
+	dist = msDelay * this.speed / 1000;
+
+	var ci = this.mod.TestCollision(dist);
+	if (ci == null)
+		{
+		this.mod.Forward(dist);
+		return;
+		}
+
+	this.mod.Remove();
+	this.ctr.Suspend(true);
+
+	if (ci.objCallback && ci.objCallback.Hit != undefined)
+		ci.objCallback.Hit(this);
+
+	this.mod.Remove();
+	this.ctr.Suspend(true);
+}
+
+function Explosion(pos)
+{
+	sndBoom.Play();
+
+	this.mod = new Sphere(4);
+	this.mod.SetTexture("fireball.wjp");
+	this.mod.MoveTo(pos.x, pos.y, pos.z);
+	this.mod.Spin();
+	this.ctr = new CBController(this);
+	this.ctr.SetLifetime(5000);
+}
+
+function Explosion.prototype.DoRender(msInterval, msTime)
+{
+	this.mod.AbsoluteScale(this.ctr.Proportion(1, 100));
+	this.mod.SetOpacity(this.ctr.Proportion(255, 20));
+	if (this.ctr.fFinal)
+		{
+		this.ctr.Remove();
+		this.mod.Remove();
+		}
+}

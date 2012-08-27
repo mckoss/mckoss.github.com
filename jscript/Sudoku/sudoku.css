@@ -1,0 +1,64 @@
+Body
+{
+font-family: Verdana;
+}
+
+Table.Sud
+{
+font-size: 28px;
+border-collapse: collapse;
+}
+
+TH.Sud
+{
+font-size:24px;
+background-color: black;
+color: white;
+padding: 5px;
+}
+
+TH.Spacer
+{
+width: 1px;
+height: 1px;
+background-color: black;
+}
+
+TD.Spacer
+{
+width: 1px;
+height: 1px;
+background-color: black;
+}
+
+TD.Cell
+{
+border:2px solid black;
+vertical-align: middle;
+text-align: center;
+width: 40px;
+height: 40px;
+padding: 4px;
+}
+
+Table.Int
+{
+border: 1px solid black;
+width: 100%;
+border-collapse: collapse;
+}
+
+Table.Int TD
+{
+border: 1px solid black;
+text-align:center;
+font-size: 10px;
+width:15px;
+height:15px
+margin: 0px;
+}
+
+TD.Excluded
+{
+background-color: red;
+}

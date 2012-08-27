@@ -1,0 +1,473 @@
+<HTML>
+<HEAD>
+<LINK REL=stylesheet HREF="object.css" type="text/css">
+<SCRIPT src="object.js"></SCRIPT>
+<SCRIPT src="examples.js"></SCRIPT>
+<TITLE>Object Oriented Programming in JavaScript</TITLE>
+</HEAD>
+<BODY style="width:900px;margin:auto;">
+
+<H1>Object Oriented Programming in JavaScript</H1>
+<address>by Mike Koss
+<br>January 14, 2006</address>
+<a href="http://bluedot.us/Authoring.aspx" onclick="{var w=window;w.l=w.location;w.SdP='';w.bU=(w.l.protocol=='https:'?'https://'+w.SdP:'http://')+'bluedot.us';w.eUC=encodeURIComponent;function fBkF(){w.l.href=w.bU+'/Authoring.aspx?u='+w.eUC(w.l.href)+'&amp;t='+w.eUC(document.title);}w.gT=w.setTimeout(fBkF,6999);w.d=w.document;w.sT=w.d.body;w.o=w.d.createElement('scri'+'pt');if(typeof w.o!='object')fBkF();w.o.setAttribute('src',w.bU+'/js/Authoring.js');w.o.setAttribute('type','text/javascript');void(w.sT.appendChild(w.o));return false;}" id="BlueDotPartner"><img src="http://bluedot.us/images/partner_79x16_blue.gif" style="border:none"/></a>
+
+<div style="float:right;margin-left:10px">
+<script type="text/javascript">
+google_hints = "javascript, ajax, programming, object oriented, firefox, internet explorer, action script, flash, web development";
+google_ad_client = "pub-5601944029322846";
+google_ad_width = 336;
+google_ad_height = 280;
+google_ad_format = "336x280_as";
+google_ad_type = "text_image";
+//2007-04-14: Jscript.Square
+google_ad_channel = "6459224279";
+</script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+
+<h3>Introduction</h3>
+
+<P>
+The <A HREF="http://mckoss.com/jscript/object-2003.htm">first version of this paper</A>, written in 2003, had several shortcomings, not the
+least of which was that the techniques described were specific to Internet Explorer.
+I've updated and improved on the original, to document the current state of the art,
+especially in light of the extensive interest in AJAX technology and the increasing adoption
+of the FireFox browser.  All the examples presented here will follow the ECMA language
+standards and can be applied to Internet Explorer, FireFox, and ActionScript (in Macromedia Flash).
+</P>
+<P>
+While early adopters  of JavaScript used it as a simple scripting engine to create dynamic 
+web pages, modern web designers have come to use more sophisticated object oriented
+techniques in building their code.  I will present here, both the common paradigms used
+in object oriented JavaScript programming, and also suggest some helper functions that you
+can use in your code to streamline the process.
+</P>
+<P>
+It should be noted that the current design of the JavaScript language, did not fully anticipate
+or fully implement an object oriented system.  That is why the subject is somewhat mysterious
+and there are various implementations of object oriented programming techniques being used
+on the web today.  I will describe what I believe to be the most main-stream and compatible implementation
+that fits most naturally into the design of the language.
+</P>
+
+<H3>Object Oriented Programming Goals</H3>
+
+<P>
+I assume that the reader has a basic familiarity with JavaScript, function calls, and the
+basic tenets of object oriented programming.  I consider the three primary goals of object oriented programming to be:
+</P>
+
+<ul>
+<li><B>Encapsulation</B> - Support for method calls on a JavaScript object as a member of a Class.</li>
+<li><B>Polymorphism</B> - The ability for two classes to respond to the same (collection of) methods.</li>
+<li><B>Inheritance</B> - The ability to define the behavior of one object in terms of another by <I>sub-classing</I>.</li>
+</ul>
+
+<P>
+Through a series of examples (which, for the curious reader, are actually 
+snippets of live JavaScript code embedded within this page), I will demonstrate 
+how objects can be used in JavaScript and how these object oriented paradigms 
+can be best implemented.  I will cover techniques for:
+</P>
+
+<UL>
+<LI>Defining a Class</LI>
+<LI>Defining and calling Methods in a Class</LI>
+<LI>Defining a Sub-Class</LI>
+<LI>Calling the Super-Class constructor from a Sub-Class</LI>
+<LI>Overriding Methods of a Super-Class in a Sub-Class</LI>
+<LI>Calling a Super-Class method from a Sub-Class</LI>
+</UL>
+
+<h3>Simple Objects</h3>
+
+<div style="float:right;width:200px;text-align:center;">
+<a href="http://www.amazon.com/gp/product/0596517742?ie=UTF8&tag=mikekoss&linkCode=as2&camp=1789&creative=9325&creativeASIN=0596517742">
+<img border="0" src="51JBu91TjRL._SL160_.jpg" width="122" height="160">
+</a>
+<p style="font-size: 10px;"><i>Doug Crockford's book explains of the best parts of the JavaScript language.
+<br />-- Mike Koss</i></p>
+<img src="http://www.assoc-amazon.com/e/ir?t=mikekoss&l=as2&o=1&a=0596517742" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+</div>
+
+<P>
+The simplest object oriented construct in JavaScript is the built-in <i>Object</i> data type.
+In JavaScript, objects are implemented as a collection of named properties.  Being an
+interpreted language, JavaScript allows for the creation of any number of properties
+in an object at any time (unlike C++, properties can be added to an object at any time;
+they do not have to be pre-defined in an object declaration or constructor).
+</P>
+<P>
+So, for example, we can create a new object and add several ad-hoc properties to it with the following code:
+</P>
+<BLOCKQUOTE>
+<SCRIPT>
+CodeSample("\
+obj = new Object;\n\
+obj.x = 1;\n\
+obj.y = 2;\
+");
+</SCRIPT>
+</BLOCKQUOTE>
+<P>
+Which creates a JavaScript object which I will represent graphically like this:
+<BLOCKQUOTE>
+<SCRIPT>
+obj.Dump("obj");
+delete obj;
+</SCRIPT>
+</BLOCKQUOTE>
+<P>
+The left hand column displays the property name of each available property on the object, while the right hand column displays it's value.  Note that in addition to the <i>x</i> and <i>y</i> properties that we created, 
+our object has an additional property called <i>constructor </i>that points (in 
+this case) to an internal JavaScript function.  I will explain <i>prototype</i>
+properties, below.
+
+<h3>Defining a Class - Object Constructors</h3>
+
+<P>
+A new JavaScript class is defined by creating a simple function.  When a function is called with
+the <i>new</i> operator, the function serves as the <i>constructor</i> for that class.  Internally,
+JavaScript creates an <i>Object</i>, and then calls the constructor function.  Inside the constructor,
+the variable <i>this</i> is initialized to point to the just created Object.  This code snippet
+defines a new class, <i>Foo</i>, and then creates a single object of that class.
+</P>
+<BLOCKQUOTE>
+<SCRIPT>
+CodeSample("\
+function Foo()\n\
+{\n\
+	this.x = 1;\n\
+	this.y = 2;\n\
+}\n\
+ \n\
+obj = new Foo;\n\
+", false, "RegisterConstructor(Foo);");
+obj.Dump("obj");
+delete obj;
+</SCRIPT>
+</BLOCKQUOTE>
+<P>
+Note that we can now create as many <i>Foo</i> type objects as we want, all of 
+whom will be properly initialized to have their <i>x</i> and <i>y</i> properties 
+set to 1 and 2, respectively.
+
+<h3>Prototypes Explained</h3>
+<P>
+In JavaScript, each Object can inherit properties from another object, called it's <i>prototype</i>.  When evaluating an expression
+to retrieve a property, JavaScript first looks to see if the property is defined directly in the object.  If it is not, it then
+looks at the object's prototype to see if the property is defined there.  This continues up the <i>prototype chain</i> until
+reaching the root prototype.  Each object is associated with a prototype which comes from the constructor function from which it is created.
+</P>
+<P>
+For example, if we want to create an object, X, from constructor function B, whose prototype chain is: B.prototype, A.prototype, Object.prototype:
+</P>
+<BLOCKQUOTE>
+<IMG SRC="Prototype.gif" width="425" height="284"/>
+</BLOCKQUOTE>
+<P> 
+We would use the following code:
+</P>
+<BLOCKQUOTE>
+<SCRIPT>
+var g;
+CodeSample("\
+Object.prototype.inObj = 1;\n\
+ \n\
+function A()\n\
+{\n\
+	this.inA = 2;\n\
+}\n\
+ \n\
+A.prototype.inAProto = 3;\n\
+ \n\
+B.prototype = new A;			// Hook up A into B's prototype chain\n\
+B.prototype.constructor = B;\n\
+function B()\n\
+{\n\
+	this.inB = 4;\n\
+}\n\
+ \n\
+B.prototype.inBProto = 5;\n\
+ \n\
+x = new B;\n\
+document.write(x.inObj + ', ' + x.inA + ', ' + x.inAProto + ', ' + x.inB + ', ' + x.inBProto);\n\
+", true, "RegisterConstructor(A);RegisterConstructor(B)");
+x.Dump("x");
+delete x;
+delete Object.prototype.inObj;
+</SCRIPT>
+</BLOCKQUOTE>
+
+<P>
+<I>In FireFox and in ActionScript, an object's prototype can be explicitly referenced via the non-standard __proto__  property.  But in standard JavaScript a prototype
+object can only by directly referenced through the object's constructor function object.</I>
+</P>
+
+<h3>Defining and Calling Methods in a Class</h3>
+
+<P>
+JavaScript allows you to assign any function to a property of an 
+object.  When you call that function using <i>obj.Function()</i> syntax, it 
+will execute the function with <i>this</i> defined as a reference to the object 
+(just as it was in the constructor).
+</P>
+<P>
+The standard paradigm for defining methods is to assign functions to a constructor's prototype.  That way,
+all objects created with the constructor automatically inherit the function references via the prototype chain.
+<BLOCKQUOTE>
+<SCRIPT>
+CodeSample("\
+function Foo()\n\
+{\n\
+	this.x = 1;\n\
+}\n\
+ \n\
+Foo.prototype.AddX = function(y)	// Define Method\n\
+{\n\
+	this.x += y;\n\
+}\n\
+ \n\
+obj = new Foo;\n\
+ \n\
+obj.AddX(5);						// Call Method\n\
+", false, "RegisterConstructor(Foo);");
+obj.Dump("obj");
+delete obj;
+</SCRIPT>
+</BLOCKQUOTE>
+<P>
+<B>Polymorphism</B> is achieved by simply having different object classes implement a collection of methods
+that use the same names.  Then, a caller, need just use the correctly named function property to invoke
+the appropriate function for each object type.
+</P>
+<BLOCKQUOTE>
+<SCRIPT>
+CodeSample("\
+function A()\n\
+{\n\
+	this.x = 1;\n\
+}\n\
+ \n\
+A.prototype.DoIt = function()	// Define Method\n\
+{\n\
+	this.x += 1;\n\
+}\n\
+ \n\
+function B()\n\
+{\n\
+	this.x = 1;\n\
+}\n\
+ \n\
+B.prototype.DoIt = function()	// Define Method\n\
+{\n\
+	this.x += 2;\n\
+}\n\
+ \n\
+a = new A;\n\
+b = new B;\n\
+ \n\
+a.DoIt();\n\
+b.DoIt();\n\
+document.write(a.x + ', ' + b.x);\n\
+", true, "RegisterConstructor(A);RegisterConstructor(B);");
+a.Dump("a");
+b.Dump("b");
+delete a;
+delete b;
+</SCRIPT>
+</BLOCKQUOTE>
+
+
+<H3>Defining a Sub-Class</H3>
+<P>
+The standard paradigm, is to use the prototype chain to implement the inheritance of methods from a super class.  Any methods defined on the sub-class
+will supersede those defined on the super-class.
+</P>
+<BLOCKQUOTE>
+<SCRIPT>
+CodeSample("\
+function A()						// Define super class\n\
+{\n\
+	this.x = 1;\n\
+}\n\
+ \n\
+A.prototype.DoIt = function()		// Define Method\n\
+{\n\
+	this.x += 1;\n\
+}\n\
+ \n\
+B.prototype = new A;				// Define sub-class\n\
+B.prototype.constructor = B;\n\
+function B()\n\
+{\n\
+	A.call(this);					// Call super-class constructor (if desired)\n\
+	this.y = 2;\n\
+}\n\
+ \n\
+B.prototype.DoIt = function()		// Define Method\n\
+{\n\
+	A.prototype.DoIt.call(this);	// Call super-class method (if desired)\n\
+	this.y += 1;\n\
+}\n\
+ \n\
+b = new B;\n\
+ \n\
+document.write((b instanceof A) + ', ' + (b instanceof B) + '<BR/>');\n\
+b.DoIt();\n\
+document.write(b.x + ', ' + b.y);\n\
+", true, "RegisterConstructor(A);RegisterConstructor(B);");
+b.Dump("b");
+delete b;
+</SCRIPT>
+</BLOCKQUOTE>
+<P>
+Something to keep in mind is that each time a sub-class is defined, we explicitly call the constructor of the super-class in order
+to insert it into our prototype chain.  So it is important to ensure that no undesirable side-effects will occur when this call is made.
+Conversely, if the super-class constructor should be called for each instance of every sub-class, code must be explicitly added
+to the sub-class's constructor to make this call (as is done in the above example).
+</P>
+
+<h3>An Alternate Sub-Classing Paradigm</h3>
+<P>
+As an alternate to using the prototype chain, I've developed a method which avoids calling the constructor of a super class when each sub-class
+is defined.  Three methods are added to the Function object:
+</P>
+<BLOCKQUOTE>
+<SCRIPT>
+document.write("<LISTING>Function.prototype.DeriveFrom = "+StHTML(Function.prototype.DeriveFrom)+"</LISTING>");
+document.write("<LISTING>Function.prototype.StName = "+StHTML(Function.prototype.StName)+"</LISTING>");
+document.write("<LISTING>Function.prototype.Override = "+StHTML(Function.prototype.Override)+"</LISTING>");
+</SCRIPT>
+</BLOCKQUOTE>
+<P>
+Repeating the sub-classing example using this new paradigm:
+</P>
+<BLOCKQUOTE>
+<SCRIPT>
+CodeSample("\
+function A()						// Define super class\n\
+{\n\
+	this.x = 1;\n\
+}\n\
+ \n\
+A.prototype.DoIt = function()		// Define Method\n\
+{\n\
+	this.x += 1;\n\
+}\n\
+ \n\
+B.DeriveFrom(A);					// Define sub-class\n\
+function B()\n\
+{\n\
+	this.A();						// Call super-class constructor (if desired)\n\
+	this.y = 2;\n\
+}\n\
+ \n\
+B.Override(A, 'DoIt');\n\
+B.prototype.DoIt = function()		// Define Method\n\
+{\n\
+	this.A_DoIt();					// Call super-class method (if desired)\n\
+	this.y += 1;\n\
+}\n\
+ \n\
+b = new B;\n\
+ \n\
+document.write((b instanceof A) + ', ' + (b instanceof B) + '<BR/>');\n\
+b.DoIt();\n\
+document.write(b.x + ', ' + b.y);\n\
+", true, "RegisterConstructor(A);RegisterConstructor(B);");
+b.Dump("b");
+delete b;
+</SCRIPT>
+</BLOCKQUOTE>
+<P>
+Unfortunately, this technique does not allow for the use of the <I>instanceof</I> operator to test
+for membership of a super-class.  But, we have the added benefit that we can derive from more than one super class (multiple inheritance).
+</P>
+<H3>Private Members</H3>
+<P>
+Amazingly, JavaScript also can support private members in an object. When the 
+constructor is called, variables declared in the function scope of the 
+constructor will actually persist beyond the lifetime of the construction 
+function itself. To access these variables, you need only create local functions 
+within the scope of the constructor.&nbsp; They may reference <i>local</i> 
+variables in the constructor.</P>
+<BLOCKQUOTE>
+<SCRIPT>
+CodeSample("\
+function A()\n\
+{\n\
+	var x = 7;\n\
+ \n\
+	this.GetX = function() { return x;}\n\
+	this.SetX = function(xT) { x = xT; }\n\
+}\n\
+ \n\
+obj = new A;\n\
+obj2 = new A;\n\
+document.write(obj.GetX() + ' ' + obj2.GetX());\n\
+obj.SetX(14);\n\
+document.write(' ' + obj.GetX() + ' ' + obj2.GetX());\n\
+", true, "RegisterConstructor(A);");
+obj.Dump("obj");
+obj2.Dump("obj2");
+delete obj;
+delete obj2;
+</SCRIPT>
+</BLOCKQUOTE>
+<P>
+I believe, however, that each instance of an object created in this way, has 
+it's own copy of each local function.&nbsp; The local copy of the function can 
+maintain a copy of the local scope (a
+<a href="http://en.wikipedia.org/wiki/Closure_(computer_science)">closure</a>) of the constructor.&nbsp; 
+This would be rather inefficient for object classes that construct many 
+instances.&nbsp; Experiments with a single (shared) reference to a function 
+reveal that they can only reference variables from a single instance of the 
+class.&nbsp; Since the benefits of using private members is rather limited in 
+the context of JavaScript (which is already lacking any form of type safety), I 
+would not recommend making extensive use of the <i>private member</i> paradigm.</P>
+
+<p><i>Update (June 2009):</i> I've developed a simple library for building <a href="http://g02me.googlecode.com/svn/trunk/app/scripts/namespace.js">JavaScript
+Namespaces (public domain source code)</a> - for a description see my <a href="http://blog.pageforest.com/2009/06/javascript-namespaces.html">blog</a>.
+</p>
+
+<div>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/mckoss/embed.js"></script>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<h3>References</h3>
+
+<p class="citation">
+<a href="http://www.ecma-international.org/publications/files/ecma-st/ECMA-262.pdf">ECMA-262 
+(PDF)</a> - ECMAScript Standard Documentation</p>
+<p class="citation">
+<a href="http://jibbering.com/faq/faq_notes/closures.html">JavaScript Closures</a> 
+- Detailed (if lengthy) explanation of JavaScript closures, along with 
+efficiency concerns especially with the inability of the garbage collector to 
+clean up function calls in the presence of possible closures.</p>
+
+
+<script type="text/javascript">
+google_ad_client = "pub-5601944029322846";
+google_ad_width = 728;
+google_ad_height = 15;
+google_ad_format = "728x15_0ads_al";
+//2007-04-14: JScript.Links
+google_ad_channel = "7327752269";
+</script>
+<script src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-177353-1";
+urchinTracker();
+</script>
+
+</BODY>
+</HTML>

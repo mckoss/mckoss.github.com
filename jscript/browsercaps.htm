@@ -1,0 +1,57 @@
+<HTML>
+<HEAD>
+<SCRIPT>
+function DoLoad()
+{
+  spanTest.innerText = "Text placed by DHTML.";
+  divTest.innerHTML = "Text placed by DHTML.";
+}
+</SCRIPT>
+</HEAD>
+<BODY onload="DoLoad();">
+<h1>Browser attributes</h1>
+<h2>Navigator</h2>
+<SCRIPT>
+var rgstAttr = new Array(
+  "appVersion",
+  "appCodeName",
+  "appName",
+  "appMinorVersion",
+  "cpuClass",
+  "platform",
+  "systemLanguage",
+  "userLanguage",
+  "userAgent",
+  "onLine",
+  "cookieEnabled"
+);
+for (i in rgstAttr)
+  document.write("<br>" + rgstAttr[i] + ": " + navigator[rgstAttr[i]]);
+</SCRIPT>
+<h2>Screen</h2>
+<SCRIPT>
+var rgstAttrS = new Array(
+  "availHeight",
+  "availWidth",
+  "bufferDepth",
+  "colorDepth",
+  "height",
+  "width",
+  "updateInterval"
+);
+for (i in rgstAttrS)
+  document.write("<br>" + rgstAttrS[i] + ": " + screen[rgstAttrS[i]]);
+</SCRIPT>
+<h1>Date</h1>
+<SCRIPT>
+document.write((new Date).toString());
+document.write("<br>Date.prototype.getUTCHours: " + typeof(Date.prototype.getUTCHours));
+</SCRIPT>
+<h1>DHTML test</h1>
+Sample Span: "<SPAN id=spanTest>innerText failed</SPAN>"
+<br>Simple Div: <DIV id=divTest>innerText failed</DIV>
+
+<h1>IFrame test</h1>
+<IFRAME SRC="http://mckoss.com">
+</BODY>
+</HTML>

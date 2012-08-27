@@ -1,0 +1,228 @@
+<HTML  xmlns:v="urn:schemas-microsoft-com:vml">
+<HEAD>
+<STYLE>
+v\:* { behavior: url(#default#VML); }
+
+BODY
+{
+font-family: Verdana;
+font-size: 8pt;
+}
+
+.Hex
+{
+cursor:hand;
+position:absolute;
+width:21600;
+height:13871;
+}
+
+.HexText
+{
+padding-top: 9;
+text-align:center;
+}
+
+</STYLE>
+
+<SCRIPT>
+function Pos(x,y)
+{
+	this.x = x;
+	this.y = y;
+}
+
+Pos.prototype.StStyle = PosStStyle;
+function PosStStyle()
+{
+	var st = "left:" + this.x + ";top:" + this.y + ";";
+	return st;
+}
+
+Pos.codeLabelStart = 0x61;
+
+Pos.prototype.toString = PosSt;
+function PosSt()
+{
+	return String.fromCharCode(this.col+Pos.codeLabelStart) + (this.rw+1);
+}
+
+HexBoard.rgxHex = new Array(6162, 15438, 21600, 15438, 6162,  0);
+HexBoard.rgyHex = new Array(0,    0,     6935,  13871, 13871, 6935);
+HexBoard.dxWidth = 21600;
+HexBoard.dyHeight = 13871;
+HexBoard.sizeDefault = 11;
+
+function HexBoard()
+{
+	this.rwMax = HexBoard.sizeDefault;
+	this.colMax = HexBoard.sizeDefault;
+	this.colorCell = "#F0DF99";
+}
+
+HexBoard.prototype.StBoard = HBStBoard;
+function HBStBoard()
+{
+	var st = "";
+	var pos = new Pos;
+
+	for (rw = 0; rw < this.rwMax; rw++)
+		for (col = 0; col < this.colMax; col++)
+			{
+			this.SetPosHex(pos, rw, col);
+			st += this.StHex(pos, pos.toString());
+			}
+
+	return st;			
+}
+
+
+HexBoard.prototype.SetPosHex = HBSetPosHex;
+function HBSetPosHex(pos, rw, col)
+{
+	pos.rw = rw;
+	pos.col = col;
+	pos.x = HexBoard.rgxHex[1] * (rw + col);
+	pos.y = HexBoard.rgyHex[2] * (rw - col) +
+		HexBoard.rgyHex[2] * this.rwMax;
+}
+
+
+HexBoard.prototype.StHex = HBStHex;
+function HBStHex(pos, stText)
+{
+	var st;
+
+	st = "<v:shape fillcolor=\"" + this.colorCell + "\" class=\"Hex\" type=\"#HexShape\"" +
+		" style=\"" + pos.StStyle() + "\">\r";
+	if (stText != null)
+		{
+		st += "<v:textbox><div class=\"HexText\">" + stText + "</div></v:textbox>\r";
+		}
+	st += "</v:shape>\r";
+	return st;
+}
+
+HexBoard.prototype.SetHexColor = HBSetHexColor;
+function HBSetHexColor(elt)
+{
+	if (elt.iPlayer == null)
+		{
+		elt.fillColor = this.colorCell;
+		elt.style.color = "black";
+		return;
+		}
+
+	elt.fillColor = HexDelegate.rgcolorHex[elt.iPlayer];
+	elt.style.color = HexDelegate.rgcolorText[elt.iPlayer];
+}
+
+MouseController.cmdInit = 0;
+MouseController.cmdTest = 1;
+MouseController.cmdIn = 2;
+MouseController.cmdClick = 3;
+MouseController.cmdOut = 4;
+
+function MouseController(fnDelegate)
+{
+	this.eltCur = null;
+	this.Delegate = fnDelegate;
+	this.Delegate(MouseController.cmdInit);
+}
+
+HexDelegate.rgcolorHex = new Array("black", "white");
+HexDelegate.rgcolorText = new Array("white", "black");
+HexDelegate.colorBack = 
+
+// Order of events (never multiple and always in this order for any one element and
+// the sequence will always complete for one element before started for a second element):
+// Cmd order: Test, In, [Click], Out
+function HexDelegate(cmd)
+{
+	switch (cmd)
+		{
+	case MouseController.cmdInit:
+		this.imove = 0;
+		break;
+	case MouseController.cmdTest:
+		var elt = this.eltNew;
+		while (elt != null)
+			{
+			var stType = elt.tagName.toUpperCase();
+			if (stType == "SHAPE")
+				{
+				if (elt.iPlayer != null)
+					return false;
+				this.eltCur = elt;
+				return true;
+				}
+			elt = elt.offsetParent;
+			}
+		return false;
+	case MouseController.cmdIn:
+		this.eltCur.fillColor = "yellow";
+		this.eltCur.style.color = "black";
+		break;
+	case MouseController.cmdClick:
+		this.eltCur.iPlayer = this.imove % 2;
+		this.imove++;
+		this.hb.SetHexColor(this.eltCur);
+		break;
+	case MouseController.cmdOut:
+		this.hb.SetHexColor(this.eltCur);
+		break;
+		}
+}
+
+
+MouseController.prototype.Event = MCEvent;
+function MCEvent()
+{
+	this.eltNew = window.event.srcElement;
+	var et = window.event.type;
+
+//	spanInfo.innerText = this.eltNew.tagName + ": " + et;
+
+	if (this.eltCur != null && et == "mouseout")
+		{
+		this.Delegate(MouseController.cmdOut)
+		this.eltCur = null;
+		return;
+		}
+
+	if (this.eltCur == null)
+		{
+		if (!this.Delegate(MouseController.cmdTest))
+			return;
+		if (this.eltCur == null)
+			this.eltCur = this.eltNew;
+		this.Delegate(MouseController.cmdIn);
+		return;
+		}
+
+	// Must be a click event
+	this.Delegate(MouseController.cmdClick);
+}
+</SCRIPT>
+</HEAD>
+
+<BODY onmouseover="mc.Event();" onmouseout="mc.Event();" onclick="mc.Event();" ondblclick="mc.Event();">
+
+<v:shapetype id="HexShape" coordsize="21600,13871"
+   path="m 6162,0 l 15438,0 21600,6935 15438,13871 6162,13871  0,6935 xe"/>
+
+
+<v:group ID=MyBoard style='width:40;height:40' coordsize="21600,13871"/>
+
+<br><span ID=spanInfo></span>
+
+<SCRIPT>
+var hb = new HexBoard;
+MyBoard.insertAdjacentHTML("BeforeEnd", hb.StBoard());
+
+var mc = new MouseController(HexDelegate);
+mc.hb = hb;
+</SCRIPT>
+
+</body>
+</html>

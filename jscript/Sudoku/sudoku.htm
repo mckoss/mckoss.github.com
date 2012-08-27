@@ -1,0 +1,27 @@
+<HTML>
+<HEAD>
+<title>Sudoku Solver by Mike Koss</title>
+<LINK REL=stylesheet HREF="sudoku.css" type="text/css">
+<SCRIPT src="debug.js"></SCRIPT>
+<SCRIPT src="sudoku.js"></SCRIPT>
+</HEAD>
+<BODY>
+<H1>Sudoku Solver</H1>
+<SCRIPT>
+var sud = new Sudoku();
+var rgset = [
+	[1,4,6],[1,6,2],[1,8,8],
+	[2,8,1],[2,9,5],
+	[3,1,4],[3,3,3],[3,5,1],
+	[4,1,8],[4,6,7],[4,9,4],
+	[5,3,1],[5,5,2],[5,7,6],
+	[6,1,7],[6,4,9],[6,9,2],
+	[7,5,3],[7,7,8],[7,9,7],
+	[8,1,1],[8,2,6],
+	[9,2,7],[9,4,4],[9,6,8]
+	];
+sud.DoSet(rgset);
+sud.Solve();
+</SCRIPT>
+</BODY>
+</HTML>

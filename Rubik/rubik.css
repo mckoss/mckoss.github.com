@@ -1,0 +1,91 @@
+BODY
+{
+font-family: Verdana;
+font-size: 12;
+margin: 0;
+}
+
+OBJECT
+{
+border: solid 2;
+}
+
+TD
+{
+vertical-align: top;
+}
+
+.pageTable {
+}
+
+.pageHeader {
+background-color: gray;
+color:white;
+font-size: 36;
+font-weight: bold;
+padding: 20;
+}
+
+.pageHeader A {
+color:white;
+}
+
+.pageHeader A:hover {
+color: red;
+}
+
+.heading {
+font-size: 16;
+font-weight: bold;
+}
+
+.keyTable {
+border: 1px solid black;
+border-collapse: collapse;
+margin: 5;
+}
+
+.key {
+text-align: center;
+font-weight: bold;
+}
+
+A {
+text-decoration: underline;
+color: blue;
+}
+
+A:hover {
+color:red;
+cursor: hand;
+}
+
+.keyTable TH {
+background-color: gray;
+color: white;
+}
+
+.keyTable TD {
+border:1px solid black;
+}
+
+.History {
+border: 1px solid black;
+border-collapse: collapse;
+margin: 5;
+}
+
+.History TH {
+background-color: gray;
+color: white;
+}
+
+.History TD {
+border:1px solid black;
+}
+
+.Amazon TD {
+vertical-align: bottom;
+text-align: center;
+color: red;
+}

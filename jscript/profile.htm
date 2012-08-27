@@ -1,0 +1,57 @@
+<HTML>
+<HEAD>
+<SCRIPT>
+function Timer(c)
+{
+	var i;
+	var st;
+
+	var d1 = new Date;
+
+	for (i = 0; i < c; i++)
+		{
+		}
+
+	var d2 = new Date;
+
+	return(d2.getTime()-d1.getTime());
+}
+
+function SpeedTest()
+{
+	var i;
+	var ms;
+	var st = "<TABLE border=1><TR><TD>Iterations</TD><TD>milliseconds</TD><TD>microseconds/iteration</TD></TR>";
+	var c;
+
+	c = 1;
+	
+	for (i = 0; i < 32; i++)
+		{
+		ms = Timer(c);
+		st += "<TR><TD>" + c + "</TD><TD>" + ms + "</TD><TD>" + ms/c*1000 + "</TD></TR>";
+		c *= 2;
+		if (ms > 2000)
+			break;
+		}
+
+	st += "</TABLE>";
+	return st;
+}
+
+</SCRIPT>
+</HEAD>
+
+<BODY>
+<h1>Speed trial.</h1>
+Each trial has an empty loop.  We use the Date function to try to get a
+millisend resolution timing between loops.  This table displays each trial, ther
+recorded millisends, and the number of microseconds per iteration of the loop.
+<hr>
+<SCRIPT>
+document.write(SpeedTest());
+</SCRIPT>
+
+</BODY>
+</HTML>
+

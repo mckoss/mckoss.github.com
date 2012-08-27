@@ -1,0 +1,292 @@
+<HTML>
+<HEAD>
+<Title>Cipher Challenge</Title>
+
+<STYLE>
+BODY TABLE
+{
+	font-family: Comic Sans MS;
+	font-size: 8pt;
+}
+
+</STYLE>
+
+<SCRIPT>
+var charAlias = new Object;
+
+charAlias[' '] = "&lt;space&gt;";
+charAlias[String.fromCharCode(13)] = "&lt;CR&gt;";
+charAlias[String.fromCharCode(10)] = "&lt;LF&gt;";
+
+// Frequency distribution from The Code Book, p 19.
+var EngFreqs = new Array(8.2,1.5,2.8,4.3,12.7,2.2,2.0,6.1,7.0,0.2,0.8,4.0,2.4,
+6.7,7.5,1.9,0.1,6.0,6.3,9.1,2.8,1.0,2.4,0.2,2.0,0.1);
+
+function DoAnalyze()
+{
+	var Freqs = new Array;
+	var FreqsAlpha = new Array(26);
+	var EngAlpha = new Array(26);
+	var cAlphas = 0;
+
+	st = document.all.Message.value.toUpperCase();
+
+	for (ich = 0; ich < 26; ich++)
+		{
+			FreqsAlpha[ich] = new Object;
+			FreqsAlpha[ich].Char = String.fromCharCode(ich+65);
+			FreqsAlpha[ich].Count = 0;
+
+			EngAlpha[ich] = new Object;
+			EngAlpha[ich].Char = String.fromCharCode(ich+65);
+			EngAlpha[ich].Count = EngFreqs[ich];
+		}
+
+	for (ich = 0; ich < st.length; ich++)
+		{
+		ch = st.charAt(ich);
+		if (Freqs[ch] == null)
+			Freqs[ch] = 1;
+		else
+			Freqs[ch]++;
+		if (ch >= 'A' && ch <= 'Z')
+			{
+			ichT = ch.charCodeAt(0)-65;
+			FreqsAlpha[ichT].Count++;
+			cAlphas++;
+			}
+		}
+
+	FreqsAlpha.sort(SgnFreq);
+	EngAlpha.sort(SgnFreq);
+
+	st = "<TABLE BORDER=1 BORDERCOLOR=black CELLPADDING=2 CELLSPACING=0>";
+	st += "<TR><TD align=center COLSPAN=3>Cipher<br>Stats</TD><TD align=center COLSPAN=2>English<br>Stats</TD></TR>";
+	st += "<TR><TD>Char</TD><TD>Count</TD><TD>Freq</TD><TD>Char</TD><TD>Freq</TD></TR>";
+
+	for (ich = 0; ich < 26; ich++)
+		{
+		st += "<TR>";
+		st += StTableText(FreqsAlpha[ich].Char);
+		st += StTableNumber(FreqsAlpha[ich].Count);
+		st += StTableText((Math.round(FreqsAlpha[ich].Count/cAlphas*1000)/10) + "%");
+
+		st += StTableText(EngAlpha[ich].Char);
+		st += StTableText((EngAlpha[ich].Count) + "%");
+		
+		st += "</TR>";
+		}
+
+	for (ch in Freqs)
+		{
+		if (ch < 'A' || ch > 'Z')
+			{
+			st += "<TR>";
+			if (charAlias[ch] == null)
+				st += StTableText(ch);
+			else
+				st += StTableText(charAlias[ch]);
+			st += StTableNumber(Freqs[ch]);
+			st += "</TR>";
+			}
+		}
+	st += "</TABLE>";
+
+	document.all.MessageFreq.innerHTML = st;
+}
+
+function SgnFreq(f1, f2)
+{
+	return f2.Count - f1.Count;
+}
+
+function StTableNumber(w)
+{
+	st = "<TD align=center>";
+	if (w == null || isNaN(w))
+		st += "&nbsp;";
+	else
+		st += w;
+	st += "</TD>";
+	return st;
+}
+
+function StTableText(ch)
+{
+	st = "<TD align=center>";
+	if (ch == null)
+		st += "&nbsp;";
+	else
+		st += ch;
+	st += "</TD>";
+	return st;
+}
+
+// Build the table of input cells for the alphabet substitutions.
+function StAlphaTable()
+{
+	st = "<TABLE BORDER=1 BORDERCOLOR=black CELLPADDING=2 CELLSPACING=0>";
+	st += "<TR><TD align=center>Cipher</TD>";
+	for (ich = 0; ich < 26; ich++)
+		{
+		ch = String.fromCharCode(65+ich);
+		st += "<TD align=center>" + ch + "</TD>";
+		}
+	st += "</TR><TR><TD align=center>Plain</TD>";
+	for (ich = 0; ich < 26; ich++)
+		{
+		ch = String.fromCharCode(65+ich);
+		st += '<TD align=center><INPUT MAXLENGTH=1 SIZE=1 Name="Letter' + ch + '"></TD>';
+		}
+	st += "</TR></TABLE>";
+	return st;
+}
+
+function DoSubstitute()
+{
+	st = document.all.Message.value.toUpperCase();
+	stT = "";
+
+	mpAlphabet = GetAlphabet();
+
+	for (ich = 0; ich < st.length; ich++)
+		{
+		ch = st.charAt(ich);
+		if (mpAlphabet[ch] == null)
+			stT += ch;
+		else
+			stT += mpAlphabet[ch];
+		}
+
+	document.all.PlainText.innerText = stT;
+}
+
+// Build a mapping from the input alphabets.
+function GetAlphabet()
+{
+	var mp = new Object;
+	
+	for (ich = 0; ich < 26; ich++)
+		{
+		ch = String.fromCharCode(65+ich);
+		stName = "Letter" + ch;
+		chT = document.all.item(stName).value;
+		if (chT != "")
+			mp[ch] = chT;
+		}
+	return mp;
+}
+
+function SetCaesar(chCipher, chPlain)
+{
+	chCipher = chCipher.toUpperCase();
+	chPlain = chPlain.toUpperCase();
+	
+	dch = chPlain.charCodeAt(0) - chCipher.charCodeAt(0) + 26
+
+	for (ich = 0; ich < 26; ich++)
+		{
+		ch = String.fromCharCode(65+ich);
+		stName = "Letter" + ch;
+		document.all.item(stName).value = String.fromCharCode(97 + (ich + dch) % 26);
+		}
+}
+</SCRIPT>
+
+</HEAD>
+
+<BODY>
+
+<H1>Cipher Challenge</H1>
+The page contains tools to help solve the <i>Cipher Challenge</i> included with <i>The Code Book</i>.
+<p><INPUT Type=Button onClick="document.all.Message.value = document.all.Stage1.innerText;" Value="Stage 1">
+<INPUT Type=Button onClick="document.all.Message.value = document.all.Stage2.innerText;" Value="Stage 2">
+<INPUT Type=Button onClick="document.all.Message.value = document.all.Stage3.innerText;" Value="Stage 3">
+<h3>Message:</h3>
+<TEXTAREA Name=Message ROWS=15 COLS=64>
+</TEXTAREA>
+
+<DIV STYLE="display:none;" ID=Stage1>
+BT JPX RMLX PCUV AMLX ICVJP IBTWXVR CI M LMT'R PMTN, MTN
+YVCJX CDXV MWMBTRJ JPX AMTNGXRJBAH UQCT JPX QGMRJXV CI JPX
+YMGG CI JPX HBTW'R QMGMAX; MTN JPX HBTW RMY JPX QMVJ CI JPX
+PMTN JPMJ YVCJX.  JPXT JPX HBTW'R ACUTJXTMTAX YMR APMTWXN,
+MTN PBR JPCUWPJR JVCUFGXN PBL, RC JPMJ JPX SCBTJR CI PBR
+GCBTR YXVX GCCRXN, MTN PBR HTXXR RLCJX CTX MWMBTRJ
+MTCJPXV.  JPX HBTW AVBXN MGCUN JC FVBTW BT JPX MRJVCGCWXVR,
+JPX APMGNXMTR, MTN JPX RCCJPRMEXVR. MTN JPX HBTW RQMHX,
+MTN RMBM JC JPX YBRX LXT CI FMFEGCT, YPCRCXDXV RPMGG VXMN
+JPBR YVBJBTW, MTN RPCY LX JPX BTJXVQVXJMJBCT JPXVXCI,
+RPMGG FX AGCJPXN YBJP RAMVGXJ, MTN PMDX M APMBT CI WCGN
+MFCUJ PBR TXAH, MTN RPMGG FX JPX JPBVN VUGXV BT JPX
+HBTWNCL.  JPXT AMLX BT MGG JPX HBTW'R YBRX LXT; FUJ JPXE
+ACUGN TCJ VXMN JPX YVBJBTW, TCW LMHX HTCYT JC JPX HBTW JPX
+BTJXVQVXJMJBCT JPXVXCI.  JPXT YMR HBTW FXGRPMOOMV WVXMJGE
+JVCUFGXN, MTN PBR ACUTJXTMTAX YMR APMTWXN BT PBL, MTN PBR
+GCVNR YXVX MRJCTBRPXN.  TCY JPX KUXXT, FE VXMRCT CI JPX
+YCVNR CI JPX HBTW MTN PBR GCVNR, AMLX BTJC JPX FMTKUXJ
+PCURX; MTN JPX KUXXT RQMHX MTN RMBN, C HBTW, GBDX ICVXDXV;
+GXJ TCJ JPE JPCUWPJR JVCUFGX JPXX, TCV GXJ JPE ACUTJXTMTAX
+FX APMTWXN; JPXVX BR M LMT BT JPE HBTWNCL, BT YPCL BR JPX
+RQBVBJ CO JPX PCGE WCNR; MTN BT JPX NMER CI JPE IMJPXV
+GBWPJ MTN UTNXVRJMTNBTW MTN YBRNCL, GBHX JPX YBRNCL CI JPX
+WCNR, YMR ICUTN BT PBL; YPCL JPX HBTW TXFUAPMNTXOOMV JPE
+IMJPXV, JPX HBTW, B RME, JPE IMJPXV, LMNX LMRJXV CI JPX
+LMWBABMTR, MRJVCGCWXVR, APMGNXMTR, MTN RCCJPRMEXVR;
+ICVMRLUAP MR MT XZAXGGXTJ RQBVBJ, MTN HTCYGXNWX, MTN
+UTNXVRJMTNBTW, BTJXVQVXJBTW CI NVXMLR, MTN RPCYBTW CI PMVN
+RXTJXTAXR, MTN NBRRCGDBTW CI NCUFJR, YXVX ICUTN BT JPX
+RMLX NMTBXG, TPCL JPX HBTW TMLXN FXGJXRPPMOOMV; TCY GXJ
+NMTBXG FX AMGGXN, MTN PX YBGG RPCY JPX BTJXVQVXJMJBCT.  JPX
+IBVRJ ACNXYCVN BR CJPXGGC.
+</DIV>
+
+<DIV STYLE="display:none;" ID=Stage2>
+MHILY LZA ZBHL XBPZXBL MVYABUHL HWWPBZ JSHBKPBZ JHLJBZ
+KPJABT HYJHUBT LZA ULBAYVU
+</DIV>
+
+<DIV STYLE="display:none;" ID=Stage3>
+IXDVMUFXLFEEFXSOQXYQVXSQTUIXWF*FMXYQVFJ*FXEFQUQXJFPTUFX
+MX*ISSFLQTUQXMXRPQEUMXUMTUIXYFSSFI*MXKFJF*FMXLQXTIEUVFX
+EQTEFXSOQXLQ*XVFWMTQTUQXTITXKIJ*FMUQXTQJMVX*QEYQVFQTHMX
+LFVQUVIXM*XEI*XLQ*XWITLIXEQTHGXJQTUQXSITEFLQVGUQX*GXKIE
+UVGXEQWQTHGXDGUFXTITXDIEUQXGXKFKQVXSIWQXAVPUFXWGXYQVXEQ
+JPFVXKFVUPUQXQXSGTIESQTHGX*FXWFQFXSIWYGJTFXDQSFIXEFXGJP
+UFXSITXRPQEUGXIVGHFITXYFSSFI*CXC*XSCWWFTIXSOQSCXYQTCXYI
+ESFCX*FXCKVQXFVFUQTPUFXQXKI*UCXTIEUVCXYIYYCXTQ*XWCUUFTI
+XLQFXVQWFXDCSQWWIXC*FXC*XDI**QXKI*IXEQWYVQXCSRPFEUCTLIX
+LC*X*CUIXWCTSFTIXUPUUQX*QXEUQ**QXJFCXLQX*C*UVIXYI*IXKQL
+QCX*CXTIUUQXQX*XTIEUVIXUCTUIXACEEIXSOQXTITXEPVJQCXDPIVX
+LQ*XWCVFTXEPI*IXSFTRPQXKI*UQXVCSSQEIXQXUCTUIXSCEEIX*IX*
+PWQXQVZXLFXEIUUIXLZX*ZX*PTZXYIFXSOQXTUVZUFXQVZKZYXTQX*Z
+*UIXYZEEIRPZTLIXTZYYZFKQXPTZXWITUZJTZXAVPTZXYQVX*ZXLFEU
+ZTHZXQXYZVKQWFXZ*UZXUZTUIXRPZTUIXKQLPUZXTITXZKQZXZ*SPTZ
+XTIFXSFXZ**QJVNWWIXQXUIEUIXUIVTIXFTXYFNTUIXSOQXLQX*NXTI
+KNXUQVVNXPTXUPVAIXTNSRPQXQXYQVSIEEQXLQ*X*QJTIXF*XYVFWIX
+SNTUIXUVQXKI*UQXF*XDQXJFVBVXSITXUPUUQX*BSRPQXBX*BXRPBVU
+BX*QKBVX*BXYIYYBXFTXEPEIXQX*BXYVIVBXFVQXFTXJFPXSIWB*UVP
+FXYFBSRPQFTDFTXSOQX*XWBVXDPXEIYVBXTIFXVFSOFPEIXX*BXYBVI
+*BXFTXSILFSQXQXQRPBUIV
+</DIV>
+
+<hr>
+<h3>Alphabet substitution table:</h3>
+<p><INPUT Type=Button onClick="SetCaesar(document.all.CaesarCipher.value, document.all.CaesarPlain.value);" Value="Caesar">
+Cipher letter:<INPUT Name=CaesarCipher MAXLENGTH=1 SIZE=1> decodes to <INPUT Name=CaesarPlain MAXLENGTH=1 SIZE=1>
+<p>
+<DIV ID=AlphabetTable></DIV>
+<SCRIPT>document.all.AlphabetTable.innerHTML = StAlphaTable();</SCRIPT>
+
+<hr>
+<h3>Plaintext message:</h3>
+<p><INPUT Type=Button onClick="DoSubstitute();" Value="Substitute">
+<DIV ID=PlainText STYLE="font-family:Comic Sans MS;font-size:12pt"></DIV>
+
+<hr>
+<h3>Frequency Analysis:</h3>
+<p><INPUT Type=Button onClick="DoAnalyze();" Value="Analyze">
+<p><DIV ID=MessageFreq></DIV>
+
+</BODY>
+</HTML>

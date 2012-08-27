@@ -1,0 +1,108 @@
+<HTML>
+<HEAD>
+<TITLE>Geek Week 2003 Test</TITLE>
+<SCRIPT SRC="geekweek.js"></SCRIPT>
+
+<STYLE>
+
+BODY
+{
+font-family: Verdana;
+font-size: 12;
+}
+
+OBJECT
+{
+border: solid 2;
+}
+
+TD
+{
+vertical-align: top;
+}
+
+.lblCmd {
+font-weight: bold;
+font-size: 18;
+}
+
+.doTable {
+border: 1px solid black;
+border-collapse: collapse;
+margin: 5
+}
+
+.doTable TD {
+border:1px solid black;
+vertical-align: top;
+}
+
+.doTitle {
+background-color: black;
+color: white;
+font-weight: bold;
+}
+
+.doProto {
+background-color: gray;
+color: white;
+font-weight: bold;
+}
+
+.doName {
+font-weight: bold;
+}
+
+.doValue {
+font-family: courier;
+font-size: 14;
+}
+
+</STYLE>
+
+</HEAD>
+<BODY>
+<H1>Wild Tangent Stage:</H1>
+
+<TABLE>
+<TR><TD>
+<SCRIPT>
+var dbg = new Debug();
+DW(dbg.StUI());
+var cmd = new Command();
+var drv = new WTDriver(cmd);
+var stLoc = document.location + "";
+if (stLoc.indexOf("sharepoint") >= 0)
+	drv.stDir = "../../Models/";
+DW(drv.StUI());
+</SCRIPT>
+</TD>
+<TD style='vertical-align:top'>
+<DIV id=divControllers>
+</DIV>
+<BR><B>Test Objects:</B><BR>
+<SCRIPT>
+drv.divControllers = divControllers;
+drv.TestEnv();
+DW(cmd.StButton("Cube", "cube = new Cube; cube.Spin();"));
+DW(cmd.StButton("3D Text", "text = new Text3D('Your name here...'); text.Spin();"));
+DW(cmd.StButton("Sphere", "sphere = new Sphere; sphere.Spin();"));
+DW(cmd.StButton("Teapot", "modTeapot = new Model('teapot'); modTeapot.Spin();"));
+DW(cmd.StButton("Tank", "modTank = new Model('tank');"));
+</SCRIPT>
+<BR><B>Stage Controls:</B><BR>
+<SCRIPT>
+DW(" " + cmd.StButton("Stop", "drv.wt.stop();"));
+DW(" " + cmd.StButton("Start", "drv.wt.start();"));
+DW(" " + cmd.StButton("Reset", "drv.Reset();drv.TestEnv();"));
+</SCRIPT>
+</TD>
+</TR>
+</TABLE>
+
+<SCRIPT>
+cmd.WriteUI();
+</SCRIPT>
+
+</BODY>
+</HTML>

@@ -1,0 +1,181 @@
+<HTML>
+<HEAD>
+<TITLE>Rubik's Cube Simulator</TITLE>
+<SCRIPT SRC="wildtangent.js"></SCRIPT>
+<SCRIPT SRC="rubik.js"></SCRIPT>
+<SCRIPT SRC="singmaster.js"></SCRIPT>
+<SCRIPT SRC="fleecube.js"></SCRIPT>
+<LINK REL=stylesheet HREF="rubik.css" type="text/css">
+<SCRIPT>
+var r;
+
+onload = RubikLoaded;
+
+function RubikLoaded()
+{
+	if (!WTDriver.FLoaded())
+		return;
+
+	r = new Rubik();
+	r.CreateStage();
+	r.txtPerm = txtPerm;
+	r.ml.txtHistory = txtHistory;
+
+	drv.wt.focus();
+}
+
+var dbg = new Debug();
+var cmd = new Command();
+var drv = new WTDriver(cmd, 640, 480);
+
+function EvtFocus()
+{
+	event.returnValue = false;
+	drv.wt.focus();
+}
+
+function DoKey(ch)
+{
+	r.DoKey(ch, true, event.shiftKey);
+	EvtFocus();
+}
+
+function DoFlip()
+{
+	r.Flip();
+	EvtFocus();
+}
+
+function DoSpeed(speed)
+{
+	Rubik.ddeg = speed;
+	drv.wt.focus();
+}
+
+function DoScramble()
+{
+	r.Scramble();
+	EvtFocus();
+}
+
+function DoSolveS()
+{
+	var solver = new Singmaster(r.ml);
+	solver.Solve(r.perm);
+	EvtFocus();
+}
+
+function DoSolveF()
+{
+	EvtFocus();
+	var solver = new FLee(r.ml);
+	solver.Solve(r.perm);
+}
+
+function Key(ch)
+{
+	DW("<A HREF=Key onclick=DoKey('"+ch+"');>" + ch + "</A>");
+}
+
+function KeyCell(ch)
+{
+	DW("<TD class=key>");
+	Key(ch);
+	DW("</TD>");
+}
+
+function StAmazon(stISBN, stTitle)
+{
+	var st = "";
+
+	st += "<TABLE><TR><TD>";
+	st += "<A HREF=http://www.amazon.com/exec/obidos/ASIN/" + stISBN + "/mikekoss>";
+	st += "<img  border=1 src=http://images.amazon.com/images/P/" + stISBN + ".01.MZZZZZZZ.jpg alt=Cover>";
+	st += "</A></TD></TR>";
+	st += "<TR><TD><SPAN class=BookTitle><A HREF=http://www.amazon.com/exec/obidos/ASIN/" + stISBN + "/mikekoss>";
+	st += stTitle;
+	st += "</A></SPAN></TD></TR></TABLE>";
+	return st;
+}
+</SCRIPT>
+</HEAD>
+
+<BODY>
+<TABLE cellspacing=0 cellpadding=0 class=pageTable width=100%>
+<TR><TD class=pageHeader COLSPAN=2>
+Rubik's Cube Simulator
+<BR><SPAN style="font-size: 16">by <A HREF=http://mckoss.com>Mike Koss</A></SPAN></BR>
+</TD></TR>
+
+<TR><TD WIDTH=640><SCRIPT>DW(drv.StUI());</SCRIPT></TD>
+
+<TD WIDTH=300 style='vertical-align:top; padding:7;'>
+
+<SPAN class=heading>Keyboard commands:</SPAN>
+<TABLE cellspacing=0 border=1 class=keyTable>
+<TR><TH>Key</TH><TH>Function</TH></TR>
+<TR><SCRIPT>KeyCell("U");</SCRIPT><TD>Turn the Up face clockwise (type SHIFT-U to move counter-clockwise).</TD></TR>
+<TR><SCRIPT>KeyCell("D");</SCRIPT><TD>Turn the Down face.</TD></TR>
+<TR><SCRIPT>KeyCell("L");</SCRIPT><TD>Turn the Left face.</TD></TR>
+<TR><SCRIPT>KeyCell("R");</SCRIPT><TD>Turn the Right face.</TD></TR>
+<TR><SCRIPT>KeyCell("F");</SCRIPT><TD>Turn the Front face.</TD></TR>
+<TR><SCRIPT>KeyCell("B");</SCRIPT><TD>Turn the Back face.</TD></TR>
+<TR><TD class=key><SCRIPT>Key("X");</SCRIPT>&nbsp;<SCRIPT>Key("Y");</SCRIPT>&nbsp;<SCRIPT>Key("Z");</SCRIPT></TD>
+<TD>Turn the inner <I>Slices</I>.</TD></TR>
+<TR><TD class=key><SCRIPT>Key("I");</SCRIPT>&nbsp;<SCRIPT>Key("J");</SCRIPT>&nbsp;<SCRIPT>Key("K");</SCRIPT></TD>
+<TD>Re-orient the cube around one of the axes.</TD></TR>
+</TABLE>
+<I>Use the mouse to spin the cube around.</I>
+<BR><A HREF=Flip onclick=DoFlip();>Flip</A> the cube upside-down.
+<BR><A HREF=Scramble onclick=DoScramble();>Scramble</A> the cube.
+<BR><A HREF=Solve onclick=DoSolveS();>Solve</A> the cube (Singmaster).
+<BR><BR><SPAN class=heading>Speed Control:</SPAN>
+<SELECT ID=selSpeed onchange=DoSpeed(selSpeed.value);>
+<OPTION SELECTED VALUE=180>Slow
+<OPTION VALUE=360>Fast
+<OPTION VALUE=10000>Fastest
+</SELECT>
+</TD>
+</TR>
+<TR><TD width=640>
+<SPAN class=heading>Current Permutation:</SPAN>
+<BR><SPAN ID=txtPerm></SPAN>
+<BR>
+<SPAN ID=txtHistory></SPAN></TD>
+<TD></TD>
+</TR>
+<TR><TD>
+<BR>
+<H3>Notes</H3>
+<P>The solution on this page is from <A HREF=http://www.amazon.com/exec/obidos/ASIN/0894900439/mikekoss/103-6419137-2196644">Note's on Rubik's Magic Cube</A>
+by David Singmaster.  I have a copy of this book from 1981 (US Edition).  The solution is not the most efficient known, taking over 100 face turns to
+solve a cube on average.  With the animation on this page set to <i>Fastest</i> it still takes about 15 seconds to solve a randomized
+cube.  Note that world-class speed cubers can solve a cube by hand in under 20 seconds!
+<P>You'll note that the solution used here procedes in layers:
+<UL>
+<LI>First the top layer is solved.
+<LI>The cube is flipped over, then the the middle layer is solved.
+<LI>Finally the Down (now Up) layer is solved.
+</UL>
+<BR><H3>Links</H3>
+<TABLE>
+<TR><TD><A HREF="http://lar5.com/cube/index.html">Rubik's Cube Solution</A></TD>
+<TD>Excellent site by Lars Petrus with animated cube solutions and SPEED-CUBING hints and videos!</TD></TR>
+<TR><TD><a href="http://www.speedcubing.com/events/wc2003/">2003 Rubik's Cube Championships</a></TD>
+<TD>World championship competition in speed cubing and other Rubik's Cube related events.  August 23, 2003 in Toronto.</TD></TR>
+<TR><TD><a href="http://rubiks.com">Rubiks.com</a></TD>
+<TD>Official Rubik's Cube web site.</TD></TR>
+</TABLE>
+<H3>Things to Buy</H3>
+<TABLE class=Amazon>
+<TR>
+<TD><SCRIPT>DW(StAmazon("0801869471", "Adventures in Group Theory"));</SCRIPT></TD>
+<TD><SCRIPT>DW(StAmazon("B00000JD5S", "Rubik's Cube"));</SCRIPT></TD>
+</TR></TABLE>
+
+</TD><TD></TD></TR></TABLE>
+<HR>
+This page produced using <A HREF=http://www.wildtangent.com/>WildTangent</A>.
+
+</BODY>
+</HTML>

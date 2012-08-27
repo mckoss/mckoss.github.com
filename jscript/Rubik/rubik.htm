@@ -1,0 +1,863 @@
+<HTML>
+<HEAD>
+<TITLE>Rubik's Cube Simulator</TITLE>
+<SCRIPT SRC="geekweek.js"></SCRIPT>
+<SCRIPT>
+// Rubik's Cube simulation (using WildTangent)
+// by Mike Koss (mckoss.com)
+//
+// History:
+// 4-10-03: Created.
+// 4-13-03: Correct design flaw - regroup cubes after each turn.
+
+Rubik.rgstFacesWT = ["right", "left", "bottom", "top", "front", "back"];
+Rubik.rgrgbFaces = [[255,71,19], [167,31,31], [255,243,253],
+	[238,209,0], [53,110,239], [57,166,59]];
+
+Rubik.rgstFaces = ["Left", "Right", "Down", "Up", "Front", "Back"];
+Rubik.rgxyzFaces = [[-1,0,0], [1,0,0], [0,-1,0], [0,1,0], [0,0,-1], [0,0,1]];
+Rubik.rgorientFaces = [[1,0,0], [-1,0,0], [0,0,1], [0,0,1], [0,0,1], [0,0,-1]];
+
+// Available in caps: AbCdEfGHijklMNOPQrSTuVWxyz";
+// Face motions: LRDUFB
+// Slice motions: XYZ
+// Cube re-orientations: IJK
+Rubik.rgchSlices = "LXRDYUFZB";
+Rubik.stMoves = Rubik.rgchSlices + "IJK";
+
+// Permutations for each move: l, x, r, d, y, u, f, z, b.
+Rubik.rgpermInit = [
+	[["LUF", "LFD", "LDB", "LBU"], ["LU", "LF", "LD", "LB"]],	// Left
+	[["FU", "UB", "BD", "DF"]],				// X (Slice)
+	[["RFU", "RUB", "RBD", "RDF"], ["RU", "RB", "RD", "RF"]],	// Right
+	[["DLF", "DFR", "DRB", "DBL"], ["DF", "DR", "DB", "DL"]],	// Down
+	[["FL", "LB", "BR", "RF"]],				// Y (Slice)
+	[["UFL", "ULB", "UBR", "URF"], ["UF", "UL", "UB", "UR"]],	// Up
+	[["FLU", "FUR", "FRD", "FDL"], ["FU", "FR", "FD", "FL"]],	// Front
+	[["UL", "LD", "DR", "RU"]],				// Z
+	[["BUL", "BLD", "BDR", "BRU"], ["BU", "BL", "BD", "BR"]]	// Back
+	];
+
+function Rubik()
+{
+	var i, j, k;
+	var cube;
+
+	Rubik.InitPerms();
+
+	this.grpSlice = new Group();
+	this.grpAll = new Group(this.grpSlice);
+	this.rgcube = new Array();
+	this.rgtext = new Array();
+	this.degFlipRemain = 0;
+	this.stProcess = "";
+	this.stHistory = "";
+	this.perm = new Permutation;
+
+	for (i = 0; i < 3; i++)
+		{
+		this.rgcube[i] = new Array();
+		for (j = 0; j < 3; j++)
+			{
+			this.rgcube[i][j] = new Array();
+			for (k = 0; k < 3; k++)
+				{
+				cube = new Cube(55);
+				this.rgcube[i][j][k] = cube;
+				cube.MoveTo(i*60-60, j*60-60, k*60-60);
+				ColorFaces(cube, Rubik.rgstFacesWT, Rubik.rgrgbFaces);
+				this.grpAll.AddObject(cube);
+				}
+			}
+		}
+
+	for (i = 0; i < Rubik.rgstFaces.length; i++)
+		{
+		var text = new Text3D(Rubik.rgstFaces[i]);
+		text.SetColor(Rubik.rgrgbFaces[i]);
+		var xyz = Rubik.rgxyzFaces[i];
+		text.MoveTo(xyz[0]*150, xyz[1]*150, xyz[2]*150);
+		xyz = Rubik.rgorientFaces[i];
+		text.SetOrientation(xyz[0], xyz[1], xyz[2], 0, i == 2 ? -1 : 1, 0);
+		this.grpAll.AddObject(text);
+		this.rgtext.push(text);
+		}
+
+	this.ctr = new CBController(this, "Rubik's Cube", Rubik.stMoves);
+}
+
+function Rubik.InitPerms()
+{
+	var iSlice;
+	var perm;
+
+	if (Rubik.rgperm != undefined)
+		return;
+
+	Rubik.rgperm = new Array;
+
+	for (iSlice = 0; iSlice < 9; iSlice++)
+		{
+		perm = new Permutation(Rubik.rgpermInit[iSlice]);
+		Rubik.rgperm[iSlice] = perm;
+		Rubik.rgperm[iSlice+12] = perm.Inverse();
+		}
+
+	for (iSlice = 0; iSlice < 3; iSlice++)
+		{
+		perm = Rubik.Perm(iSlice*3, -1);
+		perm = perm.Compose(Rubik.Perm(iSlice*3+1, 1));
+		perm = perm.Compose(Rubik.Perm(iSlice*3+2, 1));
+		Rubik.rgperm[iSlice+9] = perm;
+		Rubik.rgperm[iSlice+9+12] = perm.Inverse();
+		}
+}
+
+function Rubik.Perm(ichSlice, dir)
+{
+	return Rubik.rgperm[ichSlice + (dir == 1 ? 0 : 12)];
+}
+
+function ColorFaces(mod, rgst, rgrgb)
+{
+	var i;
+	var rgb;
+
+	for (i in rgst)
+		{
+		rgb = rgrgb[i];
+		mod.wtoI.setColor(rgb[0], rgb[1], rgb[2], rgst[i]);
+		}
+}
+
+function Rubik.prototype.CheckProcess()
+{
+	var ch;
+
+	if (this.stProcess == "" || this.FBusy())
+		return;
+
+	ch = this.stProcess.charAt(0);
+	this.stProcess = this.stProcess.substring(1);
+	if (this.FAnimateMove(ch))
+		{
+		this.stHistory = Rubik.StAppendMove(this.stHistory, ch);
+		if (this.txtHistory != undefined)
+			this.txtHistory.innerText = this.stHistory;
+		}
+}
+
+function Rubik.prototype.ReduceHistory()
+{
+	this.stHistory = Rubik.ReduceMoves(this.stHistory);
+	this.txtHistory.innerText = this.stHistory;
+}
+
+function Rubik.StAppendMove(st, ch)
+{
+	var chLast;
+
+	if (st != "")
+		{
+		chLast = st.charAt(st.length-1);
+		if (ch == ChangeCase(chLast))
+			{
+			st = st.substr(0, st.length-1);
+			return st;
+			}
+		if (st.length >= 2 && st.substr(st.length-2, 2) == ch + ch)
+			{
+			st = st.substr(0, st.length-2) + ChangeCase(ch);
+			return st;
+			}
+		}
+	return st + ch;
+}
+
+// Remove subsequences that are identity permutations
+function Rubik.ReduceMoves(st)
+{
+	var mapPerm = new Object;
+	var perm = new Permutation;
+	var stMoves = "";
+	var stPerm;
+	
+	mapPerm[perm.StCycles()] = "";
+	for (ich = 0; ich < st.length; ich++)
+		{
+		ch = st.charAt(ich);
+		perm = perm.ApplyMoves(ch);
+		stPerm = perm.StCycles();
+		if (mapPerm[stPerm] == undefined)
+			{
+			stMoves += ch;
+			mapPerm[stPerm] = stMoves;
+			continue;
+			}
+		// Found a duplicate permutation.  Go back to the earlier moves
+		// that created that permutation.
+		stMoves = mapPerm[stPerm];
+		}
+	return stMoves;
+}
+
+function ChangeCase(ch)
+{
+	if (ch == ch.toUpperCase())
+		return ch.toLowerCase();
+	return ch.toUpperCase();
+}
+
+function Rubik.prototype.DoKey(ch, fDown, fShift)
+{
+	if (!fDown)
+		return;
+
+	if (!fShift)
+		ch = ch.toLowerCase();
+	this.DoProcess(ch);
+}
+
+function Rubik.prototype.DoProcess(stProcess)
+{
+	this.stProcess += stProcess;
+}
+
+Rubik.rgSliceNormal = [
+	[-1, 0, 0], [1, 0, 0], [1, 0, 0],
+	[0, -1, 0], [0, 1, 0], [0, 1, 0],
+	[0, 0, -1], [0, 0, 1], [0, 0, 1],
+	[1, 0, 0], [0, 1, 0], [0, 0, 1]
+];
+
+function Rubik.prototype.FAnimateMove(ch)
+{
+	dbg.Assert(!this.FBusy(), "Busy");
+
+	chU = ch.toUpperCase();
+	var ich = Rubik.stMoves.indexOf(chU)
+	if (ich < 0)
+		return false;
+
+	this.dirSlice = ch == chU ? -1 : 1;
+	this.degRemain = 90;
+	this.iSliceActive = ich;
+	this.rotSlice = Rubik.rgSliceNormal[this.iSliceActive];
+	this.GroupSlice(this.iSliceActive);
+
+	return true;
+}
+
+function Rubik.prototype.FBusy()
+{
+	return this.iSliceActive != undefined;
+}
+
+function Rubik.prototype.DoMouse(x, y, fLeft, obj)
+{
+	var dx;
+
+	if (fLeft)
+		{
+		if (this.xLast == undefined)
+			dx = 0;
+		else
+			dx = x - this.xLast;
+		this.xLast = x;
+		this.grpView.Spin(dx*20);
+		}
+	else
+		this.xLast = undefined;
+}
+
+function Rubik.prototype.GroupSlice(iSlice)
+{
+    var i, j, k;
+    var grp;
+
+    if (iSlice == undefined)
+	{
+	iSlice = this.iSliceActive;
+	grp = this.grpAll;
+	}
+    else
+	grp = this.grpSlice;
+
+    for (i = 0; i < 3; i++)
+	for (j = 0; j < 3; j++)
+	    for(k = 0; k < 3; k++)
+		{
+		if (iSlice >= 9 || i == iSlice || j + 3 == iSlice || k + 6 == iSlice)
+		    {
+		    grp.AddObject(this.rgcube[i][j][k]);
+		    }
+		}
+}
+
+Rubik.ddeg = 100;
+
+function Rubik.prototype.DoRender(msInterval, msTime)
+{
+	var deg = msInterval*Rubik.ddeg/1000;
+
+	if (deg > this.degFlipRemain)
+		deg = this.degFlipRemain;
+
+	this.grpAll.wto.setRotation(1,0,0, deg);
+	this.degFlipRemain -= deg;
+	if (this.degFlipRemain > 0)
+		return;
+	
+	if (!this.FBusy())
+		{
+		this.CheckProcess();
+		return;
+		}
+
+	var deg = msInterval*Rubik.ddeg/1000;
+	if (deg > this.degRemain)
+		deg = this.degRemain;
+	this.grpSlice.wto.setRotation(this.rotSlice[0], this.rotSlice[1], this.rotSlice[2],
+		deg * this.dirSlice);
+	this.degRemain -= deg;
+	if (this.degRemain == 0)
+		{
+		this.GroupSlice();
+		this.RotateCube(this.iSliceActive, this.dirSlice);
+		this.iSliceActive = undefined;
+		this.grpSlice.SetOrientation(0,0,1, 0,1,0);
+		if (this.txtPerm != undefined)
+			this.txtPerm.innerText = this.perm.StCycles();
+		}
+}
+
+function Rubik.prototype.Flip()
+{
+	if (this.degFlipRemain == 0)
+		this.degFlipRemain = 180;
+}
+
+Rubik.rgiiFromTo = [[2, 1, 0], [1, 2, 0], [1, 2, 0],
+	[0, 2, 1], [2, 0, 1], [2, 0, 1],
+	[1, 0, 2], [0, 1, 2], [0, 1, 2],
+	[1, 2, 0], [2, 0, 1], [0, 1, 2]];
+
+function Rubik.prototype.MapXYZ(iSlice, dir, xyz)
+{
+	var xyzNew = new Array;
+
+	var iiFromTo = Rubik.rgiiFromTo[iSlice];
+	var iFrom = iiFromTo[dir == 1 ? 0 : 1];
+	var iTo = iiFromTo[dir == 1 ? 1 : 0];
+	var iNull = iiFromTo[2];
+	
+	xyzNew[iTo] = xyz[iFrom];
+	xyzNew[iFrom] = 2 - xyz[iTo];
+	xyzNew[iNull] = xyz[iNull];
+	return xyzNew;
+}
+
+function Rubik.prototype.RotateCube(iSlice, dir)
+{
+	var i, j, k;
+	var rgcubeNew = new Array;
+
+	for (i = 0; i < 3; i++)
+		{
+		rgcubeNew[i] = new Array();
+		for (j = 0; j < 3; j++)
+			{
+			rgcubeNew[i][j] = new Array();
+			for (k = 0; k < 3; k++)
+				{
+				if (iSlice >= 9 || i == iSlice || j + 3 == iSlice || k + 6 == iSlice)
+					{
+					xyz = this.MapXYZ(iSlice, -dir, [i, j, k]);
+					rgcubeNew[i][j][k] = this.rgcube[xyz[0]][xyz[1]][xyz[2]];
+					}
+				else
+					rgcubeNew[i][j][k] = this.rgcube[i][j][k];
+				}
+			}
+		}
+
+	this.rgcube = rgcubeNew;
+
+	if (iSlice < 9)
+		this.perm = this.perm.Compose(Rubik.Perm(iSlice, dir));
+	// Re-orientation - not a permutation
+	else
+		{
+		this.perm = Rubik.Perm(iSlice, -dir).Compose(this.perm).Compose(Rubik.Perm(iSlice, dir));
+		}
+}
+
+function Rubik.prototype.Scramble(cMoves)
+{
+	var i;
+	var ich;
+	var ichLast = -1;
+	var st = "";
+	var stMove = "lrdubf";
+	var ch;
+
+	if (cMoves == undefined) cMoves = 50;
+	
+	for (i = 0; i < cMoves; i++)
+		{
+		do
+			{
+			ich = Math.floor(Math.random()*6);
+			}
+		while (ich == ichLast);
+		ichLast = ich;
+		ch = stMove.charAt(ich);
+		if (Math.random() < 0.5)
+			ch = ch.toUpperCase();
+		st += ch;
+		}
+	this.DoProcess(st);
+}
+
+function Rubik.prototype.Solve()
+{
+	var perm = this.perm;
+	var stWhole = "";
+	
+	st = perm.StSolveUEdges();
+	stWhole += st;
+	perm = perm.ApplyMoves(st);
+//	this.SolveUCorners();
+//	this.SolveMEdges();
+//	this.SolveDEdges();
+//	this.SolveDCorners();
+
+	this.DoProcess(stWhole);
+}
+
+//
+// Permutation calculations
+// Constructor can take cycle list as arguments.  E.g.
+// (a b c)(d e) -> new Permutation([["a", "b", "c"], ["d", "e"]]);
+//
+
+function Permutation(rgPerms)
+{
+	var i;
+
+	this.objMap = new Object;
+	if (rgPerms == undefined)
+		return;
+
+	for (i = 0; i < rgPerms.length; i++)
+		this.AddCycle(rgPerms[i]);
+}
+
+function Permutation.prototype.AddMap(stFrom, stTo)
+{
+	if (stFrom != stTo)
+		this.objMap[stFrom] = stTo;
+}
+
+function Permutation.prototype.AddCycle(rgCycle)
+{
+	var i;
+
+	for (i = 1; i < rgCycle.length; i++)
+		{
+		this.AddMap(rgCycle[i-1], rgCycle[i]);
+		}
+	this.AddMap(rgCycle[rgCycle.length-1], rgCycle[0]);
+}
+
+function Permutation.prototype.Map(stFrom)
+{
+	var iRot;
+	var stTo;
+	
+	for (iRot = 0; iRot < stFrom.length; iRot++)
+		{
+		stTo = this.objMap[stFrom];
+		if (stTo != undefined)
+			{
+			iRot = stFrom.length - iRot;
+			return stTo.substring(iRot) +  stTo.substring(0, iRot);
+			}
+		stFrom = stFrom.substring(1) + stFrom.charAt(0);
+		}
+	return stFrom;
+}
+
+// Compose current permutation with follow on permutation
+function Permutation.prototype.Compose(p2)
+{
+	var st;
+	var stMap;
+	var pNew = new Permutation;
+
+	for (st in this.objMap)
+		{
+		stMap = this.Map(st);
+		pNew.AddMap(st, p2.Map(stMap));
+		}
+	for (st in p2.objMap)
+		{
+		if (this.Map(st) == st)
+			pNew.AddMap(st, p2.Map(st));
+		}
+	return pNew;
+}
+
+function Permutation.prototype.MapPower(st, n)
+{
+	var i;
+
+	for (i = 0; i < n; i++)
+		st = this.Map(st);
+	return st;
+}
+
+function Permutation.prototype.Power(n)
+{
+	var pNew = new Permutation;
+
+	for (st in this.objMap)
+		pNew.AddMap(st, this.MapPower(st, n));
+
+	return pNew;
+}
+
+function Permutation.prototype.Inverse()
+{
+	var pNew = new Permutation;
+	var stMap;
+
+	for (st in this.objMap)
+		{
+		stMap = this.Map(st);
+		pNew.AddMap(stMap, st);
+		}
+	return pNew;
+}
+
+function Permutation.prototype.StMap()
+{
+	var st = "";
+	var stElem;
+
+	for (stElem in this.objMap)
+		{
+		st += "(" + stElem + ", " + this.Map(stElem) + ")\n";
+		}
+	return st;
+	
+}
+
+function Permutation.prototype.StSolveUEdges()
+{
+	return "lurf";
+
+	var rgTargets = ["UF", "UR", "UB", "UL"];
+
+	for (i in rgTargets)
+		{
+		stTarget = rgTargets[i];
+		stLoc = this.Location(stTarget);
+		this.MoveToSlice(stLoc, "D");
+		}
+}
+
+function Permutation.prototype.ApplyMoves(stMoves)
+{
+	var ich;
+	var ch;
+	var chU;
+	var perm = this;
+	var iSlice;
+	var dir;
+
+	for (ich = 0; ich < stMoves.length; ich++)
+		{
+		ch = stMoves.charAt(ich);
+		chU = ch.toUpperCase();
+		iSlice = Rubik.stMoves.indexOf(chU);
+		if (iSlice < 0)
+			continue;
+
+		dir = (ch == chU ? -1 : 1);
+		if (iSlice < 9)
+			perm = perm.Compose(Rubik.Perm(iSlice, dir));
+		else
+			perm = Rubik.Perm(iSlice, -dir).Compose(perm).Compose(Rubik.Perm(iSlice, dir));
+		}
+	return perm;
+}
+
+function IchEquiv(st1, st2)
+{
+	for (iRot = 0; iRot < st1.length; iRot++)
+		{
+		if (st1 == st2)
+			{
+			return iRot;
+			}
+		st1 = st1.substring(1) + st1.charAt(0);
+		}
+	return null;
+}
+
+function Permutation.prototype.ClearMarks()
+{
+	this.objMark = new Object;
+}
+
+function Permutation.prototype.Mark(st)
+{
+	var iRot;
+
+	for (iRot = 0; iRot < st.length; iRot++)
+		{
+		this.objMark[st] = true;
+		st = st.substring(1) + st.charAt(0);
+		}
+}
+
+function Permutation.prototype.FMark(st)
+{
+	return (this.objMark[st]);
+}
+
+Permutation.stRot = ["", "+", "-"];
+
+function Permutation.prototype.StCycles()
+{
+	var st = "";
+	var stElem;
+	var stInit;
+	var iRot;
+
+	this.ClearMarks();
+	for (stInit in this.objMap)
+		{
+		if (this.FMark(stInit))
+			continue;
+		if (st != "")
+			st += " ";
+		st += "(" + stInit;
+		this.Mark(stInit);
+		stElem = this.Map(stInit);
+		while (stElem != undefined && !this.FMark(stElem))
+			{
+			st += " " + stElem;
+			this.Mark(stElem);
+			stElem = this.Map(stElem);
+			}
+		if (stElem == undefined)
+			{
+			st += " ???";
+			stElem = stInit;
+			}
+		st += ")";
+		iRot = IchEquiv(stInit, stElem);
+		st += Permutation.stRot[iRot];
+		}
+	if (st == "")
+		st = "<Identity>";
+	return st;
+}
+
+</SCRIPT>
+<STYLE>
+BODY
+{
+font-family: Verdana;
+font-size: 12;
+}
+
+OBJECT
+{
+border: solid 2;
+}
+
+TD
+{
+vertical-align: top;
+}
+
+.lblCmd {
+font-weight: bold;
+font-size: 18;
+}
+
+.doTable {
+border: 1px solid black;
+border-collapse: collapse;
+margin: 5
+}
+
+.doTable TD {
+border:1px solid black;
+vertical-align: top;
+}
+
+.doTitle {
+background-color: black;
+color: white;
+font-weight: bold;
+}
+
+.doProto {
+background-color: gray;
+color: white;
+font-weight: bold;
+}
+
+.doName {
+font-weight: bold;
+}
+
+.doValue {
+font-family: courier;
+font-size: 14;
+}
+
+</STYLE>
+
+</HEAD>
+<BODY>
+<H1>Rubik's Cube Simulator:</H1>
+<H4>by <A HREF=http://mckoss.com>Mike Koss</A></H4>
+
+<TABLE>
+<TR><TD>
+<SCRIPT>
+var dbg = new Debug();
+var cmd = new Command();
+var drv = new WTDriver(cmd);
+DW(drv.StUI());
+</SCRIPT>
+</TD>
+<TD style='vertical-align:top'>
+<DIV id=divC></DIV>
+<SCRIPT>
+//drv.divControllers = divC;
+DW(cmd.StButton("Flip", "r.Flip();"));
+DW(cmd.StButton("Fast", "Rubik.ddeg = 10000;"));
+DW(cmd.StButton("Slow", "Rubik.ddeg = 100;"));
+DW(cmd.StButton("Scramble", "r.Scramble();"));
+DW("<BR>");
+DW(cmd.StButton("Solve", "r.Solve();"));
+DW(cmd.StButton("Reduce", "r.ReduceHistory();"));
+DW(dbg.StUI());
+</SCRIPT>
+</TD>
+</TR>
+</TABLE>
+
+<SPAN class=lblCmd>Current Permutation:<BR><SPAN ID=txtPerm></SPAN></SPAN>
+<BR><BR>
+<SPAN class=lblCmd>History:<BR><SPAN ID=txtHistory></SPAN></SPAN>
+<BR><BR>
+
+
+<SCRIPT>
+drv.SetBackColor([35,10,100]);
+
+var r = new Rubik();
+r.txtPerm = txtPerm;
+r.txtHistory = txtHistory;
+
+var lgt = new Light;
+lgt.SetColor([80,80,80]);
+lgt1 = new Light(4);
+lgt1.SetColor([255,255,255]);
+lgt1.MoveTo(85, 80, -125);
+lgt1.wtoI.setLinearAttenuation(0.1);
+
+lgt2 = new Light(4);
+lgt2.SetColor([255,255,255]);
+lgt2.MoveTo(0, 150, 0);
+lgt2.wtoI.setLinearAttenuation(0.1);
+
+lgt3 = new Light(4);
+lgt3.SetColor([255,255,255]);
+lgt3.MoveTo(-85, 80, -125);
+lgt3.wtoI.setLinearAttenuation(0.1);
+
+var cam = new Camera();
+cam.MoveTo(0,250,-500);
+cam.LookAt(r.grpAll);
+lgt1.LookAt(r.grpAll);
+lgt2.LookAt(r.grpAll);
+r.grpView = new Group(lgt1, lgt2, lgt3, cam);
+r.grpView.Spin(5);
+
+var p = new Plane(400,400);
+p.SetTexture("wood.wjp");
+p.Tip(90);
+p.MoveTo(0,-120,0);
+p.SetColor([150,150,150]);
+</SCRIPT>
+
+<H2>Move Catalog</H2>
+<TABLE class=doTable>
+<TR>
+<TD class=doTitle>Moves</TD>
+<TD class=doTitle>Effect</TD>
+<TD class=doTitle>Notes</TD>
+<TD class=doTitle>Try It</TD>
+</TR>
+<SCRIPT>
+var rgMoveCatalog = [
+	["ff", "1a"],
+	["FUru", "1b"],
+	["DRdr", "2a"],
+	["dfDF", "2b"],
+	["fddF dd Rdr", "2c"],
+	["lu uuffuuffuuff UL", "3a"],
+	["Bu rruurruurruu Ub", "3b"],
+	["b luLU B", "4a"],
+	["b ulUL B", "4b"],
+	["rrD uuRlffrL drr", "6bi"],
+	["rrD RlffrLuu drr", "6bii"],
+	["rrddbbd llffllffllff Dbbddrr", "6c"],
+	["L urUR l ruRU", "7bi"],
+	["urUR L ruRU l", "7bii"],
+	["b luLU luLU luLU B", "7c"],
+	["Rbb frFR frFR frFR bbr", "7d"],
+	["fdFD fdFD", "8a"],
+	["dfDF dfDF", "8b"],
+	["ffuu ffuu ffuu", "P1(f,u)"],
+	["fuFU", "P2(f,u)"],
+	["fuFU fuFU", "P3(f,u) = P2(f,u)^2"],
+	["fuFU fuFU fuFU", "P4(f,u) = P2(f,u)^3"],
+	["Rl ff rL uu", ""]
+	];
+
+function StMoveCatalog(stMove, stNote)
+{
+	var st = ""
+
+	var perm = new Permutation;
+	perm = perm.ApplyMoves(stMove);
+
+	st += "<TR><TD>" + stMove + "</TD><TD>" + perm.StCycles() + "</TD><TD>" + 
+		stNote + "</TD>";
+	st += "<TD>" + cmd.StButton("Try It", "r.DoProcess('" + stMove + "');") + "</TD>";
+	st += "</TR>";
+	return st;		
+}
+
+for (i = 0; i < rgMoveCatalog.length; i++)
+	DW(StMoveCatalog(rgMoveCatalog[i][0], rgMoveCatalog[i][1]));
+	
+</SCRIPT>
+</TABLE>
+
+<SCRIPT>
+cmd.WriteUI();
+</SCRIPT>
+
+
+</BODY>
+</HTML>

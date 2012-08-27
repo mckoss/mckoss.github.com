@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<TITLE>IFrameTest</TITLE>
+<LINK REL=stylesheet HREF="page.css" type="text/css">
+<SCRIPT>
+function ShowFrame()
+{
+	alert(frData.document.body.innerText);
+}
+</SCRIPT>
+</HEAD>
+
+<BODY onload=ShowFrame();>
+<TABLE cellspacing=0 cellpadding=0 class=pageTable width=100%>
+<TR><TD class=pageHeader COLSPAN=2>
+IFRAME Test Bed
+<BR><SPAN style="font-size: 16">by <A HREF=http://mckoss.com>Mike Koss</A></SPAN></BR>
+</TD></TR>
+</TABLE>
+<BR>Hidden IFRAME
+<BR>
+<IFRAME style='display:none' ID=frData SRC=iframetest.txt></IFRAME>
+<BR>End Hidden IFRAME
+</BODY>
+</HTML>

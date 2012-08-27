@@ -1,0 +1,318 @@
+
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta http-equiv="Content-Language" content="en-us">
+<title>Koss Residence</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 6.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-177353-1";
+urchinTracker();
+</script>
+
+<script>
+var fUseDHTML = (navigator.appVersion.indexOf("MSIE") != -1);
+
+function Refresh()
+{
+//	window.navigate(window.location.href);
+}
+
+var tm = 0;
+
+function InitUpdateTimer()
+{
+	if (fUseDHTML)
+		{
+		tm = setInterval(UpdateTime, 1000);
+		GetNextUpdateTime();
+		}
+}
+
+var dateNext = new Date;
+var dtimeInterval = 15*60*1000;
+var dtimeLag = 5*60*1000;
+
+function GetNextUpdateTime()
+{
+	var date = new Date;
+	date.setTime(date.getTime() - dtimeLag);
+	dateNext.setTime(Math.ceil(date.getTime()/dtimeInterval)*dtimeInterval + dtimeLag);
+}
+
+function UpdateTime()
+{
+	var date = new Date;
+	var stMerid;
+	
+	var dtick = dateNext.getTime() - date.getTime();
+	if (dtick < 0)
+		{
+		if (AutoRefresh.checked)
+			Refresh();
+		}
+
+	var hr = date.getHours();
+	if (hr < 12)
+		stMerid = "am";
+	else
+		stMerid = "pm";
+	if (hr == 0) hr = 12;
+	if (hr > 12) hr -= 12;	
+	TimeNow.innerText = hr + ":" + Digits2(date.getMinutes()) + " " + stMerid;
+	
+	if (dtick >= 0)
+		{
+		var secs = Math.floor(dtick/1000);
+		var min = Math.floor(secs/60);
+		secs = secs % 60;
+		TimeRemaining.innerText = min + ":" + Digits2(secs);
+		}
+		
+	// Move-in Countdown timer ... sorry, Mike Flohr!
+	MoveCounter.innerText = StCountdown(new Date(2001, 5, 15, 17));
+}
+
+function Digits2(num)
+{
+	if (num >= 10)
+		return num;
+	return "0" + num;
+}
+
+function StCountdown(dtFuture)
+{
+  var dtNow = new Date();
+  var msDiff = dtFuture.getTime() - dtNow.getTime();
+  
+  if (msDiff < 0)
+    return("Complete!");
+
+  var msSec = 1000;
+  var msMinute = msSec*60;
+  var msHour = msMinute*60;
+  var msDay = msHour * 24;
+
+  var days = Math.floor(msDiff/msDay);
+  msDiff %= msDay;
+  var hrs = Math.floor(msDiff/msHour);
+  msDiff %= msHour;
+  var min = Math.floor(msDiff/msMinute);
+  msDiff %= msMinute;
+  var sec = Math.floor(msDiff/msSec);
+  return(days + " days " + hrs + " hours " + min + " minutes " + sec + " seconds");
+}
+
+</script>
+</head>
+
+<body onload="InitUpdateTimer();" style="font-family: Verdana">
+
+<!--webbot bot="Include" U-Include="header.htm" TAG="BODY" startspan -->
+
+<table border="0" width="99%" height="112">
+  <tr>
+    <td width="25%" height="106">
+      <p align="center"><a href="DesignWeb/images/ext03.jpg">
+      <img alt="ext03thmb.jpg (8851 bytes)" border="1" src="images/ext03thmb.jpg" width="128" height="96"></a></p>
+    </td>
+    <td width="44%" height="106">
+<h1 align="center"><font face="Verdana"><a href="Default.htm">Koss Residence<br>
+Web</a></font></h1>
+    </td>
+    <td width="31%" height="106">
+      <p align="center"><a href="http://www.seanet.com/~harleyd/koss/images/ext02.jpg"><a href="DesignWeb/images/ext11.jpg">
+      <img alt="ext11thmb.jpg (8113 bytes)" border="1" src="images/ext11thmb.jpg" width="128" height="96"></a></p>
+    </td>
+  </tr>
+</table>
+<hr>
+
+<!--webbot bot="Include" endspan i-checksum="55442" --><table border="0" width="100%">
+  <tr>
+    <td width="100%" valign="top" colspan="2"></td>
+  </tr>
+  <tr>
+    <td width="25%" valign="top">
+    <img border="1" src="images/Ground%20Breaking.JPG" align="left" hspace="4" vspace="4" width="144" height="255"></td>
+    <td width="75%" valign="top"><b>Ground-Breaking Ceremony<br>
+      </b>
+      October 22, 1999
+      <p>We officially broke ground on our new house construction project.&nbsp;
+      The architects hosted a ground breaking ceremony at the property that
+      (foggy) Friday.&nbsp; We hope to move in around <strike> May</strike> June
+      2001.</p>
+      <p>We now have a firm move-in scheduled for 5 pm on June 15, 2001.</p>
+      <p><b>Countdown Timer: <SPAN ID=MoveCounter>...</SPAN></b></p>
+      <p><font face="Verdana">Visit our </font><font face="Verdana">
+      <a href="DesignWeb">Design Web</a>
+      for computerized images of the house design.</font>
+      <p><font face="Verdana">If you're working on this project (or if you're a
+      friend or family member and would like to notified as I update this site),
+      I'd like to invite you to visit the <a href="http://communities.msn.com/KossResidence">Koss
+      Residence Community</a> web site.&nbsp;</font></td>
+  </tr>
+</table>
+
+<table border="0" width="100%">
+  <tr>
+    <td width="25%" valign="top"><b>View from Yarrow Point</b><br>
+      November, 2000
+      <p align="center">&nbsp;</td>
+    <td width="75%" valign="top"><img border="1" src="images/yphouse2.jpg" width="500" height="292">
+      </td>
+  </tr>
+  <tr>
+    <td width="25%" valign="top">September, 2001</td>
+    <td width="75%" valign="top"><img border="1" src="images/houseflag.jpg" width="500" height="375"></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>Web Cam out of Service</h3>
+      <p><font size="1">We've gotten far enough along in the project that the web-cams were
+      getting in the way of construction - so we've had to take them down.</font></p>
+      <p><font size="1">I plan to update the site with a movie made from all the web cam
+      images.</font></p>
+      <p><font size="1"><i><font face="Verdana">Our friends
+      are building a home in Australia - you can visit their <a href="http://www.noorinya.com/">web
+      cam</a>  to get your fix of construction web cam viewing.</font></i><script>
+if (fUseDHTML)
+	{
+	var st = "<input type=checkbox ID=AutoRefresh checked>Automatic Page Refresh";
+	st += "<br><i>Time now: <SPAN ID=TimeNow>00:00</SPAN>&nbsp;-&nbsp;next update in <SPAN ID=TimeRemaining>00:00</SPAN></I>";
+	document.write(st);
+	}
+      </script>
+
+
+      </font></p>
+
+
+<p><i><a href="WebCamCycler.htm"><font size="1">Web
+      Cam Image Cycler</font></a></i></td>
+    <td width="50%" valign="top"><font face="Verdana">
+<IMG SRC="images/trailer.jpg" width="320" height="240">
+      </font></td>
+  </tr>
+</table>
+<hr>
+<h3>Construction Pictures</h3>
+<table border="0" width="100%">
+  <tr>
+    <td width="31%" valign="top"><a href="199911.htm">November, 1999</a></td>
+    <td width="69%">Excavation.</td>
+  </tr>
+  <tr>
+    <td width="31%" valign="top"><a href="199912.htm">December 1999</a></td>
+    <td width="69%">Site work.</td>
+  </tr>
+  <tr>
+    <td width="31%" valign="top"><a href="200001.htm">January 2000</a></td>
+    <td width="69%">Footings poured, wall layout begins.</td>
+  </tr>
+  <tr>
+    <td width="31%" valign="top"><a href="200002.htm">February 2000</a></td>
+    <td width="69%">Concrete walls and slabs poured, guest house framing, steel
+      erection.</td>
+  </tr>
+  <tr>
+    <td width="31%" valign="top"><a href="200003.htm">March 2000</a></td>
+    <td width="69%">More concrete and framing.&nbsp; Electrical and plumbing.</td>
+  </tr>
+  <tr>
+    <td width="31%" valign="top"><a href="200004.htm">April 2000</a></td>
+    <td width="69%">Framing and concrete beam.</td>
+  </tr>
+  <tr>
+    <td width="31%" valign="top"><a href="200005.htm">May 2000</a></td>
+    <td width="69%">Framing and concrete complete!&nbsp; Pool concrete
+      finished.&nbsp; Plumbing and electrical start.&nbsp; <i>Charadrius vociferus</i>
+      nest.</td>
+  </tr>
+  <tr>
+    <td width="31%" valign="top"><a href="200006.htm">June 2000</a></td>
+    <td width="69%">HVAC, electrical, kayak storage, key recovery.</td>
+  </tr>
+  <tr>
+    <td width="31%" valign="top"><a href="200007.htm">July 2000</a></td>
+    <td width="69%">Pool steel enclosure.</td>
+  </tr>
+  <tr>
+    <td width="31%" valign="top"><a href="200008.htm">August 2000</a></td>
+    <td width="69%">Aerial photographs, roofing, duct work, home automation
+      wiring.</td>
+  </tr>
+  <tr>
+    <td width="31%" valign="top"><a href="200009.htm">September 2000</a></td>
+    <td width="69%">Lakefront retaining wall, lawn, courtyard wall, pool ceiling
+      steel, pool windows</td>
+  </tr>
+  <tr>
+    <td width="31%" valign="top"><a href="200010.htm">October 2000</a></td>
+    <td width="69%">Lakefront patio, entry walkway/arcade, stucco sample, deck
+      waterproofing, fireplace wall, theater framing, leaf art.</td>
+  </tr>
+  <tr>
+    <td width="31%" valign="top"><a href="200011.htm">November 2000</a></td>
+    <td width="69%">Courtyard stone and pond, </td>
+  </tr>
+  <tr>
+    <td width="31%" valign="top"><a href="200012.htm">December 2000</a></td>
+    <td width="69%">Wallboard, insulation, 2nd-floor bridge and stairs</td>
+  </tr>
+  <tr>
+    <td width="31%" valign="top"><a href="200101.htm">January 2001</a></td>
+    <td width="69%">Stucco and siding.</td>
+  </tr>
+  <tr>
+    <td width="31%" valign="top"><a href="200102.htm">February 2001</a></td>
+    <td width="69%">Pool roof, hardi-plank and pool finishes.</td>
+  </tr>
+  <tr>
+    <td width="31%" valign="top"><a href="200103.htm">March 2001</a></td>
+    <td width="69%">Pool tile and stone, flooring, driveway.</td>
+  </tr>
+  <tr>
+    <td width="31%" valign="top">April 2001</td>
+    <td width="69%"></td>
+  </tr>
+  <tr>
+    <td width="31%" valign="top">May 2001</td>
+    <td width="69%"></td>
+  </tr>
+  <tr>
+    <td width="31%" valign="top">June 2001</td>
+    <td width="69%">Move in!&nbsp; See
+    <a href="http://mckoss.com/kossres/ArchPics/">Completed House Pictures</a>.</td>
+  </tr>
+</table>
+&nbsp;
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber1" height="249">
+  <tr>
+    <td width="20%" valign="top" height="213">General Contractor</td>
+    <td width="80%" valign="top" height="213">
+    <a href="http://www.krekowjennings.com/">
+    <img border="0" src="images/kji.jpg" width="234" height="193"></a><br clear="ALL">
+&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" height="18">Architect</td>
+    <td width="80%" valign="top" height="18"><a href="http://www.r-b-f.com/">
+    rohleder | borges | fleming</a><p><a href="http://www.r-b-f.com/">
+    <img border="0" src="images/ext03thmb.jpg" width="128" height="96"></a></td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" height="18"></td>
+    <td width="80%" valign="top" height="18"></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<p>Visitors: <img border="0" src="http://fastcounter.bcentral.com/fastcounter?2412502+4825011"></p>
+</body
+</body>
+
+</html>

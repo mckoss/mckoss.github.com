@@ -1,0 +1,29 @@
+<HTML>
+<BODY>
+This is structured graphic.
+<br>
+<OBJECT ID=SG1
+STYLE="Position:absolute; WIDTH:400; HEIGHT:400; top:10; left;10;Z-INDEX: -1"  
+CLASSID="CLSID:369303C2-D7AC-11d0-89D5-00A0C90833E6">
+</OBJECT> 
+
+<SCRIPT LANGUAGE="VBScript">
+dim ds
+Set lib = SG1.Library
+Set ds = SG1.DrawSurface
+ds.SaveGraphicsState
+ds.transform lib.rotate2rate(-1)
+ds.fillcolor lib.blue
+ds.rect -50, -50, 200, 200
+ds.RestoreGraphicsState
+ds.fillcolor lib.ColorRgb255(200,200,255)
+ds.oval -60,-60, 120, 120
+ds.SaveGraphicsState
+ds.transform lib.rotate2rate(1)
+ds.fillcolor lib.ColorRgb255(255,0,0)
+ds.rect -20, -100, 40, 200
+ds.RestoreGraphicsState
+SG1.DrawSurface = ds
+</SCRIPT>
+</BODY>
+</HTML>

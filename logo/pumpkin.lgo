@@ -1,0 +1,97 @@
+; Fillpoly
+;
+; Creates a polygon filled in with a color. The :size is the approximate
+; diameter. :color is an RGB list. The polygon is created about the turtle
+; at its center.
+;
+to fillpoly :sides :size :color
+poly :sides :size
+setfloodcolor :color
+fill
+end
+
+; Draws the head of the Pumpkin (i.e., the orange circle)
+to head :size
+fillpoly 50 :size [255 127 0]
+end
+
+; Draws the mouth of the pumpkin - turtle starts in the middle
+to mouth :size
+local "dzMouth
+local "ptSave
+make "dzMouth :size/8
+make "ptSave pos
+
+pd
+lt 45 fd :dzMouth
+lt 90 fd :dzMouth
+rt 90 fd :dzMouth
+rt 45
+pu setpos :ptSave pd
+rt 45 fd :dzMouth
+rt 90 fd :dzMouth
+lt 90 fd :dzMouth
+lt 45
+pu setpos :ptSave
+end
+
+; A generic move function - always picks up the pen.
+; x and y are relative to the current heading of the turtle.
+to move :dx :dy
+pu fd :dy rt 90 fd :dx lt 90
+end
+
+; A Generic polygon drawing functions. The turtle is placed in the middle
+; of the polygon. The :size is the approximate diameter of the polygon.
+to poly :sides :size
+local "step
+make "step 3.14*:size/:sides
+pu
+bk :size/2 lt 90 bk :step/2
+pd
+repeat :sides [fd :step rt 360/:sides]
+pu
+fd :step/2 rt 90 fd :size/2
+end
+
+; Draws a pumpkin of a given diameter.
+to pumpkin :size
+local "dxEye
+local "dyEye
+local "dyMouth
+local "dzMouth
+local "ptCenter
+make "dxEye :size/5
+make "dyEye :size/8
+make "dyMouth :size/3
+make "dzMouth :size/8
+make "ptCenter pos
+
+setpensize [5 5]
+
+head :size
+tri :size
+
+move -:dxEye :dyEye rt 180
+tri :size
+move -2*:dxEye 0
+tri :size
+
+pu setpos :ptCenter
+fd :dyMouth rt 180
+mouth :size
+
+pu setpos :ptCenter
+end
+
+; A cool array of 7 pumpkins.
+to pumpkins
+pumpkin 200
+repeat 6 [fd 210 pumpkin 200 bk 210 rt 60]
+ht
+end
+
+; Draws triangular eyes and nose dimensioned for the :size'd pumpkin head.
+to tri :size
+fillpoly 3 :size/6 [0 0 0]
+end

@@ -1,0 +1,1069 @@
+<STORE>
+    <ID>mikekoss</ID>
+    <Title>Mike Koss's Bookstore</Title>
+    <Description>"Welcome to my bookstore.  I've listed some of my favorite books below.
+You can read my review of each book as well as purchase the books that you'd like to have.
+<p>This is a list of every book in my store.  You can click on the title of any book to see the detailed
+review or you can click on a topic of interest and see the reviews of all the books in that topic.
+<p>Click here to display all the detailed book reviews in the store in a single
+web page (this could take some time if you don't have a fast web connection): <A HREF=default.asp?Section=*>Show all detailed reviews</A>. 
+<p>Once looking at the detailed review, you can buy it from
+<a href=""http://www.amazon.com/exec/obidos/redirect-home/mikeko"">Amazon.com</a> by clicking on
+the cover image or title of the book.
+<p>I've also made it possible for you to add a review of your favorite books here.  They will show
+up in the store as being reviewed by you: <A HREF=""default.asp?Cmd=New"">Add a book review</A>.
+<p>
+    "</Description>
+    <NewDescription>"
+This page allows you to create your own book review in
+my bookstore.
+<p>The form that can be filled out to provide all the information for
+your new book review.  Click on the Save button when you are finished filling in the information for
+your review (don't forget the ISBN number!).
+<p>If you want to edit or delete an existing review, simply select it from the list of all books
+(at the bottom of this page) and
+the form will be filled out with all the current information for that book.  You can then click
+the Save or Delete buttons when you are finished editing the review information.
+<p>
+    "</NewDescription>
+    <SaveDescription>"
+This page allows you to edit (or delete) any book review appearing in
+my bookstore (<i>I would ask that you not maliciously delete or modify one of my book reviews; there is
+nothing preventing you from doing so here</i>).
+<p>Click on the Save button when you are finished filling in the information for
+your review.
+<p>To clear all the fields of the form to enter a new review you can click here: <A HREF=""default.asp?Cmd=New"">Add a new book review</A>.
+<p>
+    "</SaveDescription>
+    <FieldHelp>
+        <ISBN>"
+The most important part of the form is the ISBN number; this number uniquely identifies
+the book your are trying to describe and enables Amazon.com to find the book you are talking about.
+<p>The ISBN number can be found on the back cover of most books - look directly above the UPC code.  Enter
+the complete ISBN number <i>without dashes</i>.  So if the back of the books says ""ISBN 0-668-14236-2"", then
+you enter ""0668142362"" into the ISBN field.
+<p>If you can't find the ISBN number on the book, you can use Amazon.com to lookup the ISBN number.  With
+the ISBN field blank, click on the <b>Lookup</b> button.  After finding your book, look below the cover
+image for the ISBN number.  You can copy and paste that number back into the ISBN field here.  Once you
+have an ISBN number typed into the form, you can use the <b>Lookup</b> button to go to the Amazon.com
+page for that book to ensure that you've typed it correctly or to get the proper spelling of the author's
+name.
+			"</ISBN>
+        <Reviewer>Enter your name as you would like it to appear in the store.</Reviewer>
+        <Categories>"
+I've grouped each book into one or more categories such as <i>Engineering</i>, or <i>History</i>.  It
+would be best to use the same categories as I've defined in the store, but you <i>can</i> create a new
+one if none of mine already fit.  You should type new category names with an initial capital letter.
+<p>If you want to assign a book to more than one category, simple separate them by commas (e.g.
+""Engineering, History"").
+			"</Categories>
+        <Date>"
+The date field is the date that your review was written, not the publication
+date of the book.  It defaults to today's date.  This date will be used to display a
+<IMG SRC=images/new.gif> icon next to the recently authored reviews.
+			"</Date>
+        <Synopsis>"
+This is where the <i>meat</i> of your review should go.  You can enter as much free-form text as you'd like.
+Note that if you know HTML, you can embed tags into your text to make words appear as bold, italic, etc.
+Once you save your review - you will be returned to this form editing page with the updated review displayed
+above the form so you can see how it will look in the actual bookstore format.
+			"</Synopsis>
+        <Rating>If you want to assign a rating to your book, just type a number between 1 and 5.</Rating>
+    </FieldHelp>
+    <SECTIONS></SECTIONS>
+    <BOOKS>
+        <BOOK>
+            <TITLE>Dynamic HTML</TITLE>
+            <AUTHOR>Danny Goodman</AUTHOR>
+            <DATE>12/31/98</DATE>
+            <ISBN>1565924940</ISBN>
+            <CATEGORIES>Internet</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>Comprehensive documentation of all HTML tags, style sheets, DOM, and java script.  If you're editing HTML files by hand,
+(or writing programs that generate HTML!) you should have this book.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Pokemon: Prima's Official Strategy Guide</TITLE>
+            <AUTHOR>Elizabeth Hollinger</AUTHOR>
+            <REVIEWER>Chris Koss</REVIEWER>
+            <DATE>1/1/99</DATE>
+            <ISBN>0761518126</ISBN>
+            <CATEGORIES>Games</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>The format of this guide is nice.  It has an index that refers to everything you need to know about your Pokemon.  Nintendo sells a similar guide but this book has a nicer index and it's easier to tell which Pokemon can learn what TM or HM.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Inside DHTML</TITLE>
+            <AUTHOR>Scott Isaacs</AUTHOR>
+            <DATE>1/1/1999</DATE>
+            <ISBN>1572316861</ISBN>
+            <CATEGORIES>Internet</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"If you're just learning DHTML, this is the book to get.  While not a reference, it has excellent examples and tutorials describing what can be done using DHTML.  The author has also created a <A HREF=http://www.insidedhtml.com>web site</A> that provides additional DHTML examples.  Together they form an excellent resource for learning how to get the most from the browser."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>A Pattern Language</TITLE>
+            <AUTHOR>Chistopher Alexander</AUTHOR>
+            <DATE>10/1/98</DATE>
+            <ISBN>0195019199</ISBN>
+            <CATEGORIES>Architecture, Design</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"This book is a wonderful collection of design elements for architecture.  Each pattern
+    dissects a basic architectural element ranging from a metropolitan plan down to the
+    design of the flow through an individual home.  Each pattern is placed in the context
+    of a problem or activity, and shows how that particular solution is realized via some
+    architectural device.
+
+    For example, the pattern for <i>Levels of Intimacy</i> describes the problem that each house
+    must accommodate different levels of familiarity and intimacy.  We need spaces in our home
+    to allow guests to enter and yet not be admitted to our most personal spaces.  The design
+    of a home must therefore allow for different levels of intimacy begining with the least
+    intimate/more formal at the home entryway, and becoming more casual and intimate as you
+    proceeded into family living, eating, and sleeping spaces.
+
+    This book also influenced software designers to produce analagous collections of design patterns
+    for the software design field."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Programming Pearls</TITLE>
+            <AUTHOR>Jon Louis Bentley</AUTHOR>
+            <DATE>1/1/1999</DATE>
+            <ISBN>0201103311</ISBN>
+            <CATEGORIES>Programming</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"If you love programming, you'll love this book.  It is filled with example problems that are not only challenging, but have real depth.  I love this book because the author analyzes not only how to solve a problem, but also digs into the <i>best</i> way to solve a problem."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>QED</TITLE>
+            <AUTHOR>Richard Feynman</AUTHOR>
+            <DATE>1/1/1999</DATE>
+            <ISBN>0691024170</ISBN>
+            <CATEGORIES>Physics</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>An approachable book that actually explains quantum theory.  It takes some effort to get through, but well worth it.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Concrete Mathematics</TITLE>
+            <AUTHOR>Donald Knuth</AUTHOR>
+            <DATE>1/1/1999</DATE>
+            <ISBN>0201558025</ISBN>
+            <CATEGORIES>Mathematics</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>Techniques for solving problems dealing with series, recurrences, combinatorics.  A great mixture of practical techniques for solving problems that seem to come up in computer-oriented problems.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Treehouses</TITLE>
+            <AUTHOR>Peter Nelson</AUTHOR>
+            <DATE>1/1/1999</DATE>
+            <ISBN>0395629497</ISBN>
+            <CATEGORIES>Engineering</CATEGORIES>
+            <Review>
+                <RATING>4</RATING>
+                <SYNOPSIS>"I built a tree house in the summer of 1998 (click <A HREF=http://mckoss.com/platformhouse>here</A> to read the story).
+This book was a major inspiration.  The pictures are incredible."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Path Between the Seas</TITLE>
+            <AUTHOR>David G. McCullough</AUTHOR>
+            <DATE>10/1/98</DATE>
+            <ISBN>0671244094</ISBN>
+            <CATEGORIES>Engineering, History</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"I <I>read</I> this book several years ago by listening to it as a
+<I>Book on Tape</I>.  Not only do I admire the determination and power
+that Teddy Roosevelt wielded to complete this monumental engineering
+project, but the details of the project and the obstacles that they faced
+are fascinating."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>The Great Bridge : The Epic Story of the Building of the Brooklyn Bridge</TITLE>
+            <AUTHOR>David G. McCullough</AUTHOR>
+            <DATE>10/1/98</DATE>
+            <ISBN>067145711X</ISBN>
+            <CATEGORIES>Engineering, History</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>Another great David McCullough book tells the story of the building of
+the Brooklyn Bridge.  This period of history seems so exciting to me.  Electricity,
+the telephone and communications, as well as steel construction and bridge
+development were all producing dramatic changes in the way people lived.
+
+I've always wondered how men were able to first imagine and then realize
+building these great bridges.  Mr. McCullough tells the story of how the suspension
+wire was made, how new steel manufacturing techniques needed to be invented, and how
+the physical limits of the construction crew were tested in some of the earliest deep
+water construction projects.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>The Double Helix</TITLE>
+            <AUTHOR>James Watson</AUTHOR>
+            <DATE>1/2/1999</DATE>
+            <ISBN>0689706022</ISBN>
+            <CATEGORIES>Biology, History</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>First person account of the discovery of the structure of DNA.  Very down-to-earth writing style - most enjoyable read.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>The Bishop's Boys</TITLE>
+            <AUTHOR>Tom Crouch</AUTHOR>
+            <DATE>1/2/1999</DATE>
+            <ISBN>039330695X</ISBN>
+            <CATEGORIES>History, Engineering</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>For the feel of what it was like to invent the airplane - follow the Wright brothers in this chronological account.  Very exciting story, with enough technical detail to delight any engineer.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>The Eudaemonic Pie</TITLE>
+            <AUTHOR>Thomas Bass</AUTHOR>
+            <DATE>1/2/1999</DATE>
+            <ISBN>0140167129</ISBN>
+            <CATEGORIES>Engineering</CATEGORIES>
+            <Review>
+                <RATING>3</RATING>
+                <SYNOPSIS>A fun account of a group of chaos enthusiasts that set out to build a wearable computer to beat the game of roulette.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>T.rex and the Crater of Doom</TITLE>
+            <AUTHOR>Walter Alvarez</AUTHOR>
+            <DATE>1/2/1999</DATE>
+            <ISBN>0691016305</ISBN>
+            <CATEGORIES>Evolution</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>The title sounds farcical but this is a serious, though easy-to-read, account of the science behind the theories of the last global extinction that occurred 65 million years ago.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Spikes : Exploring the Neural Code</TITLE>
+            <AUTHOR>Fred Rieke (Editor)</AUTHOR>
+            <DATE>1/2/1999</DATE>
+            <ISBN>0262181746</ISBN>
+            <CATEGORIES>Biology, Engineering</CATEGORIES>
+            <Review>
+                <RATING>3</RATING>
+                <SYNOPSIS>I'm not all the way through it yet, but this book intrigued me for it's blend of signal theory as applied to an understanding of the coding used by the nervous system.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>The Neuron</TITLE>
+            <AUTHOR>Irwin B. Levitan</AUTHOR>
+            <DATE>1/2/1999</DATE>
+            <ISBN>0195100212</ISBN>
+            <CATEGORIES>Biology</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>My father gave me this book.  It's a pretty basic text - but goes into some depth on the chemistry and morphology of the neuron and the nervous system.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Rocket Propulsion Elements</TITLE>
+            <AUTHOR>George P. Sutton</AUTHOR>
+            <DATE>1/2/1999</DATE>
+            <ISBN>0471529389</ISBN>
+            <CATEGORIES>Engineering</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"<I>The</I> book on the design of rocket motors."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Numerical Recipes in C</TITLE>
+            <AUTHOR>William H. Press</AUTHOR>
+            <DATE>1/2/1999</DATE>
+            <ISBN>0521431085</ISBN>
+            <CATEGORIES>Programming</CATEGORIES>
+            <Review>
+                <RATING>4</RATING>
+                <SYNOPSIS>Real code and good explanation behind many numerical-type algorithms.  Kind of like Knuth, but more cookbook in nature; you can copy code directly out of the book and get up and running quickly.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Into Thin Air</TITLE>
+            <AUTHOR>Jon Krakauer</AUTHOR>
+            <DATE>1/2/1999</DATE>
+            <ISBN>0679457526</ISBN>
+            <CATEGORIES>Mountaineering</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"The gripping account of the tragic 1996 Everest summit.  You'll not be able to put this down!  I read this <i>before</i> climbing Rainier - and I <i>still</i> went!"</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Mountaineering</TITLE>
+            <AUTHOR>Mountaineers</AUTHOR>
+            <DATE>1/2/1999</DATE>
+            <ISBN>0898864267</ISBN>
+            <CATEGORIES>Mountaineering</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>A big handbook with everything you could want to know (that you can learn from a book) about hiking and climbing in the mountains.  I had the 4th edition make in the '80's; now in it's 6th edition.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>The Feynman Lectures on Physics</TITLE>
+            <AUTHOR>Richard Feynman</AUTHOR>
+            <DATE>1/2/1999</DATE>
+            <ISBN>0201510049</ISBN>
+            <CATEGORIES>Physics</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"How could you <i>not</i> love physics with books like these?  Things start out deceptively simple - but there is plenty of depth in just about every lecture."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Surely You're Joking, Mr. Feynman!</TITLE>
+            <AUTHOR>Richard Feynman</AUTHOR>
+            <DATE>1/2/1999</DATE>
+            <ISBN>0393316041</ISBN>
+            <CATEGORIES>Physics</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>Ralph Leighton recorded Feynman telling his stories during their drumming sessions together; and then he put together this beautiful little book.  I read this book soon after it was published in 1985; my beat-up copy must have been passed around to a half dozen on my friends.  My son and I have been listening to the audio-book version together; if we could all live like Feynman  no nonsense, and yet very playful.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>What Do You Care What Other People Think?</TITLE>
+            <AUTHOR>Richard Feynman</AUTHOR>
+            <DATE>1/2/1999</DATE>
+            <ISBN>0553347845</ISBN>
+            <CATEGORIES>Physics</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>More Feynman stories...</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>At the End of the Century</TITLE>
+            <AUTHOR>Richard Koshalek</AUTHOR>
+            <DATE>1/2/1999</DATE>
+            <ISBN>0810919869</ISBN>
+            <CATEGORIES>Architecture</CATEGORIES>
+            <Review>
+                <RATING>4</RATING>
+                <SYNOPSIS>Covers 100 years of architectural history in words and pictures.  From a Museum of Contemporary Art (LA) exhibit.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Interior Design</TITLE>
+            <AUTHOR>John F. Pile</AUTHOR>
+            <DATE>1/2/1999</DATE>
+            <ISBN>0810934639</ISBN>
+            <CATEGORIES>Architecture, Design</CATEGORIES>
+            <Review>
+                <RATING>3</RATING>
+                <SYNOPSIS>A fat volume - lots of ideas in words and pictures from famous designers.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>How Buildings Learn</TITLE>
+            <AUTHOR>Stewart Brand</AUTHOR>
+            <DATE>1/2/1999</DATE>
+            <ISBN>0670835153</ISBN>
+            <CATEGORIES>Architecture</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"Brand (of Whole Earth fame) shows how buildings evolve over time.  He shows how <i>low-road</i> architecture can fill a niche by allowing it's users to adapt their buildings to their changing needs.  Brand was a big fan of Building 20 on the MIT campus for this reason.  Now slated for demolition, this <i>temporary</i> building served a community of users for over 50 years."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Codes, Ciphers and Secret Writing</TITLE>
+            <AUTHOR>Martin Gardner</AUTHOR>
+            <DATE>12/31/98</DATE>
+            <ISBN>0486247619</ISBN>
+            <CATEGORIES>Cryptography</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"This is great book for kids.  I don't know a kid that <B>wasn't</B> interested in secret writing.  This book makes it fun
+and it's also a great introduction to the different forms of ciphers."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Applied Cryptography</TITLE>
+            <AUTHOR>Bruce Schneier</AUTHOR>
+            <DATE>12/31/98</DATE>
+            <ISBN>0471117099</ISBN>
+            <CATEGORIES>Cryptography</CATEGORIES>
+            <Review>
+                <RATING>4</RATING>
+                <SYNOPSIS>This book is packed with concrete technical information.  Everything from protocols to encryption algorithms is covered here.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>The Code Breakers</TITLE>
+            <AUTHOR>David Kahn</AUTHOR>
+            <DATE>12/31/98</DATE>
+            <ISBN>0684831309</ISBN>
+            <CATEGORIES>Cryptography, History</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>I've had (a previous edition) of this book for 20 years.  It's part historical and part technical.  Most of the meat
+in this book is of an historical nature.  But it's a fascinating background.
+This is a must-have volume for anyone with an interest in cryptography, though you'll also want to have more technical
+books that go into the meat of modern cryptographic systems.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>"Eyewitness Travel Guides-Florence & Tuscany"</TITLE>
+            <AUTHOR>Dorling Kindersley</AUTHOR>
+            <REVIEWER>Debbie Koss</REVIEWER>
+            <DATE>1/3/1999</DATE>
+            <ISBN>1564585026</ISBN>
+            <CATEGORIES>Travel</CATEGORIES>
+            <Review>
+                <RATING>4</RATING>
+                <SYNOPSIS>"As with DK books in general, the photos are great.  Colored indexes on the edges of pages made it simple to find regions and subjects.  The quick language translator in the back was lacking.  I had to refer to other books to find food items.  Hand drawn maps of cities and neighborhoods were great for actually walking around.  To see pictures from our trip to Italy, click here: <A HREF=""http://mckoss.com/italy98"">Italy 1998</A>."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Music, the Brain, and Ecstasy</TITLE>
+            <AUTHOR>Robert Jourdain</AUTHOR>
+            <DATE>1/3/1999</DATE>
+            <ISBN>0688142362</ISBN>
+            <CATEGORIES>Music</CATEGORIES>
+            <Review>
+                <SYNOPSIS>"Another book on my ""wish to read"" list."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Piano Lessons</TITLE>
+            <AUTHOR>Noah Adams</AUTHOR>
+            <DATE>1/4/1999</DATE>
+            <ISBN>0385314043</ISBN>
+            <CATEGORIES>Music</CATEGORIES>
+            <Review>
+                <RATING>4</RATING>
+                <SYNOPSIS>Host of NPR, Noah Adams talks about his adult experience of taking piano lessons.  It's reassuring to hear of his mixture of fear and sometimes frustration in trying to learn to
+play music on an adult's schedule.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>How to Play Popular Piano in 10 Easy Lessons</TITLE>
+            <AUTHOR>Norman Monath</AUTHOR>
+            <DATE>1/4/1999</DATE>
+            <ISBN>0671530674</ISBN>
+            <CATEGORIES>Music</CATEGORIES>
+            <Review>
+                <RATING>4</RATING>
+                <SYNOPSIS>"This book is a no-nonsense approach to not only playing popular music, but also to <i>understanding</i> it.  While it's billed as ""10 easy lessons"" - your ability to achieve profficiency will be limited by the amount of time you can devote to study and practice.  It's one thing to understand, and yet another to have these playing techniques available to
+you instinctively."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Jazz Improvisation</TITLE>
+            <AUTHOR>John Mehegan</AUTHOR>
+            <DATE>1/4/1999</DATE>
+            <ISBN>0823025594</ISBN>
+            <CATEGORIES>Music</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>This is an excellent book; I particularly love the notation Mehegan teaches for writing and playing jazz chords.  But the book is quite challenging; many of the excercises require that
+you not only know many of the jazz standards, but can play them by ear - and in many keys!  Getting through this book is a skill I aspire to rather than one I have attained.  This book is the first in a four volume set.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Genius</TITLE>
+            <AUTHOR>James Gleick</AUTHOR>
+            <REVIEWER>J.R.</REVIEWER>
+            <DATE>1/4/1999</DATE>
+            <ISBN>0679747044</ISBN>
+            <CATEGORIES>Physics,Biography</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>A fair look at Feynman's life. Debunking some of his stories a little, and at the same time delving deeper into his life than his own collections of stories did. It goes over some of the more painful moments and hits some of the more unseemly moments. Overall it does show Feynman to be a very interesting and likeable character. I really enjoyed every minute I spent reading this book.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Live MCMVC</TITLE>
+            <AUTHOR>Hot Club of San Francisco</AUTHOR>
+            <DATE>1/4/1999</DATE>
+            <ISBN>B000003Z9V</ISBN>
+            <CATEGORIES>Music, CD's</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>I love this disk.  On a trip to San Francisco in 1997, I took my sister, Catheryn, to Bimbos; an historic jazz club.  We had no idea who was playing, but the Hot Club of San Francisco treated us to a wonderful performance.  The group plays in the style of Django Reinhardt - a 20's jazz musician from Paris (Hot Club of France).  This quintet of string players creates a lively mixture of jazz and classical sounding instruments.  If you like classical guitar and fast-paced jazz, you'll love this CD.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>The Design of Everyday Things</TITLE>
+            <AUTHOR>Donald A. Norman</AUTHOR>
+            <DATE>1/2/1999</DATE>
+            <ISBN>0385267746</ISBN>
+            <CATEGORIES>Design</CATEGORIES>
+            <Review>
+                <RATING>4</RATING>
+                <SYNOPSIS>"The author is excellent at taking objects from everyday life and pointing out their design flaws - making products that work well and are understandable is much harder than it seems.  Good lesson in the need to think like a user when designing artifacts, although he is short on specific prescriptions for good design.  I guess it&#8217;s easier to be critical. A very entertaining book, none the less."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>The Invisible Computer</TITLE>
+            <AUTHOR>Donald A. Norman</AUTHOR>
+            <DATE>1/2/1999</DATE>
+            <ISBN>0262140659</ISBN>
+            <CATEGORIES>Design</CATEGORIES>
+            <Review>
+                <SYNOPSIS>"I just started reading this book.  I picked up a (signed) copy from the MIT Press bookstore in Cambridge last fall (1998).  Mr. Norman is quite critical of the current computer industry - and I understand his points; most of our products are not well designed for beginning users, nor are they simple to learn.  And I agree with his thesis that we need to make devices much better suited to simpler single-minded roles, rather that the ""universal machine"" contraption that the PC is today.
+<p>I do find some of his criticism a bit unfair...but more as I read the book myself."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>The Making of the Atomic Bomb</TITLE>
+            <AUTHOR>Richard Rhodes</AUTHOR>
+            <DATE>1/7/1999</DATE>
+            <ISBN>0684813785</ISBN>
+            <CATEGORIES>History, Physics, Engineering</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"The amazing story of the atomic bomb project.  I love the way the book begins - tracing Leo Szilard strolling through the streets of London, and suddenly realizing that a nuclear chain reaction could be possible:
+<blockquote>
+""As the light changed to green and I crossed the street, it...suddenly occurred to me that if we could find an element which is split by neutrons and which would emit <i>two</i> neutrons when it absorbs <i>one</i> neutron, such an element, if assembled in sufficiently large mass, could sustain a nuclear chain reaction.
+<p>""I didnt see at the moment just how one would go about finding such an element, or what experiments would be needed, but the idea never left me.  In certain circumstances it might be possible to set up a nuclear chain reaction, liberate energy on an industrial scale, and construct atomic bombs.""
+</blockquote>
+You just have to love a guy who can not only be so clever, but can think big like this.  And there are dozens of other fascinating characters and events throughout the book.
+"</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Guns, Germs, and Steel</TITLE>
+            <AUTHOR>Jared Diamond</AUTHOR>
+            <DATE>10/1/98</DATE>
+            <ISBN>0393038912</ISBN>
+            <CATEGORIES>Evolution, History</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"Here's an interesting puzzle.  Knowing that humans all descend from a group migration originating from the <i>fertile crescent</i> in the Middle East, why is it that we see very different levels of cultural and technological development in different parts of the world?
+<p>These different levels have lead to catastrophic consequences for the lessor developed peoples when they have come into contact again with more <i>advanced</i> cultures.  The prime example is that of the Spanish invasion of the Americas.  The Aztec culture was decimated, despite their much larger numbers and having the advantage of being the defender of an aggression.
+<p>Jared's answer lies mainly in the availability of plant species that could for the basis of an agrarian society.  Without that, peoples are forced to expend most of their resources on pure survival.  Once they have an agricultural society they are freed to dedicate time to developing specialization and technology.
+<p>I like especially that Jared provides justification for his hypothesis as well as shows the analysis for alternative theories.  Its a very well done attempt to try to piece together the reasons behind differential development.
+<p>By the way  thinking about the fate of the Aztecs, Im very much less enthused about making physical contact with extra-terrestrial life.  Im a big fan of SETIs listening efforts, but it would be prudent to minimize the amount of telegraphing our presence.
+"</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Mornings on Horseback</TITLE>
+            <AUTHOR>David McCullough</AUTHOR>
+            <DATE>1/13/1999</DATE>
+            <ISBN>0844667323</ISBN>
+            <CATEGORIES>History, Biography</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"I'm reading this book for the second time.  This biography of Teddy Roosevelt is more than the story of a single man's life.  Much of the book revolves around his family.  What was it like to grow up in a quite wealthy New York family before the turn of the century?  The family certainly had its share of problems - from a family divided by the Civil War to Teddy's severe asthma.
+<p>What is marvelous about the book is the optimism and <I>can-do</I> spirit that pervades Teddys life.  Despite his illness, and early frailties, he took it upon himself to <I>make himself</I>, both body and mind, into the type of man he most admired.
+"</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Skunk Works</TITLE>
+            <AUTHOR>Ben Rich</AUTHOR>
+            <DATE>2/6/1999</DATE>
+            <ISBN>0316743003</ISBN>
+            <CATEGORIES>Engineering</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"New technology and impossible schedules are tackled by a group of roll-up-your-sleeves engineers at Lockheed's Skunk Works.  Protected from upper-management meddling, this group was able to do the impossible on a shoestring budget.  It's the dream job for any engineer - get the managers and bureaucrats out of the way and let us get to work...
+<p>
+The detailed story behind the U2 spy plane and stealth technology are also fascinating aspects of this book.  You can feel how exciting it must have been to work at the Skunk Works in the early days of the cold war."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Rush Limbaugh Is a Big Fat Idiot : And Other Observations</TITLE>
+            <AUTHOR>Al Franken</AUTHOR>
+            <DATE>3/23/1999</DATE>
+            <ISBN>044022330X</ISBN>
+            <CATEGORIES>Politics, History, Humor</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"A round serving of political satire.  Rush Limbaugh and other conservatives are skewered by Al Franken in this hilarious book.  This book was written before the Lewinski scandal was made public.  But it is prescient in pointing out what a sad group the 1996 conservative leadership was.  I particularly love the skewering Gingrich gets for his hypocrisy in preaching family values when he had divorced his wife (who was dying of cancer) and then refused to pay alimony.
+<p>The whole impeachment trial left me with such a bad taste for the Republican leadership (though I consider myself an Independent) - it was joyful to have Al ""sock-it-to-em"".  While the Conservatives seem to have all the money and support of business, it seems like the Liberals have the best sense of humor (at least the best comedians seem to be Liberals).
+"</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Everest</TITLE>
+            <AUTHOR>IMAX</AUTHOR>
+            <DATE>4/7/1999</DATE>
+            <ISBN>B00000G3BN</ISBN>
+            <CATEGORIES>Mountaineering</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>I saw this film at the Pacific Science Center in Seattle.  It's an awesome film.  It's amazing to actually see the parts of the Everest ascent that are so vividly described in Into Thin Air.  This climb is definitely beyond my aspirations; but I can watch the video while munching popcorn!</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Why Not Me? : The Inside Story of the Making and Unmaking of the Franken Presidency</TITLE>
+            <AUTHOR>Al Franken</AUTHOR>
+            <DATE>4/23/1999</DATE>
+            <ISBN>0553526103</ISBN>
+            <CATEGORIES>Politics, Humor</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"Another hilarious book by Al Franken.  I listened to the audio tape version (read by Al Franken) that J.R. lent me.  We hear the story of the ""Franken"" campaign and his 144 days in office.  The campaign section of the book is the best part.  The book is all the more funny because many of his outrageous activities during the campaign are nearly mirrored in the behavior of our real-life politicians."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>The Sun, the Genome, and the Internet</TITLE>
+            <AUTHOR>Freeman J. Dyson</AUTHOR>
+            <DATE>4/26/1999</DATE>
+            <ISBN>0195129423</ISBN>
+            <CATEGORIES>Physics, Biology, Evolution</CATEGORIES>
+            <Review>
+                <RATING>3</RATING>
+                <SYNOPSIS>"Freeman Dyson is very cool.  I first saw him on a video interview that profiled many prominent scientists.  Of all those interviewed, I found Freeman to be the most unpretentious and open.
+<P>In this book, Freeman talks about the progress of science, and looks to the future.  He makes a great point about there being two different types of science.  One, which is an extension of philosophy, is a world of concepts and theories, but which is not motivated primarily by experiment.
+<p>The second, the one he has the most passion/respect for, is rooted in craftsmanship.  It is the science of tools, and tool making, and precise measurement.  He derides biologists for not making their own tools, as the astronomer-culture is much more apt to do.
+<p>The last part of the book looks to the future of what he sees as the three most important scientific trends emerging today - solar energy, biotechnology, and the internet.  He discusses how they are related and what possible outcomes are.
+<p>For my taste, he is a bit fanciful; and I don't necessarily agree with his views on social justice and their importance in guiding the development of these three technologies.
+"</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Marine Sniper</TITLE>
+            <AUTHOR>Charles Henderson</AUTHOR>
+            <DATE>5/20/1999</DATE>
+            <ISBN>0425103552</ISBN>
+            <CATEGORIES>Biography, History</CATEGORIES>
+            <Review>
+                <RATING>3</RATING>
+                <SYNOPSIS>As I write this, war is heating up in the Balkans and it looks like once again the U.S. could be sending troops into battle. This book is the story of marksman Carlos Hathcock who's exploits as a sniper in Vietnam have become legendary. With a white feather in his hat, he ventured out into the jungle alone to wreak havoc on the enemy. The level of discipline and personal commitment to do this job was, for me, the fascinating part of this story. 
+
+Interestingly, many of the reviews on the Amazon bookstore site are from people who claim to know Carlos personally. When he died (1998) the Wall Street Journal ran an article on Sgt. Hathcock, which is how I found this book in the first place. His fans and relatives entered memorials to him in the book reviews on the site! 
+
+Despite the almost universal enthusiasm by Amazon reviewers for the book (and Hathcock), I found the writing to be uneven. There are a couple of stories that keep you on the edge of your seat but other sections seem to ramble on to pad the content out to book length. Amazingly, none of the reviewers of the book note how sad it is that a man of great personal initiative gave his will over to that of his government to fight in a war that ultimately accomplished nothing.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Business @ the Speed of Thought</TITLE>
+            <AUTHOR>Bill Gates</AUTHOR>
+            <DATE>5/28/1999</DATE>
+            <ISBN>0446525685</ISBN>
+            <CATEGORIES>Internet</CATEGORIES>
+            <Review>
+                <RATING>4</RATING>
+                <SYNOPSIS>"Though not a highly technical book, I found Bill's book on doing business in the Internet age a great source of real-world examples.  Bill has an amazing depth of experience in talking to customers all over the world and understanding their technical and infrastructure problems.  This book is chock full of case studies that show how people are using the Internet and Internet-technologies to solve their business problems.
+
+Bill is very keen on emphasizing <i>speed</i> and quickness of action.  I think sometimes to the exclusion of taking quality (of life and work) into account.  I get the image of Bill's vision of the future filled with very frantic and hectic business people trying to make decisions as quick as humanly possible - and in some cases letting their machines make them even faster.
+"</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Lindbergh</TITLE>
+            <AUTHOR>A. Scott Berg</AUTHOR>
+            <DATE>6/17/1999</DATE>
+            <ISBN>0399144498</ISBN>
+            <CATEGORIES>Biography, History, Aviation</CATEGORIES>
+            <Review>
+                <RATING>4</RATING>
+                <SYNOPSIS>"I'm reading this as a <i>Book on Tape</i> now, and thoroughly enjoying it.  Not only are the details of his solo trans-Atlantic flight fascinating, but the degree and speed with which he was thrust into the popular consciousness demonstrate how the 20th century media was even in the 20's able to turn an ordinary man into a world-wide hero.
+
+Lindbergh spent the year after his flight cementing his fame by traveling throughout the 48 States to promote aviation.
+
+The kidnapping and death of his son is also detailed in the book (and reminds us of the potential price of fame).
+"</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Boggs</TITLE>
+            <AUTHOR>Lawrence Weschler</AUTHOR>
+            <DATE>6/17/1999</DATE>
+            <ISBN>0226893952</ISBN>
+            <CATEGORIES>Biography</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"An excellently written account of the obsessions and trials of J.S.G. Boggs.  You may have heard of him.  He's the artist that has been able to ""pay"" for goods by trading his drawings of money at face value.  He apparently drew his first $1 by absent mindedly doodling on a napkin - only to have the waitress offer to take it in lieu of money - and she even brought him the change.
+
+Boggs takes this obsession to extremes and gets into increasingly severe legal troubles in the U.S., Britain, and Australia.  He never attempts to pass his work as actual money, but skirts at the margin legality by his increasingly audacious works (including mechanically printing $1 million in Boggs Bucks at one point).
+
+A very talented artist, his works are now quite valuable in their own right (he&#8217;s passed more than $1 million dollars in Boggs denominated &#8220;currency&#8221;).  The book raises some interesting questions related to how we place value in increasingly abstract objects (paper money, electronic transactions, stocks, etc.).
+
+You can read more about Boggs (and see samples of his work) at the <A HREF=""http://www.lcl.cmu.edu/CAAE/Home/Multimedia/BOGGS/dana/arttrial.html"">Bogg's Bills web site</A>.
+"</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Wind, Sand and Stars</TITLE>
+            <AUTHOR>Antoine De Saint-Exupery</AUTHOR>
+            <DATE>8/2/1999</DATE>
+            <ISBN>0151970874</ISBN>
+            <CATEGORIES>Aviation, Biography</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"Antoine De Saint-Exupery, an early mail pilot (or as I commonly slip, ""email pilot""...people did, after all, have to receive their email somehow before the Internet), writes about his experiences flying the mails from France to Africa.  His subject is more about the condition of the human spirit than it is about any particulars about flying and aviation.  But for him, the airplane is a vehicle that brings him closer to the world and to other men.
+
+A particularly gripping part of the book is his description of his crash in the dessert, and his near death from thirst before being rescued (or rather, saving himself).
+
+Interestingly, Charles Lindberg's wife had a close relationship with Antoine De Saint-Exupery leading into WWII; she recognized in him a man that could express his feelings far beyond Charles's ability to do so.  Tragically, Saint-Exupery died in the later years of the war while on a flying mission, presumably crashing into the sea.
+
+The author is probably best known for his ""children's classic"", <I>The Little Prince</I>."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Every Man a Tiger</TITLE>
+            <AUTHOR>Tom Clancy, Chuck Horner</AUTHOR>
+            <DATE>8/24/1999</DATE>
+            <ISBN>0399144935</ISBN>
+            <CATEGORIES>Aviation, Biography, History</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>The book is part biography of Gen. Horner and part history of the Gulf war.  The book fills in enough details so you understand who Gen. Horner is, how he was trained, his experiences as a fighter pilot in Vietnam and how that affected the way he commanded the air campaign in the Gulf.
+
+The remainder of the book tells the detailed story of the Gulf campaign.  From initial planning and deployment, to the day-to-day sortie scheduling.  The book provides an inside look at how the command center was operated and the rivalries between the various services and various allied forces.  Gen. Horner is not bashful about naming names and in some cases giving people a dressing down for their mistakes (including his own).  In many ways, he faced the same management problems of any large organization - except in this one, lives were at stake when they made mistakes or bad decisions.
+
+There's also plenty of dramatic material about rescue missions to save downed pilots, etc.  A fun and informative book for understanding how our military thinks about and implements its mission.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>The Kid Stays in the Picture</TITLE>
+            <AUTHOR>Robert Evans</AUTHOR>
+            <DATE>9/12/1999</DATE>
+            <ISBN>0787101362</ISBN>
+            <CATEGORIES>Biography</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"So I'm browsing Amazon.com and I see they have a new feature - <A HREF=""http://www.amazon.com/exec/obidos/subst/community/community.html"">Purchase Circles</A>.  Since they know the zip code and email address for all of their customers, they've done a clever thing.  They've assembled their customers into various communities - by city, by school, or by business - and they let you see what that group is buying.
+
+I didn't think there could be much variation based on city - but boy was I wrong.  For example, do you think the people of <A HREF=""http://www.amazon.com/exec/obidos/tg/cm/browse-communities/-/216173/"">Hollywood, CA</A> would be so self-centered as to just be reading about the movie industry - you bet they are!  And that's how I ran into this book.
+
+The number one book being read by Amazon's Hollywood customers is <I>The Kid Stays in the Picture</I>.  What really struck me is that this is an <I>audio</I> book.  Now, I know that audio books are not that popular to begin with, but here is this tape that is topping the list of all books being bought in Hollywood.  I had to get it.
+
+And it's great.  I'm sorry to say - I didn't remember who Robert Evans was.  He ran Paramount for a decade.  Before that he was an actor.  And, most importantly, he's an outrageous character and storyteller.  And you get to hear him tell his own story on these tapes."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>The Matrix</TITLE>
+            <AUTHOR>Directed by Larry and Andy Wachowski</AUTHOR>
+            <DATE>9/26/1999</DATE>
+            <ISBN>B00000K19E</ISBN>
+            <CATEGORIES>Movie's</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"The theme of the movie picks up where Descartes left off.  ""<i>I think, therefore I am</i>,"" becomes ""<i>I think, therefore my mind is connected to a 10-Billion-Mind network running a simulation of the late 20th century</i>.""
+
+Yes, there are a lot of unexplained connections between the real world and that of life in <i>The Matrix</i>, but the action and visual effects in this movie make it one of the most exciting films in the last decade (IMHO).
+
+One of the more mind-blowing effects is one created by effects supervisor John Gaeta.  In the movie, characters are able to perform a sort of time-dilation trick to allow them to do things like dodge bullets.  What John has been able to pull off is the illusion that the camera is able to dolly around the actors in this frozen time sequence.  Imagine actress <A HREF=""http://www.whatisthematrix.com/img/3-3a.jpg"">Carrie-Anne Moss</A> jumping into the air and hanging in near motionless suspension, as the camera zooms around her 360 degrees.  It's an impossible shot...
+
+One of the features of the DVD is <i>The Making of The Matrix</I> where we get to see the <A HREF=""http://www.whatisthematrix.com/img/stills_popup6.jpg"">array of cameras</A> spaced every few degrees around the action.  By shooting the scene from many angles at once they were able to cut together the frames needed to create the frozen-time illusions.
+
+For more info on the movie, visit <A HREF=""http://www.whatisthematrix.com"">The Matrix Web Site</A>.
+"</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Weaving the Web</TITLE>
+            <AUTHOR>Tim Berners-Lee</AUTHOR>
+            <DATE>10/22/1999</DATE>
+            <ISBN>0062515861</ISBN>
+            <CATEGORIES>Internet, History</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"Tim Berners-Lee invented the Web browser and its underlying protocols we use today.  I found this book is really exciting because you can hear in his own words how he was trying to create a system that let people build information systems that could truly be open and promote very flexible linking between them.  His genius is in building a very simple system without all the complexities of earlier attempts (Ted Nelson's Xanadu, for example).
+
+Also exciting to me is his recognition that ""we're not done yet"".  There is much more to build especially in how people can use the web to interact and create content for the web.  The web standards have become popularize primarily as a <i>publishing</i> medium; relatively few people are creating the content that everyone else is reading.  Tim's original intent was to create a system where everyone can be an author.
+
+Philosophically, Tim places more trust in the government to own and control how the Internet will evolve (and is relatively more willing to have the government proscribe the actions that business entities can take).  I, personally, feel that commercial freedom is a straightforward extension of individual freedom and I want the government to do very little in the way of controlling or proscribing what is <i>allowed</i> on the Internet.
+
+This book really got me starting to think about the Open Source movement as well (in which much of the Internet software was developed and continues to evolve).  More on that in my upcoming review of <i>Open Sources</i>.
+"</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Philip and Alex's Guide to Web Publishing</TITLE>
+            <AUTHOR>Philip Greenspun</AUTHOR>
+            <DATE>11/10/1999</DATE>
+            <ISBN>1558605347</ISBN>
+            <CATEGORIES>Programming, Internet</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"Philip and I must have been classmates together at MIT, since we were in the same class (class of '82).  Unfortunately, I don't remember him.  The difference between Philip and I:  he's stayed at MIT (and has had the same <A HREF=""mailto:philg@mit.edu"">email address</A> for two decades) and hates Microsoft, whereas I left MIT to come to Microsoft (in 1983).
+
+At first, I was really put off by the comments Phil makes about Microsoft (many ranging from inaccurate to unfair).  But, in reading his book, I find that he makes inaccurate and unfair comments about <i>everybody</i>.  I think of him as kind of a tough movie critic.  In some cases he's being sarcastic, but there is usually a bit of truth to his complaints and barbs and I appreciate that he holds software vendors' (even Microsoft) feet to the coals for overly complicated or poorly performing products.
+
+The <i>Guide to Web Publishing</i> is an excellent primer on how to set up a web site that is backed by a database of information.  Phil's other love is photography, so he's sprinkled his book with (irrelevant, but excellent) photographs.
+
+I've really enjoyed the book for the view it's given me on the trials and tribulations of using current web server and database technology to build data-backed web sites.  Philp's got a ton of experience with the O/S and databases; much of the book reads like a primer, but also includes the battle stories, <i>opinion</i>, and benefits from the depth of his experience setting up real sites.
+
+If you don't want to buy Phil's book you can read the <A HREF=""http://www.photo.net/wtr/thebook/"">online version</A>.  In fact, his web site, <A HREF=""http://www.photo.net"">photo.net</A> is an excellent example of a database-backed web site (and he even includes the source code for his site, on his site).
+"</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>The Code Book</TITLE>
+            <AUTHOR>Simon Singh</AUTHOR>
+            <DATE>1/19/2000</DATE>
+            <ISBN>0385495315</ISBN>
+            <CATEGORIES>Cryptography</CATEGORIES>
+            <Review>
+                <RATING>4</RATING>
+                <SYNOPSIS>"This book offers an excellent historical and technical introduction to code and cipher systems.  Though not as historically thorough as David Kahn's <i>The Code-Breakers</I> the book is more approachable (less wordy), and has excellent diagrams and illustrations to help explain the various systems (and in fact is a better introduction to help understand the workings of the codes and not just their role in historical events)."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>The Annotated C++ Reference Manual</TITLE>
+            <AUTHOR>Bjarne Stroustrup</AUTHOR>
+            <DATE>2/10/2000</DATE>
+            <ISBN>0201514591</ISBN>
+            <CATEGORIES>Programming</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"This book is the bible for C++ syntax.  Generally referred to as <i>The ARM</i>, this book is the authoritative source for meaning of all C++ constructs.  Complex topics covered include Derived Classes, constructors and destructors, operator overloading, templates, exception handling and the preprocessor.  Stroustrup also discusses his reasons for designing the language as he did."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>The Astonishing Hypothesis</TITLE>
+            <AUTHOR>Francis Crick</AUTHOR>
+            <DATE>8/8/2000</DATE>
+            <ISBN>0684801582</ISBN>
+            <CATEGORIES>Biology</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>The book's title is somewhat of a misnomer.  At first I thought this book was about the issue of vitalism (or anti-vitalism); it would make the case for the mind being a manifestation of straightforward physical processes in the brain.  I expected this book to be an argument against those such as Roger Penrose who argue that the functioning of the mind and human intelligence, require something more than an understanding of the chemical and biological processes of neurons.
+
+In actuality, this book is a fascinating account of the workings of vision in the brain.  Dr. Crick presents a fascinating overview of the science up until that time (published in 1995).  While we don't have all the answers, it's a marvel to examine the richly coupled areas of the brain and to understand some of the attributes that neuronal computation posses.
+
+I now want to read more about the state of the art of neural networking and the successes that have been made in modeling brain-like computation using brain-like computing and learning structures.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Remaking the World : Adventures in Engineering</TITLE>
+            <AUTHOR>Remaking the World : Adventures in Engineering</AUTHOR>
+            <DATE>12/31/2000</DATE>
+            <ISBN>0375400419</ISBN>
+            <CATEGORIES>Engineering, History</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"This book is a collection of essays that first appeared in <a href=""http://www.sigmaxi.org/amsci/amsci.html"">American Scientist</a>.  I found them to be a wonderful collection on the history of engineering discipline.  Henry Petroski shares my fascination with the large seemingly impossible engineering projects from history.  He provides not only fascinating technical information, but also a perspective into the lives and thinking of the men and women who were behind these great feats.
+<p>
+His book includes an excellent essay on the Panama Canal project, the history of the Channel Tunnel, and the design and politics of the Petronas Towers (now the largest buildings in the world).  A particularly thought provoking essay on the Nobel Prize, and how it has been subverted from Alfred Nobel's original goal to reward practical engineering, and now is aimed more at practitioners of basic research."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Robotic Explorations</TITLE>
+            <AUTHOR>Fred Martin</AUTHOR>
+            <DATE>2/12/2001</DATE>
+            <ISBN>0130895687</ISBN>
+            <CATEGORIES>Engineering, Programming</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"I ordered this book before entering the January 2000 6.270 competition at MIT ... but it arrived after I returned from the trip.  This excellent book is by the creator the the <i>Handyboard</i> - the embedded computer that is used in the MIT course.
+<p>
+This wonderful book provides great information on control systems, designing with Lego parts, interfacing with sensors and motors, etc.
+
+"</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>World War 3.0 : Microsoft and Its Enemies</TITLE>
+            <AUTHOR>Ken Auletta</AUTHOR>
+            <DATE>2/26/2001</DATE>
+            <ISBN>0375503668</ISBN>
+            <CATEGORIES>Politics, Internet</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"I just finished this book in February of 2001.  I find this book to be among the more balanced depictions of the Microsoft trial that I've read; and I feel that the author has a good general understanding of the issues (though he is still a bit confused on some technical issues).
+
+Some of the quotes from this book may actually have a bearing on the case as Judge Jackson is quoted as saying some very unfavorable remarks that could be used to argue that he showed undue bias against Microsoft.  I'm particularly struck by Jackson's statements about Microsoft's lack of contriteness.  He seems to think that Microsoft is not allowed to have the opinion that we did nothing wrong.  I believe that is our prerogative and duty to continue to say so as long as we still see it that way.  But that does not mean that Microsoft could not honor a well-written and specific behavioral remedy negotiated by the parties.  Jackson seems to equate our disagreement about guilt, with our inability to conform to a behavioral remedy.  I see these as totally separable.
+
+Chapter 21 is particularly interesting as it outlines in some detail, the negotiated settlement that Microsoft was prepared to accept were it not for the recalcitrance of the States Attorneys General.  This book really points out the failure of <A HREF=""http://creditsite.com/jiklein.htm"">Joel Klein</A> to bring the States together and in line with the US goverment's interests in this case.
+
+I find it ironic that the strongest opponents of Microsoft in this case (AOL/Netscape, Cisco, IBM), are also those that tend to have products that attempt to ""lock in"" their customers to a much larger degree than Microsoft has ever done.
+
+I think what this case failed to really address is the issue of how Microsoft's competitors can have the same opportunity to innovate in building desktop platforms that Microsoft has.  It would certainly be a disaster for the US economy and consumers to have the government appointing a committee as to which features can be added to Windows.  Looking back in hindsight - it seems unfathomable that Microsoft could NOT integrate a web browser into it's operating system as the Internet has become an equal and sometimes more important component for users than the traditional file system, or windows interfaces.
+
+At root of Microsofts problems is that given the very vague wording of the US anti-trust laws, including an imprecise interpretation of <i>monopoly</i>, it's very difficult for a company to know when it must stop conforming to the standard commercial rules that apply to all businesses, and instead start confroming to the special laws for behavior that apply to a monopoly.
+
+I don't see how we can escape the labeling of Windows as a monopoly OS on Intel desktop systems.  But what need be <i>done</i> about that?  Some of the proposed behavioral remedies would enable competitors to have equal access to Windows at a standardized price.  OEM's would be free to install other software as well as add some non-destructive modifications to the desktop and startup screens.  It would also ensure that developers for Windows could have early and complete information about the Window's API's.
+
+Unfortunately, Microsoft's enemies are primarily interested in the destruction of a keen competitor, regardless of the impact or cost to consumers or Microsoft's ability to continue to innovate.  And the States Attorneys General seem to be more interested in building publicity for their personal political careers (and financial backing from the competitive businesses owners in their states) than they are in acting in the best interests of the citizens of their states."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Turtles, Termites and Traffic Jams</TITLE>
+            <AUTHOR>Mitchel Resnick</AUTHOR>
+            <DATE>3/31/2001</DATE>
+            <ISBN>0262680939</ISBN>
+            <CATEGORIES>Programming</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"If you're familiar with the Logo programming language, how would you like to graduate to using thousands of turtles all at once.  This book describes the <A HREF=""http://wex.www.media.mit.edu/courses/mas712/slweb/index.html"">StarLogo</A> system that allows you to write programs where many different agents act together in concert.  There are some great examples of how seemingly complex ""social"" behaviors can spring from a large number of agents using very simple rules.  My favorite chapters describe ""Artifical Ants"" and ""Traffic Jams""."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>When I'm Dead All This Will Be Yours : Joe Teller</TITLE>
+            <AUTHOR>Teller</AUTHOR>
+            <REVIEWER>J.R.</REVIEWER>
+            <DATE>4/12/2001</DATE>
+            <ISBN>0922233225</ISBN>
+            <CATEGORIES>Art,Biography</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"This is a book by Teller of ""Penn and Teller"". It is a portait of his father mostly, but a lot of information about both of his parents come through. I reallyed enjoyed this book. It was an interesting look deep into someone's family. 
+
+The cartoons in the book at original artwork that Joe Teller did in the 40's. He never really succeded as a cartoonist until now. They give a peek at what a this nation was like in the heat of the depression.
+
+You can check out more information about this book at <a href=""http://www.sincity.com""> SinCity </a>"</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Black Hawk Down</TITLE>
+            <AUTHOR>Mark Bowden</AUTHOR>
+            <DATE>10/29/2001</DATE>
+            <ISBN>0451203933</ISBN>
+            <CATEGORIES>History</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"The amazing story of the 1993 battle in Mogadishu, Somalia in which 18 US soldiers were killed, along with many 100's of Somali's presumed dead.  This story is very relevant to the current situation (in October 2001) where we are trying to use traditional military action to capture a single person.  In 1993, we were trying to apprehend ""warlord"" Mohamed Farrah Aidid - and today we are going after Osama bin Laden.
+
+Our critical mistake in this episode was drastically underestimating the enemy.  While we had every advantage in terms of technology and military hardware, the Somali's had on their side sheer numbers of fighters as well as their determined willingness to fight regardless of the dangers to their own lives.  Time and again, Somali fighters would put themselves in direct fire of the US forces to attack, usually being killed in the process.  Another Somali fighter would then pick up their weapon and take their place.  This went on for 12 to 18 hours in a house-to-house street battle that kept the relatively small force of Americans pinned down all night.
+
+Like the movies <I>Saving Private Ryan</I> and <I>Three Kings</I> this book depicts a very graphic image of war and battle.  While I do believe that there are things we need to be willing to fight for, every one of us needs to understand the type of situation we are asking our military to go in to."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>e:The Story of a Number</TITLE>
+            <AUTHOR>Eli Maor</AUTHOR>
+            <REVIEWER>J.R.</REVIEWER>
+            <DATE>12/10/2001</DATE>
+            <ISBN>0691058547</ISBN>
+            <CATEGORIES>Mathematics</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"This book is so good I have to admit I'm not done with it and I need to share how good it is. Maor goes through the history of things that lead up to the nubmer e. All the while explaining not only the math that was being used at the time, but Why. Thats a very important point as he does a great job setting the context for each discovery.
+
+In school I was never bad at math, but series math was always toughest because I didn't ever grasp why anyone would really want to add up stuff in an infinite series. Teachers would always present the series as if it came right out of the air begging to be summed up. Maor always presents them in a very solid way. 
+
+Again I haven't finished the book, but I'm really enjoying it. I would go as far as to say I'm <b>savoring</b> it.
+
+I will add to this review after I finish the book which will be soon as I'm reading almost nothing else at this point."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Project Orion: The True Story of the Atomic Spaceship</TITLE>
+            <AUTHOR>George Dyson</AUTHOR>
+            <DATE>4/29/2002</DATE>
+            <ISBN>0805059857</ISBN>
+            <CATEGORIES>Engineering, History</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"Can you make a rocket ship by blowing up nuclear bombs behind it to push it along?  Apparently, you can!  And the enigineering was done in the late 50's.  George Dyson interviewed many of the principals (including his father, Freeman Dyson, who worked on the project when George was only 5 years old) and examined thousands of pages of newly declassified documents to pull together the fascinating story of this bold engineering project.
+
+One of the challenges is how to harness a very brief and very high energy explosion, and convert it into useful propulsion without destroying the vehicle.  Included are pictures of experiments using high explosives (C4) to prove the ""pusher-plate"" design (a big shock absorber placed between the vehicle and the explosion)."</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Galileo's Daughter</TITLE>
+            <AUTHOR>Dava Sobel</AUTHOR>
+            <REVIEWER>J.R.</REVIEWER>
+            <DATE>6/26/2002</DATE>
+            <ISBN>0140280553</ISBN>
+            <CATEGORIES>History, Biography, Religion</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>"124 letters from Suor Maria Celeste Galilei (a nun of the order of Poor Clare) written to her father, Galileo form the spine of this unbelievably well written biography. The text of whole letters along with commentary and narrative by the author make for one of the best biographies I've ever read.
+
+The book is as much history of the Catholic Church and the Italian inquisition as it is a biography. The author does a great job showing the context of the 30 years war and the attitudes of Pope Urban the VIII as they change over time. From this history we can be reminded of the beauty and importance of the first amendment to our constitution.
+
+There is also enough science sprinkled in to get a feel for the works of Galileo and how much influence he clearly had on Newton. Specifically the laws of motion and gravity were laid out fairly clearly by Galileo in his final bootlegged work <i>Two Sciences</i>, which could not be published in Italian, only English and Dutch in protestant countries.
+
+One more little note. This is the only biography that I've ever read that has a real surprise ending...
+"</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Seizing the Enigma</TITLE>
+            <AUTHOR>David Kahn</AUTHOR>
+            <DATE>12/21/2002</DATE>
+            <ISBN>0395427398</ISBN>
+            <CATEGORIES>Cryptography, History</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>This books covers the role of the Enigma machine and the code breakers of Bletchley Park in the Battle of the Atlantic.  We learn that not all the breakthroughs were due to the cryptanalysts.  The British at times relied on spies, trickery, and the capture of submarines and other vessels.  We also learn of Ian Fleming's (yes, the writer of the James Bond novels) daring plan to capture critical German cipher documents.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Cadillac Desert : The American West and Its Disappearing Water</TITLE>
+            <AUTHOR>Mark Reisner</AUTHOR>
+            <DATE>10/1/98</DATE>
+            <ISBN>0140178244</ISBN>
+            <CATEGORIES>Engineering</CATEGORIES>
+            <Review>
+                <SYNOPSIS>This book appeals to me on two levels.  First, I find very large
+development projects intriguing.  Second, the political dimension
+of how our society can make the collective decision to spend so
+much money is fascinating - especially since most people are not
+aware that we have even created these huge water development projects.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>May It Please the Court</TITLE>
+            <AUTHOR>Peter Irons</AUTHOR>
+            <DATE>1/2/1999</DATE>
+            <ISBN>1565843304</ISBN>
+            <CATEGORIES>History</CATEGORIES>
+            <Review>
+                <RATING>4</RATING>
+                <SYNOPSIS>You get to hear the recordings of actual arguments made before the Supreme Court in several groundbreaking cases. I was amazed at how normal lawyers can sound in their arguments; even when presenting to the highest court in the land.  [Note: As of 2003, it looks like the original book is no longer available.  There are now several editions that have different court cases presented.]</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>A Course in Combinatorics</TITLE>
+            <AUTHOR>van Lint and Wilson</AUTHOR>
+            <DATE>6/14/2003</DATE>
+            <ISBN>0521422604</ISBN>
+            <CATEGORIES>Mathematics</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>I've just started reading this textbook (June '03).  I've been prompted back into mathematics thinking about some combinatorial problems, mostly relating to games (like the card game Set).  The text is dense, so Darrell Plank and I have decided to study sections of the book together.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>Plan of Attack</TITLE>
+            <AUTHOR>Bob Woodward</AUTHOR>
+            <DATE>5/31/2004</DATE>
+            <ISBN>074325547X</ISBN>
+            <CATEGORIES>History, Politics</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>Bob Woodward, famed reporter from the Washington Post, has done an amazing job with this book.  The degree of access and breadth of sources is amazing; starting with President Bush, and reaching across his entire cabinet, to key players in the State Department, and the Pentagon.
+
+Plan of Attack recounts the 16 month odyssey toward the decision to attack Iraq.  While Im not a big fan of Bushs, I find that I have more respect for how he managed the process to decide to go to war.  There certainly remains much to second-guess, as this book was published in the year after the end of major combat operations.  But given the information available to him at the time, its hard to fault the administration for the choices they made.
+
+I am still left with the feeling that Bush has never been able to put together a strong diplomatic approach to foreign affairs.  I think there is a lot of room to work underneath a simple show of force.  As portrayed in this book, Bush did little more than treat the UN as a problem to be dealt with; he wanted a rubber stamp more than anything.  You feel more frustration with their timeline being held up than treating the UN as a real vehicle for true negotiation, listening and understanding.
+
+While hinting at several areas where critics can be strongly critical, I think the book overall tries to be very fair in its coverage and analysis.  I particularly enjoyed reading details about DB/ROCKSTARS  the CIA team that developed much of the early intelligence before the beginning of the war.</SYNOPSIS>
+            </Review>
+        </BOOK>
+        <BOOK>
+            <TITLE>The Algorithmic Beauty of Plants</TITLE>
+            <AUTHOR>Prusinkiewicz and Lindenmayer</AUTHOR>
+            <DATE>1/20/2005</DATE>
+            <ISBN>0387972978</ISBN>
+            <CATEGORIES>Programming</CATEGORIES>
+            <Review>
+                <RATING>5</RATING>
+                <SYNOPSIS>When I was exploring how to create a computer generated leaf, I ran into this very lovely book.  It describes many plant structures and how they can be generated mathematically and simulated on a computer.  Lots of pictures - lots of equations.</SYNOPSIS>
+            </Review>
+        </BOOK>
+    </BOOKS>
+</STORE>

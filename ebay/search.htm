@@ -1,0 +1,177 @@
+<HTML>
+<HEAD>
+<SCRIPT>
+var rgst = new Array(
+"Norden",
+"IBM 5100",
+"IBM 026",
+"IBM 029",
+"IBM 407",
+"IBM 1130",
+"keypunch",
+"key punch",
+"Altair computer",
+"Imsai computer",
+"Kim-1",
+"vintage IBM",
+"rare IBM",
+"paper tape",
+"paper reader punch",
+"ASR 33",
+"teletype",
+"cipher device",
+"enigma machine",
+"cipher machine",
+"cypher machine",
+"cipher",
+"telgraphic code",
+"code book",
+"Cryptologia",
+"Cryptanalysis",
+"cryptography",
+"Black Chamber",
+"chiffre",
+"m94",
+"m-94",
+"m209",
+"m-209",
+"STG 61",
+"CSP 888",
+"CSP 889",
+"M-134",
+"M134",
+"crypto*",
+"hagelin",
+"hebern",
+"encryption",
+"telephone scrambler",
+
+"Thacher",
+"Curta",
+"Brunsviga",
+"Friden calculator",
+"Fuller calculator",
+"Fowler slide*",
+"Apple II Rare",
+"digicomp",
+"digi-comp",
+"TRS* Model 100",
+
+"atomic bomb",
+"PBA",
+
+"DDR",
+"Dance Revolution",
+"Drummania",
+"Electronic Drums",
+"Roland v-Drum",
+"DTXPress",
+"TB-303",
+"MC-303",
+"Zendrum"
+);
+
+var rgstUsers = new Array(
+"codasaurus",
+"schneier",
+"cpeters58",
+"swordfish",
+"hagelin",
+"mclemore",
+"htf",
+"pck@netcom.com",
+"relicwizard",
+"douglasprice",
+"averillw",
+"wa2bvr",
+"rlandsman",
+"thxi38",
+"keimy",
+"dimethyl",
+"rosenbach2",
+"k2112@earthlink.net",
+"lehughes",
+"huw.thomas@mi8.com",
+"nsaproofcrypto",
+"codepapa",
+"swampisle",
+"jljag",
+"foundmymojo",
+"datawrangler",
+"torquetum",
+"mariojc",
+"jalex-uk",
+"boardwalker55",
+"texaspyro"
+);
+
+var rgstSellers = new Array(
+"jalex-uk",
+"haiku2",
+"rsmode",
+"rechenmeister",
+"dburns@medical-antiques.com",
+"remcleod@earthlink.net",
+"gerard.schnoebelen@span.ch",
+"gemmary.com",
+"bkdme",
+"hagelin",
+"oregontrail2000"
+);
+
+function BuildLinks()
+{
+	var i;
+	var stTerm;
+	var st = "Items:<ol>";
+
+	var stSearchURL = "http://search.ebay.com/search/search.dll?MfcISAPICommand=GetResult&ht=1&SortProperty=MetaHighestPriceSort&query=";
+	var stUserURL = "http://cgi3.ebay.com/aw-cgi/eBayISAPI.dll?ViewBidItems&sort=9&page=1&rows=200&completed=1&all=1&userid=";
+	var stSellerURL = "http://cgi6.ebay.com/aw-cgi/eBayISAPI.dll?MfcISAPICommand=ViewListedItems&include=0&since=-1&sort=2&rows=200&userid=";
+	
+	for (i = 0; i < rgst.length; i++)
+		{
+		stTerm = rgst[i];
+		st += "<li><A target=frmTarget HREF=\"" + stSearchURL + escape(stTerm) + "\">" + stTerm + "</a>";
+		}
+
+	st += "</ol><p>Sellers (current items):<ol>";
+
+	for (i = 0; i < rgstSellers.length; i++)
+		{
+		stTerm = rgstSellers[i];
+		st += "<li><A target=frmTarget HREF=\"" + stSellerURL + escape(stTerm) + "\">" + stTerm + "</a>";
+		}
+
+	st += "</ol><p>Buyers:<ol>";
+
+	for (i = 0; i < rgstUsers.length; i++)
+		{
+		stTerm = rgstUsers[i];
+		st += "<li><A target=frmTarget HREF=\"" + stUserURL + escape(stTerm) + "\">" + stTerm + "</a>";
+		}
+
+
+
+	st += "</ol>";
+
+	document.write(st);
+}
+
+</SCRIPT>
+</HEAD>
+<BODY>
+<h1 style="text-align:center">Ebay Search Page</h1>
+<TABLE width=100%>
+<TR>
+<TD style="vertical-align:top" width=200>
+<SCRIPT>
+BuildLinks();
+</SCRIPT>
+</TD>
+<TD style="vertical-align:top">
+<IFRAME Name=frmTarget SRC="http://www.ebay.com" width=100% height=3000>
+</TD>
+</TR></TABLE>
+</BODY>
+<FRAME>
